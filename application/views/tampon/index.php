@@ -8,9 +8,23 @@
 
 <div class="row">
     <div class="col-md-3 col-md-offset-1">
+		<label>Forme de l'appareil</label>
+                            <select id="formComboBox">
+							    <option disabled selected value> -- Sélectionner une option-- </option>
+                                <option value="Rond">Rond</option>
+                                <option value="Rectangle">Rectangle</option>
+                                <option value="Carre">Carre</option>
+                            </select>
     </div>
 
     <div class="col-md-3 col-md-offset-3">
+	<label>Type d'appareil</label>
+                            <select id="typeComboBox">
+														    <option disabled selected value> -- Sélectionner une option-- </option>
+                                <option value="Bois">Bois</option>
+                                <option value="Plastique">Plastique</option>
+                                <option value="Metallique">Metallique</option>
+                            </select>
     </div>
 </div>
 
@@ -41,17 +55,16 @@
 
     function refreshList() {
         $.ajax({
-            url: '/Tampon/RefreshListPad',
+			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_pad",
             type: 'POST',
-            data: '{ form : "' + $('#formComboBox').val() + '", type : "' + $('#typeComboBox').val() + '", dater: "' + $('#dater_checkbox').is(':checked') + '", search : "' + $('#search_box').val() + '"}',
+			data: 'form=' + $('#formComboBox').val() + '&type=' + $('#typeComboBox').val() + '&dater=' + $('#dater_checkbox').is(':checked') + '&search=' + $('#search_box').val(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (returnedData) {
                 $.each(returnedData, function (index) {
-                    var name = "TAMPON " + returnedData[index].Marque + " " + returnedData[index].Nom;
-                    var id = returnedData[index].Id;
-                    var url = '@Url.Action("Personalize","Tampon", new { id = 1234567 })';
-                    url = url.replace(1234567, id);
+                    var name = "TAMPON " + returnedData[index][1] + " " + returnedData[index][2];
+                    var id = returnedData[index][0];
+                    var url = "<?php echo base_url(); ?>" + "index.php/tampon/personalize/" + id;
                     var line = "<div class='col-md-4'>" +
                         "<div class='card'>" +
                         "<div class='card-image waves-effect waves-block waves-light'>" +

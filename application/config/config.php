@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = '';
+$config['base_url'] = 'http://localhost:8080/EspaceMarquage';
 
 /*
 |--------------------------------------------------------------------------
@@ -89,7 +89,9 @@ $config['language']	= 'english';
 | See http://php.net/htmlspecialchars for a list of supported charsets.
 |
 */
-$config['charset'] = 'UTF-8';
+//$config['charset'] = 'iso-8859-1';
+$config['charset'] = 'utf-8';
+
 
 /*
 |--------------------------------------------------------------------------
