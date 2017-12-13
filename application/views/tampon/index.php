@@ -56,7 +56,7 @@
     function refreshList() {
         $.ajax({
 			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_pad",
-            type: 'POST',
+            type: 'GET',
 			data: 'form=' + $('#formComboBox').val() + '&type=' + $('#typeComboBox').val() + '&dater=' + $('#dater_checkbox').is(':checked') + '&search=' + $('#search_box').val(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

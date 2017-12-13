@@ -10,6 +10,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo base_url('bootstrap/js/bootstrap.min.js');?>"></script>
 
+	<link href="<?php echo base_url('bootstrap/css/Site.css');?>" rel="stylesheet">
 
 	<link type="text/css" rel="stylesheet" href="<?php echo base_url('materialize/css/materialize.min.css'); ?>" media="screen,projection" />
     <script type="text/javascript" src="<?php echo base_url('materialize/js/materialize.min.js');?>"></script>
@@ -20,6 +21,25 @@
     <link href="<?php echo base_url('dropzone/dropzone.css');?>" rel="stylesheet">
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
 </head>
-<body>
 
-<h3><?php echo $title; ?></h3>
+<body style="">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                Espace Marquage
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>Accueil</li>
+                    <li>À propos de</li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">

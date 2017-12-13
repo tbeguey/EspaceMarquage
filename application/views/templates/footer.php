@@ -1,3 +1,8 @@
-<em>&copy; 2015</em>
+<hr />
+        <footer>
+            <p>&copy; 2018 - Espace Marquage</p>
+        </footer>
+
+		    </div>
 </body>
 </html>
