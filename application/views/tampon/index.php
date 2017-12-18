@@ -1,3 +1,4 @@
+<?php header('Content-Type: text/html; charset=utf-8'); ?>
 
 <div class='row'>
     <div class="col-md-3 col-md-offset-4 input-field">
@@ -62,8 +63,8 @@
             dataType: "json",
             success: function (returnedData) {
                 $.each(returnedData, function (index) {
-                    var name = "TAMPON " + returnedData[index][1] + " " + returnedData[index][2];
-                    var id = returnedData[index][0];
+                    var name = "TAMPON " + returnedData[index].marque + " " + returnedData[index].nom;
+                    var id = returnedData[index].id;
                     var url = "<?php echo base_url(); ?>" + "index.php/tampon/personalize/" + id;
                     var line = "<div class='col-md-4'>" +
                         "<div class='card'>" +

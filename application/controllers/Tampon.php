@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+include APPPATH . 'data/Pad.php';
 
 class Tampon extends CI_Controller {
 
@@ -35,19 +36,27 @@ class Tampon extends CI_Controller {
 
 	public function refresh_list_pad()
 	{
-		$pad_one = array (1, "TRODAT", "4913");
-		$pad_two = array (2, "TRODAT", "4913");
-		$pads = array($pad_one, $pad_two);		
+		$pads = array();
 
-		/*$this->load->database();
-		$query = $this->db->query('SELECT Id, Marque, Nom FROM TAMPON');
+		//$dbh = new PDO('mysql:host=mysql55-162.perso;dbname=espacemawps;charset=utf8', 'espacemawps', 'vlBl1nFV');
+
+		/*$bdd = new PDO('mysql:host=localhost;dbname=espace_database;charset=utf8', 'root', '');
+		$bdd = new PDO('mysql:host=espacemawps.mysql.db;dbname=espacemawps;charset=utf8', 'espacemawps', 'vlBl1nFV');
+
+		$reponse = $bdd->query('SELECT * FROM Tampon');
+		while($row = $reponse->fetch()){
+			$pad = array($row['Id'],$row['Marque'], $donnees[2]);
+			array_push($pads, $pad);
+		}
+
+		$reponse->closeCursor(); // Termine le traitement de la requête*/
+
+		$query = $this->db->query("SELECT * FROM TAMPON");
 		foreach ($query->result() as $row)
 		{
-			$pad = array($row->Id, $row->Marque, $row->Nom);
+			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Prix, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
 			array_push($pads, $pad);
-		}*/
-
-		$dbh = new PDO('mysql:host=espacemawps.mysql.db:3306;dbname=espacemawps', 'espacemawps', 'vlBl1nFV');
+		}
 
 		$form = $this->input->get("form");
 		$type = $this->input->get("type");
@@ -55,6 +64,11 @@ class Tampon extends CI_Controller {
 		$search = $this->input->get("search");
 
 		echo json_encode($pads);
+	}
+
+	public function save_upload_file()
+	{
+	
 	}
 }
 ?>

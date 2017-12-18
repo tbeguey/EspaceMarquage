@@ -1,6 +1,6 @@
+
 <html>
 <head>
-
     <title>Welcome Home</title>
 
 		<!-- Bootstrap -->
@@ -22,7 +22,7 @@
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
 </head>
 
-<body style="">
+<body style="background-color:#e0e0e0">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -42,4 +42,5 @@
             </div>
         </div>
     </div>
+	</br>
     <div class="container body-content">

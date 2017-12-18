@@ -1,3 +1,5 @@
+<?php header('Content-Type: text/html; charset=iso-8859-1'); ?>
+
 <div class="row">
     <div id="pads" class="col-md-4 col-md-offset-5" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
         <div id="pad"></div>
@@ -20,8 +22,9 @@
         <ul id="tabs-swipe-demo" class="tabs">
             <li class="tab col s3"><a href="#test-swipe-1">Texte entier</a></li>
             <li class="tab col s3"><a href="#test-swipe-2">Ligne par ligne</a></li>
-            <li class="tab col s3" onclick="$('.carousel-item').trigger('click')"><a href="#test-swipe-3">Images / Logos</a></li>
-            <li class="tab col s3"><a href="#test-swipe-4">Cadre / Bordures</a></li>
+            <li class="tab col s2" onclick="$('.carousel-item').trigger('click')"><a href="#test-swipe-3">Images / Logos</a></li>
+            <li class="tab col s2"><a href="#test-swipe-4">Cadre / Bordures</a></li>
+			<li class="tab col s2"><a href="#test-swipe-5">Modèles</a></li>
         </ul>
         <div id="test-swipe-1" class="col s12">
             <br />
@@ -124,7 +127,7 @@
             </div>
             <br/>
             <div class="jumbotron">
-                <form action="" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm"> <!-- J'ai enlever l'action là, fais key-->
+                <form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
                     <div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
                     <div class="fallback">
                         <input name="file" type="file" multiple />
@@ -156,12 +159,12 @@
                         </div>
                         <div> 
                             <label> Largeur
-                                <input type="range" min="0" max="100" value="0" step="1" id="width_border_one" class="width_border"/> 
+                                <input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
                             </label>
                         </div>
                         <div> 
                             <label> Hauteur
-                                <input type="range" min="0" max="100" value="0" step="1" id="height_border_one" class="height_border"/> 
+                                <input type="range" min="8" max="100" value="8" step="1" id="height_border_one" class="height_border"/> 
                             </label>
                         </div>
                     </div>
@@ -199,6 +202,8 @@
             </div>
             <br/>
         </div>
+        <div id="test-swipe-5" class="col s12">
+		</div>
     </div>
 </div>
 
@@ -224,7 +229,7 @@
     <br />
     <div class="row">
         <div class="col-md-3">
-            <img src="" style="width:50px; height:50px" />
+            <img src="<?php echo base_url('images/logo-pdf.png');?>" style="width:50px; height:50px" />
             <a href="javascript:export_pdf()">Télécharger le visuel en PDF</a>
         </div>
 
@@ -270,10 +275,6 @@
     #pad {
         border: 2px dashed grey;
         overflow: hidden;
-        /*display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        line-height: 15px;*/
         display: inline-block;
         padding: 0;
         padding-top: 5px;
@@ -398,7 +399,7 @@
 
         $('.indicator').css('height', '10px');
 
-        step_top = 85 / (max_lines - 1);
+        step_top = 78 / (max_lines - 1);
         
         while(nb_line != max_lines)
             addrow();
@@ -407,12 +408,7 @@
         $('#textfield_1').val("Bonjour");
 
         re_center(1);
-
-        $('#p_1').css('top', '5%');
-        //$('#p_' + max_lines).css('top', '85%');
         
-        $('#line_position_y_slider_1').val(0);
-        $('#line_position_y_slider_' + max_lines).val(100);
 
         if (dateur == true) {
             var d = new Date();
@@ -509,7 +505,7 @@
             "<div class='col-md-4' style='text-align:center'>" +
             "<div class='col-md-4'>" +
             "<label> Espacement des lettres" +
-            "<input type='range' min='0' max='100' value='0' step='1' class='slider_range' id='space_letter_slider_" +
+            "<input type='range' min='10' max='80' value='0' step='1' class='slider_range' id='space_letter_slider_" +
             counter +
             "' onchange='space_letter_target(" +
             counter +
@@ -520,7 +516,7 @@
             "</div>" +
             "<div class='col-md-4'>" +
             "<label> Position X de la ligne" +
-            "<input type='range' min='0' max='100' value='50' step='1' class='line_position_x_slider' id='line_position_x_slider_" +
+            "<input type='range' min='10' max='90' value='50' step='1' class='line_position_x_slider' id='line_position_x_slider_" +
             counter +
             "' onchange='move_position_x(" +
             counter +
@@ -531,7 +527,7 @@
             "</div>" +
             "<div class='col-md-4'>" +
             "<label> Position Y de la ligne" +
-            "<input type='range' min='0' max='100' value='50' step='1' class='line_position_y_slider' id='line_position_y_slider_" +
+            "<input type='range' min='7' max='85' step='1' class='line_position_y_slider' id='line_position_y_slider_" +
             counter +
             "' onchange='move_position_y(" +
             counter +
@@ -599,6 +595,7 @@
         });
 
         var top_move = step_top * (counter - 1);
+		top_move = top_move + 7;
 
         var new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
         $('#pad').append(new_pad_line);
@@ -632,8 +629,6 @@
     }
 
     function left_align() {
-        //$('.p_pad').css('text-align', 'left');
-
         $('.line_position_x_slider').val(0);
         
         $('.p_pad').removeClass('right-align');
@@ -649,9 +644,7 @@
         $('.right_align_button_targets').removeClass('active_button');
     }
 
-    function left_align_target(id) {
-        //$('#p_' + id).css('text-align', 'left');
-        
+    function left_align_target(id) {        
         $('#line_position_x_slider_' + id).val(0);
         
         $('#p_' + id).removeClass('right-align');
@@ -663,9 +656,7 @@
         $('#right_align_button_target_' + id).removeClass('active_button');
     }
 
-    function center_align() {
-        //$('.p_pad').css('text-align', 'center');
-        
+    function center_align() {        
         $('.line_position_x_slider').val(50);
         
         $('.p_pad').removeClass('right-align');
@@ -688,8 +679,6 @@
     }
 
     function center_align_target(id) {
-        //$('#p_' + id).css('text-align', 'center');
-
         $('#line_position_x_slider_' + id).val(50);
         
         $('#p_' + id).removeClass('right-align');
@@ -703,9 +692,7 @@
         $('#right_align_button_target_' + id).removeClass('active_button');
     }
 
-    function right_align() {
-        //$('.p_pad').css('text-align', 'right');
-        
+    function right_align() {        
         $('.line_position_x_slider').val(100);
         
         $('.p_pad').addClass('right-align');
@@ -726,9 +713,7 @@
         $('.left_align_button_targets').removeClass('active_button');
     }
 
-    function right_align_target(id) {
-        //$('#p_' + id).css('text-align', 'right');
-        
+    function right_align_target(id) {        
         $('#line_position_x_slider_' + id).val(100);
         
         $('#p_' + id).addClass('right-align');
@@ -938,8 +923,10 @@
     }
 
     function add_image_pad() {
-        $('#pad-img').css('visibility', 'visible');
-        $('#pad-img').attr('src', carousel_src);
+		if(carousel_src != undefined){
+	        $('#pad-img').css('visibility', 'visible');
+			$('#pad-img').attr('src', carousel_src);
+		}
     }
 
     Dropzone.options.dropzoneForm = {
@@ -970,6 +957,9 @@
     function active_border_one() {
         $('#options-border-1').toggleClass('invisible');
         $('#border_one').toggleClass('invisible');
+
+		$('#width_border_one').trigger('change');
+		$('#height_border_one').trigger('change');
     }
     
     function active_border_two() {
@@ -1012,8 +1002,9 @@
     }
     
     function move_position_x(id) {
-        var value = $('#line_position_x_slider_' + id).val();
-        var left = value / 100;
+        var value = $('#line_position_x_slider_' + id).val() + $('#line_position_x_slider_' + id).attr('min');
+        var left = value / $('#line_position_x_slider_' + id).attr('max');
+		alert(left);
         left = left * $('#pad').css('width').replace('px', '');
         left = left - $('#p_' + id).textWidth()/2;
         $('#p_' + id).css('left', left + "px");
