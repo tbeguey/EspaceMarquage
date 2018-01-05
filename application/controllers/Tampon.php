@@ -38,18 +38,15 @@ class Tampon extends CI_Controller {
 	{
 		$pads = array();
 
-		//$dbh = new PDO('mysql:host=mysql55-162.perso;dbname=espacemawps;charset=utf8', 'espacemawps', 'vlBl1nFV');
+		$form = utf8_decode($this->input->get("form"));
+		$type = utf8_decode($this->input->get("type"));
+		$dater = $this->input->get("dater");
+		$search = utf8_decode($this->input->get("search"));
 
-		/*$bdd = new PDO('mysql:host=localhost;dbname=espace_database;charset=utf8', 'root', '');
-		$bdd = new PDO('mysql:host=espacemawps.mysql.db;dbname=espacemawps;charset=utf8', 'espacemawps', 'vlBl1nFV');
-
-		$reponse = $bdd->query('SELECT * FROM Tampon');
-		while($row = $reponse->fetch()){
-			$pad = array($row['Id'],$row['Marque'], $donnees[2]);
-			array_push($pads, $pad);
-		}
-
-		$reponse->closeCursor(); // Termine le traitement de la requête*/
+		if($dater=== "false" || $dater === 0 || $dater === "0")
+			$dater = false;
+		else if($dater === "true" || $dater === 1 || $dater === "1")
+			$dater = true;
 
 		$query = $this->db->query("SELECT * FROM TAMPON");
 		foreach ($query->result() as $row)
@@ -58,17 +55,60 @@ class Tampon extends CI_Controller {
 			array_push($pads, $pad);
 		}
 
-		$form = $this->input->get("form");
-		$type = $this->input->get("type");
-		$dater = $this->input->get("dater");
-		$search = $this->input->get("search");
+		foreach($pads as $key => $p){
+			if($form !== "none")
+				if($form !==$p->forme)
+					unset($pads[$key]);				
+			
+			if($type !== "none")
+				if($type !== $p->type)
+					unset($pads[$key]);
+
+			if($search !== "")
+				if(!preg_match('/' . $search . '/',$p->nom))
+					unset($pads[$key]);
+
+			if($dater !== $p->dateur)
+				unset($pads[$key]);
+		}
 
 		echo json_encode($pads);
 	}
 
+	public function refresh_list_logo()
+	{
+		$logos = array();
+
+		$storeFolder = 'uploads/';
+		$clientStoreFolder = ""; // A DEFINIR ET AJOUTER DANS LE PATH
+		$targetPath = FCPATH . $storeFolder;
+
+		foreach(glob($targetPath.'*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
+			array_push($logos, basename($file));
+		}
+
+		echo json_encode($logos);
+	}
+
 	public function save_upload_file()
 	{
-	
+		$config['upload_path'] = './uploads/';
+		$config['encrypt_name'] = TRUE;
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size'] = 100;
+		$config['max_width'] = 1024;
+		$config['max_height'] = 768;
+
+		$this->load->library('upload', $config);
+
+		if (!$this->upload->do_upload('file'))
+		{
+			$error = array('error' => $this->upload->display_errors());
+		}
+		else
+		{
+			$data = array('upload_data' => $this->upload->data());
+		}
 	}
 }
 ?>

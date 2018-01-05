@@ -14,7 +14,7 @@ Class Pad {
 	public $lignes_max;
 	public $dateur;
 
-	function __construct($i, $m, $n, $p, $l,$h, $f, $t, $lm, $d){
+	public function __construct($i, $m, $n, $p, $l, $h, $f, $t, $lm, $d){
 		$this->id = $i;
 		$this->marque = $m;
 		$this->nom = $n;
@@ -25,7 +25,12 @@ Class Pad {
 		$this->type = $t;
 		$this->lignes_max = $lm;
 		$this->dateur = $d;
+		if($d === "false" || $d === 0 || $d === "0")
+			$this->dateur = false;
+		else if($d === "true" || $d === 1 || $d === "1")
+			$this->dateur = true;
 	}
+
 }
 
 ?>

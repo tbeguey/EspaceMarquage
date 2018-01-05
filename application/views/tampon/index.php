@@ -11,20 +11,20 @@
     <div class="col-md-3 col-md-offset-1">
 		<label>Forme de l'appareil</label>
                             <select id="formComboBox">
-							    <option disabled selected value> -- Sélectionner une option-- </option>
+							    <option selected value="none"> -- Sélectionner une option-- </option>
                                 <option value="Rond">Rond</option>
                                 <option value="Rectangle">Rectangle</option>
-                                <option value="Carre">Carre</option>
+                                <option value="Carré">Carré</option>
                             </select>
     </div>
 
     <div class="col-md-3 col-md-offset-3">
 	<label>Type d'appareil</label>
                             <select id="typeComboBox">
-														    <option disabled selected value> -- Sélectionner une option-- </option>
+														    <option selected value="none"> -- Sélectionner une option-- </option>
                                 <option value="Bois">Bois</option>
                                 <option value="Plastique">Plastique</option>
-                                <option value="Metallique">Metallique</option>
+                                <option value="Métallique">Métallique</option>
                             </select>
     </div>
 </div>
@@ -43,9 +43,23 @@
 
 
 <script type="text/javascript">
+$('#search_box').bind("enterKey",function(e){
+	refreshList();
+});
+$('#search_box').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+	if(e.keyCode == 8)
+	{
+		if($(this).val().length == 0)
+			$(this).trigger("enterKey");
+	}
+});
+
     document.getElementById('formComboBox').onchange = document.getElementById('typeComboBox').onchange =
-        document.getElementById('dater_checkbox').onchange = document.getElementById('search_box').oninput = function () {
-            $('#pad-list').empty();
+        document.getElementById('dater_checkbox').onchange = function () {
             refreshList();
         };
 
@@ -55,6 +69,7 @@
     });
 
     function refreshList() {
+	    $('#pad-list').empty();
         $.ajax({
 			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_pad",
             type: 'GET',

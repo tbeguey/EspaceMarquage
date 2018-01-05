@@ -20,7 +20,18 @@
     <script type="text/javascript" src="<?php echo base_url('html2canvas/html2canvas.js');?>"></script>
     <link href="<?php echo base_url('dropzone/dropzone.css');?>" rel="stylesheet">
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('ckeditor/ckeditor.js');?>"></script>
 </head>
+
+<style>
+
+.navbar-title {
+	font-size: 30px;
+	color : white;
+	float: left;
+}
+
+</style>
 
 <body style="background-color:#e0e0e0">
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -31,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                Espace Marquage
+                <a class="navbar-title" href="<?php echo base_url(); ?>">Espace Marquage</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

@@ -106,26 +106,7 @@
                 <a class="waves-effect waves-light btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
                 <a class="waves-effect waves-light btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
             </div>
-            <br />
-            <div class="row">
-                <div class="col-md-3 col-md-offset-2">
-                    <input type="checkbox" class="filled-in" checked="checked" id="general_librairy_checkbox" onchange="refreshList()" />
-                    <label for="general_librairy_checkbox">Bibliothèque générale</label>
-                </div>
-                <div class="col-md-4 col-md-offset-2">
-                    <input type="checkbox" class="filled-in" checked="checked" id="personal_librairy_checkbox" onchange="refreshList()" />
-                    <label for="personal_librairy_checkbox">Bibliothèque personnelle</label>
-                </div>
-            </div>
-            <br />
             <div class="carousel" id="logo-carousel"></div>
-            <br />
-            <div class="row">
-                <div class="col-md-offset-5 col-md-3">
-                    <a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="left material-icons">add_a_photo</i>AJOUTER</a>
-                </div>
-            </div>
-            <br/>
             <div class="jumbotron">
                 <form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
                     <div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
@@ -140,7 +121,7 @@
             <br/>
             <div class="row">
                 <div class="col-md-4 col-md-offset-1 border-rect">
-                    <p class="border-title">Bordure 1</p>
+                    <p class="border-title">Bordure</p>
                     <div class="switch">
                         <label>
                             Off
@@ -164,37 +145,7 @@
                         </div>
                         <div> 
                             <label> Hauteur
-                                <input type="range" min="8" max="100" value="8" step="1" id="height_border_one" class="height_border"/> 
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-md-offset-1 border-rect">
-                    <p class="border-title">Bordure 2</p>
-                    <div class="switch">
-                        <label>
-                            Off
-                            <input type="checkbox" onchange="active_border_two()">
-                            <span class="lever"></span>
-                            On
-                        </label>
-                    </div>
-                    <div id="options-border-2" class="invisible">
-                        <div>
-                            <label>Style de bordure : </label>
-                            <select>
-                                <option value="solid">Normal</option>
-                                <option value="dashed">Pointillé</option>
-                            </select>
-                        </div>
-                        <div> 
-                            <label> Largeur
-                                <input type="range" min="0" max="100" value="0" step="1" id="width_border_two" class="width_border"/> 
-                            </label>
-                        </div>
-                        <div> 
-                            <label> Hauteur
-                                <input type="range" min="0" max="100" value="0" step="1" id="height_border_two" class="height_border"/> 
+                                <input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
                             </label>
                         </div>
                     </div>
@@ -235,15 +186,28 @@
 
         <div class="col-md-6 col-md-offset-2" style="text-align:right">
             <label>Quantité : </label>
-            <input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center">
-            <a class="waves-effect waves-light btn" onclick="order()" style="margin-left:15px"><i class="material-icons left">shopping_cart</i>ACHETER MAINTENANT</a>
+            <input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center; margin-right:15px;">
+            <a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
         </div>
     </div>
 </div>
 <br />
+<div id="mail-modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+		<h4>Modal Header</h4>
+		<label for="object">Objet : </label> <input type="text" id="object" value="COMMANDE XXXXXXXX [CLIENT]"/>
+		<br/>
+		<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
+		<script type="text/JavaScript">CKEDITOR.replace('Commentaires');</script>
+	</div>
 
+    <div class="modal-footer">
+      <a onclick="order()" class="modal-action modal-close waves-effect waves-green btn">ENVOYER</a>
+    </div>
+</div>
 
 <style>
+
     .row {
         margin: 0;
     }
@@ -377,6 +341,11 @@
         left: 0;
     }
     
+	.modal {
+		width: 50% !important;
+		max-height: 100% !important;
+		overflow-y: hidden !important;
+	}
 
 </style>
 
@@ -396,7 +365,7 @@
 
     $(document).ready(function () {
         $('select').material_select();
-
+		$('.modal').modal();
         $('.indicator').css('height', '10px');
 
         step_top = 78 / (max_lines - 1);
@@ -728,7 +697,7 @@
     }
 
     function change_color() {
-        var color = $("#list_color").val(); // The value of the selected option
+        var color = $("#list_color").val(); 
         $('.p_pad').css('color', color);
 
         $('#pad-img').removeClass('filter-black');
@@ -744,7 +713,7 @@
     }
 
     function change_font_size() {
-        var size = $("#font_size_list").val(); // The value of the selected option
+        var size = $("#font_size_list").val(); 
         $('.p_pad').css('font-size', size + "pt");
 
         $('.font_size_list_targets').each(function (index) {
@@ -776,7 +745,7 @@
     }
 
     function change_font_family() {
-        var font = $("#font_family_list").val(); // The value of the selected option
+        var font = $("#font_family_list").val();
         $('.p_pad').css('font-family', font);
 
         $('.font_family_list_targets').each(function (index) {
@@ -895,16 +864,16 @@
     }
     
     function refreshList() {
-        /*$.ajax({
-            url: '/Tampon/RefreshListLogo',
-            type: 'POST',
-            data: '{general: "' + $('#general_librairy_checkbox').is(':checked') + '", personal: "' + $('#personal_librairy_checkbox').is(':checked') + '"}',
+	$('#logo-carousel').empty();
+        $.ajax({
+			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
+            type: 'GET',
+			data: '',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (returnedData) {
                 $.each(returnedData, function (index) {
-                    var image = returnedData[index].Image;
-                    var line = "<a class='carousel-item'><img src='data:image/png;base64," + image + "'/>" +
+                    var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
                         "</a>";
                     $('#logo-carousel').append(line);
                 })
@@ -919,7 +888,7 @@
             error: function () {
                 alert("Erreur de récupération de données.");
             }
-        });*/
+        });
     }
 
     function add_image_pad() {
@@ -931,8 +900,8 @@
 
     Dropzone.options.dropzoneForm = {
         init: function () {
-            // Set up any event handlers
             this.on('complete', function () {
+			alert("hoptions");
                 refreshList();
             });
         }
@@ -950,10 +919,6 @@
         re_center(id);
     }
 
-    function order() {
-        alert("Bam la t'affiche un pop up où tu fais apparaitre la date de livraison tout ca tout ca");
-    }
-    
     function active_border_one() {
         $('#options-border-1').toggleClass('invisible');
         $('#border_one').toggleClass('invisible');
@@ -961,12 +926,6 @@
 		$('#width_border_one').trigger('change');
 		$('#height_border_one').trigger('change');
     }
-    
-    function active_border_two() {
-        $('#options-border-2').toggleClass('invisible');
-        $('#border_two').toggleClass('invisible');
-    }
-
 
     $('.width_border').on('change input', function() {
         var width = 100 - $(this).val();
@@ -1058,4 +1017,8 @@
             }, 0);
         }
     })
+
+	function order(){
+		alert("BAAAAAm");
+	}
 </script>

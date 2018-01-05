@@ -93,3 +93,24 @@ $db['default'] = array(
         'stricton' => FALSE,
         'failover' => array()
 );
+
+/*$db['default'] = array(
+		'dsn'   => 'mysql:host=espacemawps.mysql.db;dbname=espacemawps',
+        'hostname' => 'espacemawps.mysql.db',
+        'username' => 'espacemawps',
+        'password' => 'vlBl1nFV',
+        'database' => 'espacemawps',
+        'dbdriver' => 'pdo',
+        'dbprefix' => '',
+        'pconnect' => TRUE,
+        'db_debug' => TRUE,
+        'cache_on' => FALSE,
+        'cachedir' => '',
+        'char_set' => 'utf8',
+        'dbcollat' => 'utf8_general_ci',
+        'swap_pre' => '',
+        'encrypt' => FALSE,
+        'compress' => FALSE,
+        'stricton' => FALSE,
+        'failover' => array()
+);*/
