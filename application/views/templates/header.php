@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
     <script type="text/javascript" src="<?php echo base_url('html2canvas/html2canvas.min.js');?>"></script>
-    <script type="text/javascript" src="<?php echo base_url('html2canvas/html2canvas.js');?>"></script>
     <link href="<?php echo base_url('dropzone/dropzone.css');?>" rel="stylesheet">
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('ckeditor/ckeditor.js');?>"></script>

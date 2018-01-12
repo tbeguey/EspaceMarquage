@@ -1,5 +1,7 @@
 <?php header('Content-Type: text/html; charset=iso-8859-1'); ?>
 
+<h4 id="title"><?php echo $title ?></h4>
+
 <div class="row">
     <div id="pads" class="col-md-4 col-md-offset-5" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
         <div id="pad"></div>
@@ -9,7 +11,7 @@
     <div class="col-md-2 col-md-offset-1">
         <a onclick="zoom_in_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_in</i></a>
         <label>
-            <input type="text" class="textfield" style="color: grey; width: 30px;" id="zoom_value" value="100"/>
+            <input type="text" style="color: grey; width: 30px;" id="zoom_value" value="100"/>
             %
         </label>
         <a onclick="zoom_out_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_out</i></a>
@@ -154,6 +156,16 @@
             <br/>
         </div>
         <div id="test-swipe-5" class="col s12">
+			<br/>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<input type="text" style="margin-right:15px;" id="title-model" placeholder="Titre du modèle"/>
+					<a class='btn waves-effect waves-light blue model-save'><i class='material-icons left'>save</i>Enregistrer ce modèle</a>
+				</div>
+			</div>
+			<div class="row" id="container-models">
+				
+			</div>
 		</div>
     </div>
 </div>
@@ -181,7 +193,7 @@
     <div class="row">
         <div class="col-md-3">
             <img src="<?php echo base_url('images/logo-pdf.png');?>" style="width:50px; height:50px" />
-            <a href="javascript:export_pdf()">Télécharger le visuel en PDF</a>
+            <a href="javascript:export_pdf(true)">Télécharger le visuel en PDF</a>
         </div>
 
         <div class="col-md-6 col-md-offset-2" style="text-align:right">
@@ -195,7 +207,7 @@
 <div id="mail-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
 		<h4>Modal Header</h4>
-		<label for="object">Objet : </label> <input type="text" id="object" value="COMMANDE XXXXXXXX [CLIENT]"/>
+		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="COMMANDE XXXXXXXX [CLIENT]"/>
 		<br/>
 		<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
 		<script type="text/JavaScript">CKEDITOR.replace('Commentaires');</script>
@@ -205,6 +217,7 @@
       <a onclick="order()" class="modal-action modal-close waves-effect waves-green btn">ENVOYER</a>
     </div>
 </div>
+
 
 <style>
 
@@ -338,13 +351,19 @@
     }
     
     .left-align {
-        left: 0;
+        left: 0 !important;
     }
     
 	.modal {
 		width: 50% !important;
 		max-height: 100% !important;
 		overflow-y: hidden !important;
+	}
+	
+	.models {
+		text-align:center;
+		border: 1px solid #1e88e5;
+		border-radius:15px 50px;
 	}
 
 </style>
@@ -372,11 +391,6 @@
         
         while(nb_line != max_lines)
             addrow();
-
-        $('#p_1').text("Bonjour");
-        $('#textfield_1').val("Bonjour");
-
-        re_center(1);
         
 
         if (dateur == true) {
@@ -412,8 +426,11 @@
             $(new_textfield).insertAfter('#lines');
         }
         
-        refreshList();
+        refreshListPad();
+		refreshListModels();
+		$()
 
+		
         $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");
 
         //$("#p_0").arctext({ radius: 47, dir: 1, rotate: true });
@@ -474,7 +491,7 @@
             "<div class='col-md-4' style='text-align:center'>" +
             "<div class='col-md-4'>" +
             "<label> Espacement des lettres" +
-            "<input type='range' min='10' max='80' value='0' step='1' class='slider_range' id='space_letter_slider_" +
+            "<input type='range' min='0' max='100' value='0' step='1' class='slider_range' id='space_letter_slider_" +
             counter +
             "' onchange='space_letter_target(" +
             counter +
@@ -594,7 +611,7 @@
         $('#add-row').removeClass("disabled");
         nb_line--;
         $('#p_' + id).remove();
-        $('#textfield_' + id).parent().parent().remove();
+        $('#textfield_' + id).parent().parent().parent().remove();
     }
 
     function left_align() {
@@ -722,26 +739,41 @@
                 $(this).material_select();
             }
         });
+
+		$('.p_pad').each(function (index) {
+			var id = $(this).attr('id').replace('p_','');
+            if (id != undefined) {
+				re_center(id);
+            }
+        });
     }
 
     function change_font_size_target(id) {
         var size = $('#font_size_list_' + id).val();
         $('#p_' + id).css('font-size', size + "pt");
+
+		re_center(id);
     }
 
     function to_bold_target(id) {
         $('#p_' + id).toggleClass('bold');
         $('#bold_button_target_' + id).toggleClass('active_button');
+
+		re_center(id);
     }
 
     function to_italic_target(id) {
         $('#p_' + id).toggleClass('italic');
         $('#italic_button_target_' + id).toggleClass('active_button');
+
+		re_center(id);
     };
 
     function to_underline_target(id) {
         $('#p_' + id).toggleClass('underline');
         $('#underline_button_target_' + id).toggleClass('active_button');
+
+		re_center(id);
     }
 
     function change_font_family() {
@@ -754,11 +786,20 @@
                 $(this).material_select();
             }
         });
+
+		$('.p_pad').each(function (index) {
+			var id = $(this).attr('id').replace('p_','');
+            if (id != undefined) {
+				re_center(id);
+            }
+        });
     }
 
     function change_font_family_target(id) {
         var font = $('#font_family_list_' + id).val();
         $('#p_' + id).css('font-family', font);
+
+		re_center(id);
     }
 
     function img_size_plus() {
@@ -815,33 +856,35 @@
         while ($('.active-pad-color').length > $('#input_quantity').val()) {
             $('.active-pad-color').eq(0).removeClass('active-pad-color');
         }
-    })
+    });
 
     var doc;
     var nb_img_charged;
     var nb_img = 3;
     var border;
 
-    function export_pdf() {
+    function export_pdf(save) {
         doc = new jsPDF('p', 'mm');
         nb_img_charged = 0;
+
+		border = $('#pad').css('border');
+        $('#pad').css('border', 'none');
 
         html2canvas($("#title"), {
             onrendered: function (canvas) {
                 doc.addImage(canvas, 'PNG', 1, 1);
                 nb_img_charged++;
-                save_pdf();
+				if(save == true)
+				save_pdf(save);
             }
         });
 
-        border = $('#pad').css('border');
-        $('#pad').css('border', 'none');
-
         html2canvas($("#pad-colors"), {
             onrendered: function (canvas) {
-                doc.addImage(canvas, 'PNG', 10, 150);
+                doc.addImage(canvas, 'PNG', 5, 150);
                 nb_img_charged++;
-                save_pdf();
+				if(save == true)
+				save_pdf(save);
             }
         });
 
@@ -850,45 +893,69 @@
             onrendered: function (canvas) {
                 doc.addImage(canvas, 'PNG', 50, 50, width_mm, height_mm);
                 nb_img_charged++;
-                save_pdf();
+				save_pdf(save);
             }
         });
     }
 
-    function save_pdf() {
+    function save_pdf(save) {
         if (nb_img_charged == nb_img) {
-            doc.save('sample-file.pdf');
+			if(save == true)
+				doc.save('sample-file.pdf');
+			else
+			{
+				var pdf = doc.output(); //returns raw body of resulting PDF returned as a string as per the plugin documentation.
+				var data = new FormData();
+				data.append("data" , pdf);
+				var xhr = new XMLHttpRequest();
+				xhr.open( 'post', "<?php echo base_url(); ?>" + "index.php/tampon/upload_pdf", true ); //Post to php Script to save to server
+				xhr.send(data);
+
+				$.ajax({
+					url: "<?php echo base_url(); ?>" + "index.php/tampon/send_mail",
+					type: 'GET',
+					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val(),
+					contentType: "application/json; charset=utf-8",
+					success: function (returnedData) {
+						alert(returnedData);
+					},
+					error: function () {
+						alert("Erreur d'envoie.");
+					}
+				});
+			}
+
             $('#pad').css('border', border);
             return;
         }
     }
     
-    function refreshList() {
-	$('#logo-carousel').empty();
-        $.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
-            type: 'GET',
-			data: '',
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (returnedData) {
-                $.each(returnedData, function (index) {
-                    var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
-                        "</a>";
-                    $('#logo-carousel').append(line);
-                })
-                $('.carousel').carousel({
-                    pause: true,
-                    interval: false,
-                    onCycleTo: function(data) {
-                        carousel_src = data.children('img').attr('src');
-                    },
-                });
-            },
-            error: function () {
-                alert("Erreur de récupération de données.");
-            }
-        });
+    function refreshListPad() {
+		$('#logo-carousel').empty();
+			$.ajax({
+				url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
+				type: 'GET',
+				data: '',
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (returnedData) {
+					$.each(returnedData, function (index) {
+						var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
+							"</a>";
+						$('#logo-carousel').append(line);
+					})
+					$('.carousel').carousel({
+						pause: true,
+						interval: false,
+						onCycleTo: function(data) {
+							carousel_src = data.children('img').attr('src');
+						},
+					});
+				},
+				error: function () {
+					alert("Erreur de récupération de données.");
+				}
+		});
     }
 
     function add_image_pad() {
@@ -902,7 +969,7 @@
         init: function () {
             this.on('complete', function () {
 			alert("hoptions");
-                refreshList();
+                refreshListPad();
             });
         }
     };
@@ -961,24 +1028,38 @@
     }
     
     function move_position_x(id) {
-        var value = $('#line_position_x_slider_' + id).val() + $('#line_position_x_slider_' + id).attr('min');
-        var left = value / $('#line_position_x_slider_' + id).attr('max');
-		alert(left);
+		var max = parseInt($('#line_position_x_slider_' + id).attr('max'));
+		var min = parseInt($('#line_position_x_slider_' + id).attr('min'));
+		var value = parseInt($('#line_position_x_slider_' + id).val());
+		var mid = (max + min)/2;
+        var left = max + min;
+		left = value / left;
         left = left * $('#pad').css('width').replace('px', '');
         left = left - $('#p_' + id).textWidth()/2;
+
         $('#p_' + id).css('left', left + "px");
         
+		$('#p_' + id).removeClass('middle-align');
+		$('#p_' + id).removeClass('left-align');
+		$('#p_' + id).removeClass('right-align');
         
         $('#right_align_button_target_' + id).removeClass('active_button');
         $('#left_align_button_target_' + id).removeClass('active_button');
         $('#center_align_button_target_' + id).removeClass('active_button');
         
-        if (value === 0)
-            $('#left_align_button_target_' + id).addClass('active_button');
-        else if(value === 50)
-            $('#center_align_button_target_' + id).addClass('active_button');
-        else if(value === 100)
-            $('#right_align_button_target_' + id).addClass('active_button');
+        if (value === parseInt(min)){
+			$('#left_align_button_target_' + id).addClass('active_button');
+			$('#p_' + id).addClass('left-align');
+		}
+        else if(value === parseInt(mid)){
+		    $('#center_align_button_target_' + id).addClass('active_button');
+			$('#p_' + id).addClass('middle-align');
+		}
+
+        else if(value === parseInt(max)){
+		    $('#right_align_button_target_' + id).addClass('active_button');
+			$('#p_' + id).addClass('right-align');
+		}
         
     }
     
@@ -998,13 +1079,15 @@
         }
     }
     
+	/* LE ZOOM COMME CA MARCHE PAS SUR FIREFOX ! */
+
     function zoom_out_pad() {
         var zoom = parseInt($('#zoom_value').val());
         zoom = zoom - 20;
         if (zoom > 50) {
             $('#pads').animate({
                 zoom: '-=20%'
-            }, 0); 
+            }, 0);
             $('#zoom_value').val(zoom);
         }
     }
@@ -1019,6 +1102,202 @@
     })
 
 	function order(){
-		alert("BAAAAAm");
+		export_pdf(false);		
 	}
+
+	function refreshListModels() {
+		$('#container-models').empty();
+		$.ajax({
+			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_models",
+			type: 'GET',
+			data: '',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (returnedData) {
+				$.each(returnedData, function (index) {		
+					var model = returnedData[index];
+					var append = "<div class='col-md-4 models' id='model_" + model.id + "'>";
+					$.each(model.lignes, function(i){
+						var line = model.lignes[i];
+						var space = line.espacement / 2;
+						append += "<p style='font-family:" + line.police + ";font-size:" + line.taille + "pt;letter-spacing:" + space + "px; text-indent:" + space + "px; margin-left:-" + space + "px; margin-right:-" + space + "px;' class='" + line.alignement + "-align ";
+						if(line.gras == true)
+							append += " bold ";
+						if(line.italique == true)
+							append += " italic ";
+						if(line.souligne == true)
+							append += " underline ";
+						append += "'>" + line.texte + "</p>";
+					})
+					append += "<br/>";
+					append += "<h5 class='bold' style='font-family:serif;'>" + model.titre + "</h5>";
+					append += "<div style='margin:5px;'>"
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light green model-check'><i class='material-icons'>check</i></a>";
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light red model-remove"
+					if(model.id == 0)
+						append += "disabled";
+					append += "'><i class='material-icons'>cancel</i></a>";
+					append += "</div>";
+
+					$('#container-models').append(append);
+
+					if(model.titre == "Défaut")
+						$('#model_' + model.id).children('div')[0].children('a')[0].trigger('click');
+				})
+
+				$('.model-remove').on('click', function(){
+					var id = $(this).parent().parent().attr('id').replace('model_', '');
+					$.ajax({
+						url: "<?php echo base_url(); ?>" + "index.php/tampon/delete_model",
+						type: 'GET',
+						data: 'model=' + id,
+						contentType: "application/json; charset=utf-8",
+						success: function (returnedData) {
+							refreshListModels();
+						},
+						error: function () {
+							alert("Erreur de suppression de données.");
+						}
+					});
+				})
+
+				$('.model-check').on('click', function(){
+					var lines = [];
+					$(this).parent().parent().children('p').each(function(index){
+						var text = $(this).text();
+						var size = $(this)[0].style.fontSize;
+						size = size.replace('pt', '');
+						var family = $(this).css('font-family').split('"').join("");
+						var space = $(this).css('letter-spacing') * 2;
+						var align = "";
+						if($(this).hasClass('left-align') == true)
+							align = "left";
+						else if($(this).hasClass('middle-align') == true)
+							align = "middle";
+						else if($(this).hasClass('right-align') == true)
+							align = "right";
+						var bold = false;
+						if($(this).hasClass('bold') == true)
+							bold = true;
+
+						var italic = false;
+						if($(this).hasClass('italic') == true)
+							italic = true
+
+						var underline = false;
+						if($(this).hasClass('underline') == true)
+							underline = true;
+
+						var line = {
+							"texte" : text,
+							"taille" : size,
+							"police" : family,
+							"espacement" : space,
+							"alignement" : align,
+							"gras" : bold,
+							"italique" : italic,
+							"souligne" : underline
+						};
+						lines.push(line);
+					})
+					
+					var index_textfields = [];
+					$('.textfield').each(function(){
+						var id = $(this).attr('id').replace('textfield_', '');
+						index_textfields.push(id);
+					})
+
+					lines.forEach(function(item, i){
+						var index = index_textfields[i];
+						$('#textfield_' + index).val(item.texte);
+						$('#textfield_' + index).trigger('input');
+
+						$('#font_size_list_' + index).val(item.taille);
+						$('#font_size_list_' + index).material_select();
+						change_font_size_target(index);
+
+						$('#font_family_list_' + index).val(item.police);
+						$('#font_family_list_' + index).material_select();
+						change_font_family_target(index);
+
+						$('#space_letter_slider_' + index).val(item.espacement);
+						space_letter_target(index);
+
+						$('#' + item.alignement + '_align_button_target_' + index).click();
+
+						if(item.gras == 1)
+							$('#bold_button_target_' + index).click();
+
+						if(item.italique == 1)
+							$('#italic_button_target_' + index).click();
+
+						if(item.souligne == 1)
+							$('#underline_button_target_' + index).click();
+					});
+				})
+			},
+			error: function () {
+				alert("Erreur de récupération de données.");
+			}
+		});
+    }	
+
+	$('.model-save').on('click', function(){
+		var title = $('#title-model').val();
+		var lines = [];
+		$('.textfield').each(function() {
+			var id = $(this).attr('id').replace('textfield_', '');
+			var text = $('#textfield_' + id).val();
+			var size = $('#font_size_list_' + id).val();
+			var family = $('#font_family_list_' + id).val();
+			var space = $('#space_letter_slider_' + id).val();
+			var align = "";
+			if($('#left_align_button_target_' + id).hasClass('active_button'))
+				align = "left";
+			else if($('#center_align_button_target_' + id).hasClass('active_button'))
+				align = "middle";
+			else if($('#right_align_button_target_' + id).hasClass('active_button'))
+				align = "right";
+
+			var bold = false;
+			if($('#bold_button_target_' + id).hasClass('active_button'))
+				bold = true;
+
+			var italic = false;
+			if($('#italic_button_target_' + id).hasClass('active_button'))
+				italic = true;
+
+			var underline = false
+			if($('#underline_button_target_' + id).hasClass('active_button'))
+				underline =true;
+
+			lines.push(text);
+			lines.push(size);
+			lines.push(family);
+			lines.push(space);
+			lines.push(align);
+			lines.push(bold);
+			lines.push(italic);
+			lines.push(underline);
+		})
+		if(title){
+			var lines_to_send = JSON.stringify(lines);
+			$.ajax({
+					url: "<?php echo base_url(); ?>" + "index.php/tampon/save_model",
+					type: 'GET',
+					data: 'title=' + title + '&lines=' + lines_to_send,
+					contentType: "application/json; charset=utf-8",
+					success: function (returnedData) {
+						refreshListModels();
+					},
+					error: function () {
+						alert("Erreur de sauvegarde de données.");
+					}
+			});
+		}
+		else{
+			alert("Veuillez définir un titre.");
+		}
+
+	})
 </script>
