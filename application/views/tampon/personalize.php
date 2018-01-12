@@ -1141,8 +1141,8 @@
 
 					$('#container-models').append(append);
 
-					if(model.titre == "Défaut")
-						$('#model_' + model.id).children('div')[0].children('a')[0].trigger('click');
+					//if(model.titre == "Défaut")
+					//	$('#model_' + model.id).children('div')[0].children('a')[0].trigger('click');
 				})
 
 				$('.model-remove').on('click', function(){
