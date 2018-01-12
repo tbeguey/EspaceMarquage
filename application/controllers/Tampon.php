@@ -160,8 +160,8 @@ class Tampon extends CI_Controller {
 
 		$query = $this->db->query("SELECT MODELE.Id as MID, Titre, LIGNE.Id as LID, Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne " .
 								"FROM LIGNE_MODELE " .
-								"JOIN LIGNE ON Ligne.Id = Id_Ligne " .
-								"JOIN MODELE ON Modele.Id = Id_Modele " .
+								"JOIN LIGNE ON LIGNE.Id = Id_Ligne " .
+								"JOIN MODELE ON MODELE.Id = Id_Modele " .
 								"WHERE (Id_Client = " . $id_client . " OR Id_Client = 0) AND Id_Tampon = " . $id_pad . " " . // where id client = client actuel, pareil pour le tampon
 								"ORDER BY Ordre"); 
 
