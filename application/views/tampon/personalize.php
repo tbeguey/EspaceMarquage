@@ -1,19 +1,16 @@
 <?php header('Content-Type: text/html; charset=iso-8859-1'); ?>
 
-<h4 id="title"><?php echo $title ?></h4>
+<h4 id="title">TAMPON <?php echo $title ?></h4>
 
-<div class="row">
-    <div id="pads" class="col-md-4 col-md-offset-5" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
+<div class="row" style="display:inline-flex;-webkit-transform: scale(1);transform: scale(1);">
+    <div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
         <div id="pad"></div>
         <div id="border_one" class="invisible"></div>
         <div id="border_two" class="invisible"></div>
     </div>
-    <div class="col-md-2 col-md-offset-1">
+    <div style="display:inline-grid; margin: 10px; margin-top:0">
         <a onclick="zoom_in_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_in</i></a>
-        <label>
-            <input type="text" style="color: grey; width: 30px;" id="zoom_value" value="100"/>
-            %
-        </label>
+        <span id="zoom_value">100%</span>
         <a onclick="zoom_out_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_out</i></a>
     </div>
 </div>
@@ -98,17 +95,23 @@
         <div id="test-swipe-3" class="col s12">
             <br />
             <div class="row">
-                <a class="waves-effect waves-light btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
-                <a class="waves-effect waves-light btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
             </div>
             <br />
             <div class="row">
-                <a class="waves-effect waves-light btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
-                <a class="waves-effect waves-light btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
-                <a class="waves-effect waves-light btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
-                <a class="waves-effect waves-light btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
+                <a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
             </div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
+				</div>
+			</div>
             <div class="carousel" id="logo-carousel"></div>
+
             <div class="jumbotron">
                 <form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
                     <div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
@@ -135,20 +138,27 @@
                     <div id="options-border-1" class="invisible">
                         <div>
                             <label>Style de bordure : </label>
-                            <select>
+                            <select class="border_style" id="border_style_one">
                                 <option value="solid">Normal</option>
                                 <option value="dashed">Pointillé</option>
+								<option value="double">Double</option>
                             </select>
                         </div>
-                        <div> 
-                            <label> Largeur
+                        <div style="display:inline-flex"> 
+                            <label> Largeur 1
                                 <input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
                             </label>
+							<label> Largeur 2 (Double uniquement)
+									<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
+							</label>
                         </div>
-                        <div> 
-                            <label> Hauteur
+                        <div style="display:inline-flex"> 
+                            <label> Hauteur 1
                                 <input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
                             </label>
+							<label> Hauteur 2 (Double uniquement)
+									<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
+							</label>
                         </div>
                     </div>
                 </div>
@@ -174,7 +184,7 @@
 <div style="padding:5px; background-color:white;">
     <div class="row">
         <div class="col-md-12" style="text-align:center">
-            <input type="checkbox" id="alone_checkbox" onchange="$('#pad-colors').toggleClass('invisible')"/>
+            <input type="checkbox" id="alone_checkbox" onchange="alone_function()"/>
             <label for="alone_checkbox">Empreinte seule ?</label>
         </div>
     </div>
@@ -207,7 +217,7 @@
 <div id="mail-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
 		<h4>Modal Header</h4>
-		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="COMMANDE XXXXXXXX [CLIENT]"/>
+		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="ESPACE MARQUAGE - COMMANDE XXXXXXXX [CLIENT]"/>
 		<br/>
 		<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
 		<script type="text/JavaScript">CKEDITOR.replace('Commentaires');</script>
@@ -364,6 +374,18 @@
 		text-align:center;
 		border: 1px solid #1e88e5;
 		border-radius:15px 50px;
+		margin:5px;
+	}
+
+	#zoom_value {
+		font-size: 0.8rem !important;
+		color : #9e9e9e !important;
+		font-weight: bold !important;
+		margin-bottom: 5px !important;
+	}
+
+	.width_border {
+		margin-right : 5px;
 	}
 
 </style>
@@ -381,6 +403,7 @@
     var max_lines = <?php echo $max_lines ?>;
 	var dateur = <?php echo $dater ?>;
     var step_top;
+	var model_applied = false;
 
     $(document).ready(function () {
         $('select').material_select();
@@ -428,13 +451,13 @@
         
         refreshListPad();
 		refreshListModels();
-		$()
+		
+		$(function(){
+			$(".img-btn").attr("disabled", true);
+		});
 
 		
-        $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");
-
-        //$("#p_0").arctext({ radius: 47, dir: 1, rotate: true });
-        
+        $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");        
     });
 
     function addrow() {
@@ -583,6 +606,19 @@
         var top_move = step_top * (counter - 1);
 		top_move = top_move + 7;
 
+		if(counter > max_lines){
+			var max_move = 0;
+			$('.p_pad').each(function(){
+				var t = parseFloat($(this)[0].style.top.replace('%',''));
+				if(t > max_move){
+					max_move = t;
+				}
+			});
+			top_move = max_move + step_top;
+			alert(top_move);
+		}
+			
+
         var new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
         $('#pad').append(new_pad_line);
 
@@ -599,12 +635,6 @@
         $('#p_' + id).text(text);
         
         re_center(id);
-
-        /*$('#p_0').remove();
-        var line = "<p id='p_0' class='p_pad' style='padding-top:5px'></p>";
-        $('#pad').append(line);
-        $('#p_0').text(text);
-        $("#p_0").arctext({ radius: 47, dir: 1, rotate: true });*/
     });
 
     function delete_target(id) {
@@ -612,6 +642,14 @@
         nb_line--;
         $('#p_' + id).remove();
         $('#textfield_' + id).parent().parent().parent().remove();
+
+		$('.p_pad').each(function(){
+			var i = parseInt($(this).attr('id').replace('p_', ''));
+			if(i > id){
+				var t = parseFloat($(this)[0].style.top.replace('%','')) - step_top;
+				$(this).css('top', t +'%');
+			}
+		});
     }
 
     function left_align() {
@@ -858,103 +896,50 @@
         }
     });
 
-    var doc;
-    var nb_img_charged;
-    var nb_img = 3;
-    var border;
+    function export_pdf() {
+        var doc = new jsPDF('l', 'mm', [height_mm, width_mm]);
 
-    function export_pdf(save) {
-        doc = new jsPDF('p', 'mm');
-        nb_img_charged = 0;
-
-		border = $('#pad').css('border');
+		var border = $('#pad').css('border');
         $('#pad').css('border', 'none');
-
-        html2canvas($("#title"), {
-            onrendered: function (canvas) {
-                doc.addImage(canvas, 'PNG', 1, 1);
-                nb_img_charged++;
-				if(save == true)
-				save_pdf(save);
-            }
-        });
-
-        html2canvas($("#pad-colors"), {
-            onrendered: function (canvas) {
-                doc.addImage(canvas, 'PNG', 5, 150);
-                nb_img_charged++;
-				if(save == true)
-				save_pdf(save);
-            }
-        });
 
         html2canvas($("#pad"), {
             scale: 8,
             onrendered: function (canvas) {
-                doc.addImage(canvas, 'PNG', 50, 50, width_mm, height_mm);
-                nb_img_charged++;
-				save_pdf(save);
-            }
-        });
-    }
-
-    function save_pdf(save) {
-        if (nb_img_charged == nb_img) {
-			if(save == true)
-				doc.save('sample-file.pdf');
-			else
-			{
-				var pdf = doc.output(); //returns raw body of resulting PDF returned as a string as per the plugin documentation.
-				var data = new FormData();
-				data.append("data" , pdf);
-				var xhr = new XMLHttpRequest();
-				xhr.open( 'post', "<?php echo base_url(); ?>" + "index.php/tampon/upload_pdf", true ); //Post to php Script to save to server
-				xhr.send(data);
-
-				$.ajax({
-					url: "<?php echo base_url(); ?>" + "index.php/tampon/send_mail",
-					type: 'GET',
-					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val(),
-					contentType: "application/json; charset=utf-8",
-					success: function (returnedData) {
-						alert(returnedData);
-					},
-					error: function () {
-						alert("Erreur d'envoie.");
-					}
-				});
+                doc.addImage(canvas, 'PNG', 0, 0, width_mm, height_mm);
+				doc.save('APERCU - ' + $('#title').text() + ' - ' + $.now() + '.pdf');			
+				$('#pad').css('border', border);
+				return;
 			}
-
-            $('#pad').css('border', border);
-            return;
-        }
+        });
     }
     
     function refreshListPad() {
 		$('#logo-carousel').empty();
-			$.ajax({
-				url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
-				type: 'GET',
-				data: '',
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				success: function (returnedData) {
-					$.each(returnedData, function (index) {
-						var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
-							"</a>";
-						$('#logo-carousel').append(line);
-					})
-					$('.carousel').carousel({
-						pause: true,
-						interval: false,
-						onCycleTo: function(data) {
-							carousel_src = data.children('img').attr('src');
-						},
-					});
-				},
-				error: function () {
-					alert("Erreur de récupération de données.");
-				}
+		$.ajax({
+			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
+			type: 'GET',
+			data: '',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (returnedData) {
+				$.each(returnedData, function (index) {
+					var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
+						"</a>";
+					$('#logo-carousel').append(line);
+				})
+				if($('#logo-carousel').hasClass('initialized'))
+					$('#logo-carousel').removeClass('initialized');
+				$('#logo-carousel').carousel({
+					pause: true,
+					interval: false,
+					onCycleTo: function(data) {
+						carousel_src = data.children('img').attr('src');
+					},
+				});
+			},
+			error: function () {
+				alert("Erreur de récupération de données.");
+			}
 		});
     }
 
@@ -963,12 +948,15 @@
 	        $('#pad-img').css('visibility', 'visible');
 			$('#pad-img').attr('src', carousel_src);
 		}
+
+		$(function(){
+			$(".img-btn").attr("disabled", false);
+		});
     }
 
     Dropzone.options.dropzoneForm = {
         init: function () {
             this.on('complete', function () {
-			alert("hoptions");
                 refreshListPad();
             });
         }
@@ -1005,6 +993,29 @@
         var id = $(this).attr('id').replace('height_', '');
         $('#' + id).css('height', height + '%');
     });
+
+	$('#border_style_one').on('change', function(){
+		var value = $(this).val();
+		$('#border_two').addClass('invisible');
+
+		switch(value){
+			case "solid":
+				$('#border_one').css('border-style', 'solid');
+				break;
+			case "dashed":
+				$('#border_one').css('border-style', 'dashed');
+				break;
+			case "double":
+				$('#width_border_two').prop('disabled', false);
+				$('#height_border_two').prop('disabled', false);
+				$('#border_two').removeClass('invisible');
+				$('#width_border_two').trigger('change');
+				$('#height_border_two').trigger('change');
+				$('#border_one').css('border-style', 'solid');
+
+				break;
+		}
+	});
     
     $.fn.textWidth = function(){
         var html_org = $(this).html();
@@ -1069,48 +1080,39 @@
     }
     
     function zoom_in_pad() {
-        var zoom = parseInt($('#zoom_value').val());
+        var zoom = parseInt($('#zoom_value').text().replace('%',''));
         zoom = zoom + 20;
         if (zoom < 300) {
-            $('#pads').animate({
+            $('#pads').parent().animate({
                 zoom: '+=20%'
             }, 0);
-            $('#zoom_value').val(zoom);
+            $('#zoom_value').text(zoom + '%');
         }
     }
     
-	/* LE ZOOM COMME CA MARCHE PAS SUR FIREFOX ! */
+	/* LE ZOOM COMME CA MARCHE PAS SUR FIREFOX !
+		$('#pads').parent().css('-webkit-transform', 'scale(2)');
+		$('#pads').parent().css('transform', 'scale(2)');
+		--- Pourrait etre une solution mais c'est tres moche...
+	*/
 
     function zoom_out_pad() {
-        var zoom = parseInt($('#zoom_value').val());
+        var zoom = parseInt($('#zoom_value').text().replace('%',''));
         zoom = zoom - 20;
         if (zoom > 50) {
-            $('#pads').animate({
+            $('#pads').parent().animate({
                 zoom: '-=20%'
             }, 0);
-            $('#zoom_value').val(zoom);
+            $('#zoom_value').text(zoom + '%');
         }
     }
-    
-    $('#zoom_value').on('input', function() {
-        var zoom = parseInt($(this).val());
-        if (zoom < 300 && zoom > 50) {
-            $('#pads').animate({
-                zoom: '=' + zoom + '%'
-            }, 0);
-        }
-    })
-
-	function order(){
-		export_pdf(false);		
-	}
 
 	function refreshListModels() {
 		$('#container-models').empty();
 		$.ajax({
 			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_models",
 			type: 'GET',
-			data: '',
+			data: 'id_pad=' + <?php echo $id_pad ?>,
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			success: function (returnedData) {
@@ -1132,17 +1134,14 @@
 					append += "<br/>";
 					append += "<h5 class='bold' style='font-family:serif;'>" + model.titre + "</h5>";
 					append += "<div style='margin:5px;'>"
-					append += "<a class='btn btn-floating btn-small waves-effect waves-light green model-check'><i class='material-icons'>check</i></a>";
-					append += "<a class='btn btn-floating btn-small waves-effect waves-light red model-remove"
-					if(model.id == 0)
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light green model-check' style='margin:10px'><i class='material-icons'>check</i></a>";
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light red model-remove ";
+					if(model.defaut == true)
 						append += "disabled";
 					append += "'><i class='material-icons'>cancel</i></a>";
 					append += "</div>";
 
 					$('#container-models').append(append);
-
-					//if(model.titre == "Défaut")
-					//	$('#model_' + model.id).children('div')[0].children('a')[0].trigger('click');
 				})
 
 				$('.model-remove').on('click', function(){
@@ -1205,6 +1204,7 @@
 					$('.textfield').each(function(){
 						var id = $(this).attr('id').replace('textfield_', '');
 						index_textfields.push(id);
+
 					})
 
 					lines.forEach(function(item, i){
@@ -1223,6 +1223,20 @@
 						$('#space_letter_slider_' + index).val(item.espacement);
 						space_letter_target(index);
 
+						if($('#right_align_button_target_' + index).hasClass('active_button') == true)
+							$('#right_align_button_target_' + index).trigger('click');
+						else if($('#middle_align_button_target_' + index).hasClass('active_button') == true)
+							$('#middle_align_button_target_' + index).trigger('click');
+						else if($('#left_align_button_target_' + index).hasClass('active_button') == true)
+							$('#left_align_button_target_' + index).trigger('click');
+
+						if($('#bold_button_target_' + index).hasClass('active_button') == true)
+							$('#bold_button_target_' + index).trigger('click');
+						if($('#italic_button_target_' + index).hasClass('active_button') == true)
+							$('#italic_button_target_' + index).trigger('click');
+						if($('#underline_button_target_' + index).hasClass('active_button') == true)
+							$('#underline_button_target_' + index).trigger('click');
+
 						$('#' + item.alignement + '_align_button_target_' + index).click();
 
 						if(item.gras == 1)
@@ -1235,6 +1249,15 @@
 							$('#underline_button_target_' + index).click();
 					});
 				})
+				if(model_applied == false){
+					$('.model-remove').each(function(){
+						if($(this).hasClass('disabled')){
+							$(this).parent().children('a').first().trigger('click');
+						}
+					});
+					model_applied = true;
+				}
+
 			},
 			error: function () {
 				alert("Erreur de récupération de données.");
@@ -1285,7 +1308,7 @@
 			$.ajax({
 					url: "<?php echo base_url(); ?>" + "index.php/tampon/save_model",
 					type: 'GET',
-					data: 'title=' + title + '&lines=' + lines_to_send,
+					data: 'title=' + title + '&lines=' + lines_to_send + '&id_pad=' + <?php echo $id_pad ?>,
 					contentType: "application/json; charset=utf-8",
 					success: function (returnedData) {
 						refreshListModels();
@@ -1300,4 +1323,37 @@
 		}
 
 	})
+
+	function order(){
+		var border = $('#pad').css('border');
+        $('#pad').css('border', 'none');
+	    html2canvas($("#pad"), {
+            scale: 8,
+            onrendered: function (canvas) {
+				var data = encodeURIComponent(canvas.toDataURL("image/jpg").split(',')[1]);
+                $.ajax({
+					url: "<?php echo base_url(); ?>" + "index.php/tampon/send_mail",
+					type: 'POST',
+					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val() + '&data=' + data + '&width=' + <?php echo $width_mm  ?> + '&height=' + <?php echo $height_mm ?>,
+					success: function (returnedData) {
+						$('#pad').css('border', border);
+						alert(returnedData);
+					},
+					error: function () {
+						alert("Erreur d'envoie.");
+					}
+				});
+			}
+        });		
+	}
+
+	function alone_function(){
+		$('#pad-colors').toggleClass('invisible');
+		if($('#alone_checkbox').is(':checked')){
+			$('#title').text('EMPREINTE POUR <?php echo $title; ?>');
+		}
+		else{
+			$('#title').text('TAMPON <?php echo $title; ?>');
+		}
+	}
 </script>

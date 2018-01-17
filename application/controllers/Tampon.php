@@ -33,7 +33,8 @@ class Tampon extends CI_Controller {
 			$width = $pad->largeur;
 			$height = $pad->hauteur;	
 
-			$data['title'] = "TAMPON " . $pad->marque . " " . $pad->nom; 
+			$data['id_pad'] = $pad->id;
+			$data['title'] =  $pad->marque . " " . $pad->nom; 
 			$data['width'] = intval($width * 3.78) + "px";
 			$data['height'] = intval($height * 3.78) + "px";
 			$data['max_lines'] = $pad->lignes_max;
@@ -94,14 +95,20 @@ class Tampon extends CI_Controller {
 
 	public function refresh_list_logo()
 	{
+		$id_client = 1; // to change
 		$logos = array();
 
 		$storeFolder = 'uploads/';
 		$clientStoreFolder = ""; // A DEFINIR ET AJOUTER DANS LE PATH
 		$targetPath = FCPATH . $storeFolder;
 
-		foreach(glob($targetPath.'*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
-			array_push($logos, basename($file));
+
+		foreach(glob($targetPath . $id_client . "/" . '*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
+			array_push($logos, $id_client . "/" . basename($file));
+		}
+
+		foreach(glob($targetPath . "0/" . '*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
+			array_push($logos, "0/" .  basename($file));
 		}
 
 		echo json_encode($logos);
@@ -109,7 +116,12 @@ class Tampon extends CI_Controller {
 
 	public function save_upload_file()
 	{
-		$config['upload_path'] = './uploads/';
+		$id_client = 1; // to change
+		$targetPath = './uploads/' . $id_client . "/";
+		if(!file_exists($targetPath))
+			mkdir($targetPath, 0777, true);
+
+		$config['upload_path'] = $targetPath;
 		$config['encrypt_name'] = TRUE;
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size'] = 100;
@@ -128,15 +140,59 @@ class Tampon extends CI_Controller {
 		}
 	}
 
-	public function upload_pdf()
-	{
-
-	}
-
 	public function send_mail()
 	{
-		$header = $this->input->get("header");
-		$content = $this->input->get("content");
+		$header = $this->input->post("header");
+		$content = $this->input->post("content");
+		$data = $this->input->post("data");
+		$width = $this->input->post("width");
+		$height = $this->input->post("height");
+
+		$storeFolder = 'orders/';
+		$targetPath = FCPATH . $storeFolder;
+
+		$today = getdate();
+
+		$targetPath = $targetPath . $today['year'] . "/";
+		if(!file_exists($targetPath))
+			mkdir($targetPath, 0777, true);
+
+		$targetPath = $targetPath . $today['mon'] . "/";
+		if(!file_exists($targetPath))
+			mkdir($targetPath, 0777, true);
+
+		$targetPath = $targetPath . $today['mday'] . "/";
+		if(!file_exists($targetPath))
+			mkdir($targetPath, 0777, true);
+
+		$pdfName = "[IDCLIENT]" . "-" . "[IDTAMPON]" . "-" . $today['0'] . ".pdf";
+
+		$imgdata = base64_decode($data);
+
+		$this->load->helper('pdf_helper');
+
+		tcpdf();
+		$obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$obj_pdf->SetCreator(PDF_CREATOR);
+		$title = "PDF Report";
+		$obj_pdf->SetTitle($title);
+		$obj_pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $title, PDF_HEADER_STRING);
+		$obj_pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$obj_pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$obj_pdf->SetDefaultMonospacedFont('helvetica');
+		$obj_pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$obj_pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+		$obj_pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$obj_pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$obj_pdf->SetFont('helvetica', '', 9);
+		$obj_pdf->setFontSubsetting(false);
+		$obj_pdf->AddPage();
+
+		$obj_pdf->setJPEGQuality(100);
+
+		$obj_pdf->Image('@' . $imgdata, 50, 50, $width, $height);
+
+		$obj_pdf->Output($targetPath . $pdfName, 'F');
 
 		$this->load->library('email');
 
@@ -147,6 +203,7 @@ class Tampon extends CI_Controller {
 
 		$this->email->subject($header);
 		$this->email->message($content);
+		$this->email->attach($targetPath . $pdfName);
 
 		$this->email->send();
 
@@ -155,10 +212,10 @@ class Tampon extends CI_Controller {
 	public function refresh_list_models()
 	{
 		$id_client = 1; // to change
-		$id_pad = 1; // to change
+		$id_pad = $this->input->get("id_pad");
 		$models = array();
 
-		$query = $this->db->query("SELECT MODELE.Id as MID, Titre, LIGNE.Id as LID, Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne " .
+		$query = $this->db->query("SELECT MODELE.Id as MID, Titre, Defaut, LIGNE.Id as LID, Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne " .
 								"FROM LIGNE_MODELE " .
 								"JOIN LIGNE ON LIGNE.Id = Id_Ligne " .
 								"JOIN MODELE ON MODELE.Id = Id_Modele " .
@@ -188,7 +245,7 @@ class Tampon extends CI_Controller {
 			{
 				$lines = array();
 				array_push($lines, $line);
-				$model = new Model($model_id, $row->Titre, $lines);
+				$model = new Model($model_id, $row->Titre, $row->Defaut, $lines);
 				array_push($models, $model);
 			}
 
@@ -200,7 +257,7 @@ class Tampon extends CI_Controller {
 	public function save_model()
 	{
 		$id_client = 1; // to change
-		$id_pad = 1; // to change
+		$id_pad = $this->input->get("id_pad");
 		$title = $this->input->get("title"); // si je mets des accents ca passe pas
 		$lines = json_decode($this->input->get("lines"));
 
@@ -208,7 +265,7 @@ class Tampon extends CI_Controller {
 			'Id_Client' => $id_client,
 			'Id_Tampon' => $id_pad,
 			'Titre' => $title,
-			'Nb_Usage' => 0
+			'Defaut' => false
 		);
 		$this->db->insert('MODELE', $data_model);
 		$id_model = $this->db->insert_id();

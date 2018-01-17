@@ -39,7 +39,8 @@
 	    Id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 		Id_Client INT(6) NOT NULL,
 		Id_Tampon INT(6) NOT NULL,
-		Titre VARCHAR(255) NOT NULL
+		Titre VARCHAR(255) NOT NULL,
+		Defaut BOOLEAN NOT NULL
 	);
 
 	CREATE TABLE LIGNE_MODELE (
@@ -60,12 +61,12 @@
   VALUES ("BEGUEY", "THEO", "begueytheo@gmail.com");
     
 INSERT INTO LIGNE(Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne)
-VALUES ("ESPACE MARQUAGE", 12, "Century", 30, "middle", true, false, false);
+VALUES ("ESPACE MARQUAGE", 12, "Century", 0, "middle", true, false, false);
 
 INSERT INTO LIGNE(Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne)
 VALUES ("27 Rue Georges Barres", 10, "Arial", 0, "left", false, true, false);
 
-INSERT INTO MODELE(Id_Client, Id_Tampon, Titre) VALUES (0, 1, "Défaut");
+INSERT INTO MODELE(Id_Client, Id_Tampon, Titre, Defaut) VALUES (0, 1, "Défaut", true);
 
 INSERT INTO LIGNE_MODELE(Id_Ligne, Id_Modele, Ordre) VALUES (1,1,1);
 
