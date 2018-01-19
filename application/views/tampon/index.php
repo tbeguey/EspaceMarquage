@@ -81,7 +81,7 @@ $('#search_box').keyup(function(e){
                     var name = "TAMPON " + returnedData[index].marque + " " + returnedData[index].nom;
                     var id = returnedData[index].id;
                     var url = "<?php echo base_url(); ?>" + "index.php/tampon/personalize/" + id;
-                    var line = "<div class='col-md-4'>" +
+                    var line = "<div class='col-md-3'>" +
                         "<div class='card'>" +
                         "<div class='card-image waves-effect waves-block waves-light'>" +
                         "<img class='activator' src='http://www.tampon-en-ligne.fr/1289-thickbox_default/tampon-trodat-printy-4913.jpg'>" +

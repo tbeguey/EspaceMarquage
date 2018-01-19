@@ -14,9 +14,8 @@
         <a onclick="zoom_out_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_out</i></a>
     </div>
 </div>
-<br />
 
-<div class="row" style="background-color:white">
+<div class="row" style="background-color:white; margin-top:10px;">
     <div class="col-md-12">
         <ul id="tabs-swipe-demo" class="tabs">
             <li class="tab col s3"><a href="#test-swipe-1">Texte entier</a></li>
@@ -162,6 +161,43 @@
                         </div>
                     </div>
                 </div>
+				<div id="date-border" class="col-md-4 col-md-offset-1 border-rect invisible">
+                    <p class="border-title">Bordure de date</p>
+                    <div class="switch">
+                        <label>
+                            Off
+                            <input type="checkbox" onchange="active_border_date()">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                    </div>
+                    <div id="options-border-d" class="invisible">
+                        <div>
+                            <label>Style de bordure : </label>
+                            <select class="border_style" id="border_style_date">
+                                <option value="solid">Normal</option>
+                                <option value="dashed">Pointillé</option>
+								<option value="double">Double</option>
+                            </select>
+                        </div>
+                        <!--<div style="display:inline-flex"> 
+                            <label> Largeur 1
+                                <input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
+                            </label>
+							<label> Largeur 2 (Double uniquement)
+									<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
+							</label>
+                        </div>
+                        <div style="display:inline-flex"> 
+                            <label> Hauteur 1
+                                <input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
+                            </label>
+							<label> Hauteur 2 (Double uniquement)
+									<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
+							</label>
+                        </div>-->
+                    </div>
+                </div>
             </div>
             <br/>
         </div>
@@ -284,23 +320,13 @@
         display: block;
     }
 
-    #date{
-        position: absolute;
-        text-align:center;
-        left: 49%;
-        transform: translateX(-49%);
-        top: 50%;
-    }
 
     #p_date_left{
-        position: absolute;
         top: 50%;
     }
 
     #p_date_right{
-        position: absolute;
         top: 50%;
-        right: 70%;
     }
 
     .filter-blue {
@@ -388,6 +414,11 @@
 		margin-right : 5px;
 	}
 
+	.date_border {
+		padding: 10px;
+		border: 1px solid black;
+	}
+
 </style>
 
 
@@ -428,9 +459,11 @@
 
             id_to_place_date = Math.ceil(max_lines / 2);
 
-            var new_line = "<p id='p_date_left' class='p_pad'></p> <p id='p_date_right' class='p_pad'></p> <p id='date'>" + today_date + "</p>";
+            var new_line = "<p id='p_date_left' class='p_pad left-align'></p> <p id='p_date_right' class='p_pad right-align'></p> <p id='p_date' style='position: absolute; top: 50%;' class='middle-align'>" + today_date + "</p>";
             $('#pad').append(new_line);
 
+			re_center("date_right");
+			re_center("date");
 
             var new_textfield = "<div class='row'>" +
                 "<div class='col-md-12'>" +
@@ -447,6 +480,8 @@
                 "</div >";
 
             $(new_textfield).insertAfter('#lines');
+
+			$('#date-border').removeClass('invisible');
         }
         
         refreshListPad();
@@ -615,9 +650,11 @@
 				}
 			});
 			top_move = max_move + step_top;
-			alert(top_move);
 		}
-			
+
+		/* PAS TERRIBLE, LE MIEUX SERAIT DE DIVISER LE TAMPON EN 2 ET ATTRIBUE N/2 LIGNES EN HAUT ET PAREIL EN BAS */
+		if(dateur == true && counter >= (max_lines/2)+1)
+			top_move = top_move + 7;
 
         var new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
         $('#pad').append(new_pad_line);
@@ -982,6 +1019,18 @@
 		$('#height_border_one').trigger('change');
     }
 
+	function active_border_date() {
+		$('#options-border-d').toggleClass('invisible');
+		$('#p_date').toggleClass('date_border');
+		var move = 10;
+		if($('#p_date').hasClass('date_border'))
+			move = -10;
+		var top = parseFloat($('#p_date').css('top').replace('px', '')) + move;
+		var left = parseFloat($('#p_date')[0].style.left.replace('px', '')) + move;
+		$('#p_date').css('top', top + 'px');
+		$('#p_date').css('left', left + 'px');
+	}
+
     $('.width_border').on('change input', function() {
         var width = 100 - $(this).val();
         var id = $(this).attr('id').replace('width_', '');
@@ -1029,6 +1078,7 @@
     function re_center(id){
         if ($('#p_' + id).hasClass('middle-align')) {
             var padding = ($('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth())/2;
+			padding -= 2;
             $('#p_' + id).css('left', padding + "px");
         }
         else if ($('#p_' + id).hasClass('right-align')) {
