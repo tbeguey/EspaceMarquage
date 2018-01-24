@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Zabritzkyes";
+    src: url('../fonts/Zabritzkyes/Zabritzkyes Personal Use.ttf');
+}
+
+@font-face {
+    font-family: "Robaga";
+    src: url('../fonts/Robaga/Robaga Rounded Regular.otf');
+}
+
+.nav-extended {
+    background-color: #01579b;
+}
+
+.navbar-title {
+    font-size: 25px;
+    color: white;
+    font-family: "Zabritzkyes";
+}
+
+    .navbar-title:hover {
+        color: orange;
+    }
+
+body {
+    font-family: "Robaga";
+    background-color: rgb(224, 224, 224);
+}

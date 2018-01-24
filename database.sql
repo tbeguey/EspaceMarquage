@@ -7,7 +7,6 @@
     Id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Marque VARCHAR(255) NOT NULL,
     Nom VARCHAR(255) NOT NULL,
-    Prix FLOAT(4) NOT NULL,
     Largeur INT(6) NOT NULL,
     Hauteur INT(6) NOT NULL,
     Forme VARCHAR(255) NOT NULL,
@@ -19,8 +18,8 @@
   CREATE TABLE CLIENT (
     Id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Nom VARCHAR(255) NOT NULL,
-	Prenom VARCHAR(255) NOT NULL,
-	Mail VARCHAR(255) NOT NULL
+	Mail VARCHAR(255) NOT NULL,
+	NUMBER INT(10) NOT NULL
 	);
 
 	CREATE TABLE LIGNE (
@@ -51,14 +50,14 @@
 	);
 
 
-  INSERT INTO TAMPON(Marque, Nom, Prix, Largeur, Hauteur, Forme, Type, Lignes_Max, Dateur)
-  VALUES ("TRODAT", "4913", 8.12, 56, 20, "Rectangle", "Plastique", 5, false);
+  INSERT INTO TAMPON(Marque, Nom, Largeur, Hauteur, Forme, Type, Lignes_Max, Dateur)
+  VALUES ("TRODAT", "4913", 56, 20, "Rectangle", "Plastique", 5, false);
   
-  INSERT INTO TAMPON(Marque, Nom, Prix, Largeur, Hauteur, Forme, Type, Lignes_Max, Dateur)
-  VALUES ("TRODAT", "5470", 51.35, 38, 38, "Carré", "Métallique", 6, true);
+  INSERT INTO TAMPON(Marque, Nom, Largeur, Hauteur, Forme, Type, Lignes_Max, Dateur)
+  VALUES ("TRODAT", "5470", 38, 38, "Carre", "Metallique", 6, true);
   
-  INSERT INTO CLIENT(Nom, Prenom, Mail)
-  VALUES ("BEGUEY", "THEO", "begueytheo@gmail.com");
+  INSERT INTO CLIENT(Nom, Mail, Number)
+  VALUES ("ADMIN", "begueytheo@gmail.com", 0616545495);
     
 INSERT INTO LIGNE(Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne)
 VALUES ("ESPACE MARQUAGE", 12, "Century", 0, "middle", true, false, false);

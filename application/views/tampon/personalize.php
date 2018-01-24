@@ -1,255 +1,260 @@
 <?php header('Content-Type: text/html; charset=iso-8859-1'); ?>
 
-<h4 id="title">TAMPON <?php echo $title ?></h4>
+<body>
+	<div class="container body-content">
 
-<div class="row" style="display:inline-flex;-webkit-transform: scale(1);transform: scale(1);">
-    <div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
-        <div id="pad"></div>
-        <div id="border_one" class="invisible"></div>
-        <div id="border_two" class="invisible"></div>
-    </div>
-    <div style="display:inline-grid; margin: 10px; margin-top:0">
-        <a onclick="zoom_in_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_in</i></a>
-        <span id="zoom_value">100%</span>
-        <a onclick="zoom_out_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_out</i></a>
-    </div>
-</div>
+		<h4 id="title">TAMPON <?php echo $title ?></h4>
 
-<div class="row" style="background-color:white; margin-top:10px;">
-    <div class="col-md-12">
-        <ul id="tabs-swipe-demo" class="tabs">
-            <li class="tab col s3"><a href="#test-swipe-1">Texte entier</a></li>
-            <li class="tab col s3"><a href="#test-swipe-2">Ligne par ligne</a></li>
-            <li class="tab col s2" onclick="$('.carousel-item').trigger('click')"><a href="#test-swipe-3">Images / Logos</a></li>
-            <li class="tab col s2"><a href="#test-swipe-4">Cadre / Bordures</a></li>
-			<li class="tab col s2"><a href="#test-swipe-5">Modèles</a></li>
-        </ul>
-        <div id="test-swipe-1" class="col s12">
-            <br />
-            <div class="row">
-                <div class="col-md-12" style="text-align:center">
-                    <a class="btn waves-effect waves-light" id="left_align_button" onclick="left_align()"><i class="material-icons left">format_align_left</i>ALIGNER A GAUCHE</a>
-                    <a class="btn waves-effect waves-light active_button" id="center_align_button" onclick="center_align()"><i class="material-icons left">format_align_center</i>CENTRER</a>
-                    <a class="btn waves-effect waves-light" id="right_align_button" onclick="right_align()"><i class="material-icons left">format_align_right</i>ALIGNER A DROITE</a>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <form class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label>Couleur de texte</label>
-                            <select onchange="change_color()" id="list_color">
-                                <option value="black">Noir</option>
-                                <option value="blue">Bleu</option>
-                                <option value="red">Rouge</option>
-                                <option value="green">Vert</option>
-                                <option value="purple">Violet</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label>Taille de texte</label>
-                            <select onchange="change_font_size()" id="font_size_list">
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10" selected="selected">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                                <option value="13">13</option>
-                                <option value="14">14</option>
-                                <option value="15">15</option>
-                                <option value="16">16</option>
-                                <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label>Police de texte</label>
-                            <select onchange="change_font_family()" id="font_family_list" style="height:20px; overflow:scroll">
-                                <option value="Arial" style="font-family:'Arial'">Arial</option>
-                                <option value="Agency FB" style="font-family:'Agency FB'">Agency FB</option>
-                                <option value="Century" style="font-family:'Century'">Century</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <br />
-        </div>
-        <div id="test-swipe-2" class="col s12">
-            <br />
-            <div id="lines">
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-6 col-md-offset-4" style="padding:0px">
-                    <a class="waves-effect waves-light btn" onclick="addrow()" id="add-row"><i class="material-icons left">add</i>AJOUTER UNE LIGNE</a>
-                </div>
-            </div>
-            <br />
-        </div>
-
-        <div id="test-swipe-3" class="col s12">
-            <br />
-            <div class="row">
-                <a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
-                <a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
-            </div>
-            <br />
-            <div class="row">
-                <a class="waves-effect waves-light btn img-btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
-                <a class="waves-effect waves-light btn img-btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
-                <a class="waves-effect waves-light btn img-btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
-                <a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
-            </div>
-			<div class="row">
-				<div class="col-md-4 col-md-offset-4">
-					<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
-				</div>
+		<div class="row" style="display:inline-flex;">
+			<div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
+				<div id="pad"></div>
+				<div id="border_one" class="invisible"></div>
+				<div id="border_two" class="invisible"></div>
 			</div>
-            <div class="carousel" id="logo-carousel"></div>
-
-            <div class="jumbotron">
-                <form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-                    <div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
-                    <div class="fallback">
-                        <input name="file" type="file" multiple />
-                    </div>
-                </form>
-            </div>
-            <br />
-        </div>
-        <div id="test-swipe-4" class="col s12">
-            <br/>
-            <div class="row">
-                <div class="col-md-4 col-md-offset-1 border-rect">
-                    <p class="border-title">Bordure</p>
-                    <div class="switch">
-                        <label>
-                            Off
-                            <input type="checkbox" onchange="active_border_one()">
-                            <span class="lever"></span>
-                            On
-                        </label>
-                    </div>
-                    <div id="options-border-1" class="invisible">
-                        <div>
-                            <label>Style de bordure : </label>
-                            <select class="border_style" id="border_style_one">
-                                <option value="solid">Normal</option>
-                                <option value="dashed">Pointillé</option>
-								<option value="double">Double</option>
-                            </select>
-                        </div>
-                        <div style="display:inline-flex"> 
-                            <label> Largeur 1
-                                <input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
-                            </label>
-							<label> Largeur 2 (Double uniquement)
-									<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
-							</label>
-                        </div>
-                        <div style="display:inline-flex"> 
-                            <label> Hauteur 1
-                                <input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
-                            </label>
-							<label> Hauteur 2 (Double uniquement)
-									<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
-							</label>
-                        </div>
-                    </div>
-                </div>
-				<div id="date-border" class="col-md-4 col-md-offset-1 border-rect invisible">
-                    <p class="border-title">Bordure de date</p>
-                    <div class="switch">
-                        <label>
-                            Off
-                            <input type="checkbox" onchange="active_border_date()">
-                            <span class="lever"></span>
-                            On
-                        </label>
-                    </div>
-                    <div id="options-border-d" class="invisible">
-                        <div>
-                            <label>Style de bordure : </label>
-                            <select class="border_style" id="border_style_date">
-                                <option value="solid">Normal</option>
-                                <option value="dashed">Pointillé</option>
-								<option value="double">Double</option>
-                            </select>
-                        </div>
-                        <!--<div style="display:inline-flex"> 
-                            <label> Largeur 1
-                                <input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
-                            </label>
-							<label> Largeur 2 (Double uniquement)
-									<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
-							</label>
-                        </div>
-                        <div style="display:inline-flex"> 
-                            <label> Hauteur 1
-                                <input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
-                            </label>
-							<label> Hauteur 2 (Double uniquement)
-									<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
-							</label>
-                        </div>-->
-                    </div>
-                </div>
-            </div>
-            <br/>
-        </div>
-        <div id="test-swipe-5" class="col s12">
-			<br/>
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
-					<input type="text" style="margin-right:15px;" id="title-model" placeholder="Titre du modèle"/>
-					<a class='btn waves-effect waves-light blue model-save'><i class='material-icons left'>save</i>Enregistrer ce modèle</a>
-				</div>
-			</div>
-			<div class="row" id="container-models">
-				
+			<div style="display:inline-grid; margin: 10px; margin-top:0">
+				<a onclick="zoom_in_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_in</i></a>
+				<span id="zoom_value">100%</span>
+				<a onclick="zoom_out_pad()" style="cursor: pointer"><i class="material-icons small grey-text text-grey">zoom_out</i></a>
 			</div>
 		</div>
-    </div>
-</div>
 
-<br />
-<div style="padding:5px; background-color:white;">
-    <div class="row">
-        <div class="col-md-12" style="text-align:center">
-            <input type="checkbox" id="alone_checkbox" onchange="alone_function()"/>
-            <label for="alone_checkbox">Empreinte seule ?</label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12" style="text-align: center" id="pad-colors">
-            <label>Préférence de couleur du boitier (Facultatif) : </label>
-            <a class="btn waves-effect waves-light pad-color-button red"><i class="material-icons">check</i></a>
-            <a class="btn waves-effect waves-light pad-color-button green"><i class="material-icons">check</i></a>
-            <a class="btn waves-effect waves-light pad-color-button blue"><i class="material-icons">check</i></a>
-            <a class="btn waves-effect waves-light pad-color-button purple"><i class="material-icons">check</i></a>
-            <a class="btn waves-effect waves-light pad-color-button orange"><i class="material-icons">check</i></a>
-            <a class="btn waves-effect waves-light pad-color-button black"><i class="material-icons">check</i></a>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-md-3">
-            <img src="<?php echo base_url('images/logo-pdf.png');?>" style="width:50px; height:50px" />
-            <a href="javascript:export_pdf(true)">Télécharger le visuel en PDF</a>
-        </div>
+		<div class="row" style="background-color:white; margin-top:10px;">
+			<div class="col s12">
+				<ul id="tabs-swipe-demo" class="tabs">
+					<li class="tab col s3"><a class="swipe-text" href="#test-swipe-1">Texte entier</a></li>
+					<li class="tab col s3"><a class="swipe-text" href="#test-swipe-2">Ligne par ligne</a></li>
+					<li class="tab col s2" onclick="$('.carousel-item').trigger('click')"><a class="swipe-text" href="#test-swipe-3">Images / Logos</a></li>
+					<li class="tab col s2"><a class="swipe-text" href="#test-swipe-4">Cadre / Bordures</a></li>
+					<li class="tab col s2"><a class="swipe-text" href="#test-swipe-5">Modèles</a></li>
+				</ul>
+				<div id="test-swipe-1" class="col s12">
+					<br />
+					<div class="row">
+						<div class="col s12" style="text-align:center">
+							<a class="btn waves-effect waves-light" id="left_align_button" onclick="left_align()"><i class="material-icons left">format_align_left</i>ALIGNER A GAUCHE</a>
+							<a class="btn waves-effect waves-light active_button" id="center_align_button" onclick="center_align()"><i class="material-icons left">format_align_center</i>CENTRER</a>
+							<a class="btn waves-effect waves-light" id="right_align_button" onclick="right_align()"><i class="material-icons left">format_align_right</i>ALIGNER A DROITE</a>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<form class="col s12">
+							<div class="row">
+								<div class="col s4">
+									<label>Couleur de texte</label>
+									<select onchange="change_color()" id="list_color">
+										<option value="black">Noir</option>
+										<option value="blue">Bleu</option>
+										<option value="red">Rouge</option>
+										<option value="green">Vert</option>
+										<option value="purple">Violet</option>
+									</select>
+								</div>
+								<div class="col s4">
+									<label>Taille de texte</label>
+									<select onchange="change_font_size()" id="font_size_list">
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10" selected="selected">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+										<option value="13">13</option>
+										<option value="14">14</option>
+										<option value="15">15</option>
+										<option value="16">16</option>
+										<option value="17">17</option>
+										<option value="18">18</option>
+										<option value="19">19</option>
+										<option value="20">20</option>
+									</select>
+								</div>
+								<div class="col s4">
+									<label>Police de texte</label>
+									<select onchange="change_font_family()" id="font_family_list" style="height:20px; overflow:scroll">
+										<option value="Arial" class="arial">Arial</option>
+										<option value="Agency FB" style="font-family:'Agency FB'">Agency FB</option>
+										<option value="Century" style="font-family:'Century'">Century</option>
+									</select>
+								</div>
+							</div>
+						</form>
+					</div>
+					<br />
+				</div>
+				<div id="test-swipe-2" class="col s12">
+					<br />
+					<div id="lines">
+					</div>
+					<br />
+					<div class="row">
+						<div class="col s6 col offset-s4" style="padding:0px">
+							<a class="waves-effect waves-light btn" onclick="addrow()" id="add-row"><i class="material-icons left">add</i>AJOUTER UNE LIGNE</a>
+						</div>
+					</div>
+					<br />
+				</div>
 
-        <div class="col-md-6 col-md-offset-2" style="text-align:right">
-            <label>Quantité : </label>
-            <input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center; margin-right:15px;">
-            <a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
-        </div>
-    </div>
-</div>
-<br />
+				<div id="test-swipe-3" class="col s12">
+					<br />
+					<div class="row">
+						<a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
+						<a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
+					</div>
+					<br />
+					<div class="row">
+						<a class="waves-effect waves-light btn img-btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
+						<a class="waves-effect waves-light btn img-btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
+						<a class="waves-effect waves-light btn img-btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
+						<a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
+					</div>
+					<div class="row">
+						<div class="col s4 col offset-s4">
+							<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
+						</div>
+					</div>
+					<div class="carousel" id="logo-carousel"></div>
+
+					<div class="jumbotron">
+						<form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+							<div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
+							<div class="fallback">
+								<input name="file" type="file" multiple />
+							</div>
+						</form>
+					</div>
+					<br />
+				</div>
+				<div id="test-swipe-4" class="col s12">
+					<br/>
+					<div class="row">
+						<div class="col s4 col offset-s1 border-rect">
+							<p class="border-title">Bordure</p>
+							<div class="switch">
+								<label>
+									Off
+									<input type="checkbox" onchange="active_border_one()">
+									<span class="lever"></span>
+									On
+								</label>
+							</div>
+							<div id="options-border-1" class="invisible">
+								<div>
+									<label>Style de bordure : </label>
+									<select class="border_style" id="border_style_one">
+										<option value="solid">Normal</option>
+										<option value="dashed">Pointillé</option>
+										<option value="double">Double</option>
+									</select>
+								</div>
+								<div style="display:inline-flex"> 
+									<label> Largeur 1
+										<input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
+									</label>
+									<label> Largeur 2 (Double uniquement)
+											<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
+									</label>
+								</div>
+								<div style="display:inline-flex"> 
+									<label> Hauteur 1
+										<input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
+									</label>
+									<label> Hauteur 2 (Double uniquement)
+											<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
+									</label>
+								</div>
+							</div>
+						</div>
+						<div id="date-border" class="col s4 col offset-s1 border-rect invisible">
+							<p class="border-title">Bordure de date</p>
+							<div class="switch">
+								<label>
+									Off
+									<input type="checkbox" onchange="active_border_date()">
+									<span class="lever"></span>
+									On
+								</label>
+							</div>
+							<div id="options-border-d" class="invisible">
+								<div>
+									<label>Style de bordure : </label>
+									<select class="border_style" id="border_style_date">
+										<option value="solid">Normal</option>
+										<option value="dashed">Pointillé</option>
+										<option value="double">Double</option>
+									</select>
+								</div>
+								<!--<div style="display:inline-flex"> 
+									<label> Largeur 1
+										<input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
+									</label>
+									<label> Largeur 2 (Double uniquement)
+											<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
+									</label>
+								</div>
+								<div style="display:inline-flex"> 
+									<label> Hauteur 1
+										<input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
+									</label>
+									<label> Hauteur 2 (Double uniquement)
+											<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
+									</label>
+								</div>-->
+							</div>
+						</div>
+					</div>
+					<br/>
+				</div>
+				<div id="test-swipe-5" class="col s12">
+					<br/>
+					<div class="row">
+						<div class="col s6 offset-s3">
+							<input type="text" style="margin-right:15px;" id="title-model" placeholder="Titre du modèle"/>
+							<a class='btn waves-effect waves-light blue model-save'><i class='material-icons left'>save</i>Enregistrer ce modèle</a>
+						</div>
+					</div>
+					<div class="row" id="container-models">
+				
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div style="padding:5px; background-color:white;">
+			<div class="row">
+				<div class="col s12" style="text-align:center">
+					<input type="checkbox" id="alone_checkbox" onchange="alone_function()"/>
+					<label for="alone_checkbox">Empreinte seule ?</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12" style="text-align: center" id="pad-colors">
+					<label>Préférence de couleur du boitier (Facultatif) : </label>
+					<a class="btn waves-effect waves-light pad-color-button red"><i class="material-icons">check</i></a>
+					<a class="btn waves-effect waves-light pad-color-button green"><i class="material-icons">check</i></a>
+					<a class="btn waves-effect waves-light pad-color-button blue"><i class="material-icons">check</i></a>
+					<a class="btn waves-effect waves-light pad-color-button purple"><i class="material-icons">check</i></a>
+					<a class="btn waves-effect waves-light pad-color-button orange"><i class="material-icons">check</i></a>
+					<a class="btn waves-effect waves-light pad-color-button black"><i class="material-icons">check</i></a>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col s3">
+					<img src="<?php echo base_url('images/logo-pdf.png');?>" style="width:50px; height:50px" />
+					<a href="javascript:export_pdf(true)">Télécharger le visuel en PDF</a>
+				</div>
+
+				<div class="col s6 col offset-s2" style="text-align:right">
+					<label>Quantité : </label>
+					<input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center; margin-right:15px;">
+					<a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+</body>
+
 <div id="mail-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
 		<h4>Modal Header</h4>
@@ -263,164 +268,6 @@
       <a onclick="order()" class="modal-action modal-close waves-effect waves-green btn">ENVOYER</a>
     </div>
 </div>
-
-
-<style>
-
-    .row {
-        margin: 0;
-    }
-
-    .p_pad {
-        position: absolute;
-        font-family: 'Arial';
-        color: black;
-        text-anchor: middle;
-        font-size: 10pt;
-        font-weight: normal;
-        font-style: normal;
-        text-decoration: none;
-    }
-    
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .italic {
-        font-style: italic;
-    }
-
-    .underline {
-        text-decoration: underline;
-    }
-
-    #pad {
-        border: 2px dashed grey;
-        overflow: hidden;
-        display: inline-block;
-        padding: 0;
-        padding-top: 5px;
-        line-height: 4px;
-    }
-
-    .active_button {
-        background-color: #29524e
-    }
-
-    .textfield {
-        text-align: center;
-    }
-
-    .pad-color-button > i {
-        display: none;
-    }
-
-    .active-pad-color > i {
-        display: block;
-    }
-
-
-    #p_date_left{
-        top: 50%;
-    }
-
-    #p_date_right{
-        top: 50%;
-    }
-
-    .filter-blue {
-        filter: sepia(100%) hue-rotate(190deg) saturate(500%);
-    }
-    .filter-black {
-        filter: grayscale(100%);
-    }
-    .filter-red {
-        filter: sepia(100%) saturate(10000%) hue-rotate(30deg);
-    }
-    .filter-green {
-        filter: sepia(100%) saturate(10000%) hue-rotate(100deg);
-    }
-    .filter-purple {
-        filter: sepia(100%) saturate(10000%) hue-rotate(270deg);
-    }
-
-    .invisible {
-        visibility: hidden;
-    }
-    
-    .tabs {
-        overflow-x: hidden;
-    }
-    
-    .border-rect {
-        border: 1px solid darkblue;
-        border-radius: 5px;
-    }
-    
-    .border-title {
-        font-weight: bold;
-    }
-    
-    #pads {
-        position: relative;
-        display: flex;
-        align-items: center;
-        vertical-align: middle;
-        justify-content: center;
-    }
-
-    #pads > div {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-    }
-    
-    #pads > div:not(#pad) {
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-    }
-    
-    .thumb {
-        visibility: hidden;   
-    }
-    
-    .left-align {
-        left: 0 !important;
-    }
-    
-	.modal {
-		width: 50% !important;
-		max-height: 100% !important;
-		overflow-y: hidden !important;
-	}
-	
-	.models {
-		text-align:center;
-		border: 1px solid #1e88e5;
-		border-radius:15px 50px;
-		margin:5px;
-	}
-
-	#zoom_value {
-		font-size: 0.8rem !important;
-		color : #9e9e9e !important;
-		font-weight: bold !important;
-		margin-bottom: 5px !important;
-	}
-
-	.width_border {
-		margin-right : 5px;
-	}
-
-	.date_border {
-		padding: 10px;
-		border: 1px solid black;
-	}
-
-</style>
-
 
 <script type="text/javascript">
     var counter;
@@ -439,7 +286,7 @@
     $(document).ready(function () {
         $('select').material_select();
 		$('.modal').modal();
-        $('.indicator').css('height', '10px');
+
 
         step_top = 78 / (max_lines - 1);
         
@@ -466,14 +313,14 @@
 			re_center("date");
 
             var new_textfield = "<div class='row'>" +
-                "<div class='col-md-12'>" +
-                "<div class='col-md-4'>" +
+                "<div class='col s12'>" +
+                "<div class='col s4'>" +
                 "<input type='text' class='textfield' id='textfield_date_left' />" +
                 "</div>" +
-                "<div class='col-md-4'>" +
+                "<div class='col s4'>" +
                 "<input type='text' style='text-align:center' value='" + today_date + "' disabled />" +
                 "</div>" +
-                "<div class='col-md-4'>" +
+                "<div class='col s4'>" +
                 "<input type='text' class='textfield' id='textfield_date_right' />" +
                 "</div>" + 
                 "</div>" +
@@ -507,13 +354,13 @@
         ++counter;
 
         var new_textfield = "<div class='row'>" +
-            "<div class='col-md-4' style='text-align:center'>" +
-            "<div class='col-md-5'>" +
+            "<div class='col s4' style='text-align:center'>" +
+            "<div class='col s5'>" +
             "<input type='text' class='textfield' id='textfield_" +
             counter +
             "' /> " +
             "</div>" +
-            "<div class='col-md-3'>" +
+            "<div class='col s3'>" +
             "<select class='font_size_list_targets' id='font_size_list_" +
             counter +
             "' onchange='change_font_size_target(" +
@@ -534,7 +381,7 @@
             "<option value='20'>20</option>" +
             "</select>" +
             "</div>" +
-            "<div class='col-md-4'>" +
+            "<div class='col s4'>" +
             "<select class='font_family_list_targets' onchange='change_font_family_target(" +
             counter +
             ")' id='font_family_list_" +
@@ -546,8 +393,8 @@
             "</select>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-4' style='text-align:center'>" +
-            "<div class='col-md-4'>" +
+            "<div class='col s4' style='text-align:center'>" +
+            "<div class='col s4'>" +
             "<label> Espacement des lettres" +
             "<input type='range' min='0' max='100' value='0' step='1' class='slider_range' id='space_letter_slider_" +
             counter +
@@ -558,7 +405,7 @@
             ")' />" +
             "</label>" +
             "</div>" +
-            "<div class='col-md-4'>" +
+            "<div class='col s4'>" +
             "<label> Position X de la ligne" +
             "<input type='range' min='10' max='90' value='50' step='1' class='line_position_x_slider' id='line_position_x_slider_" +
             counter +
@@ -569,7 +416,7 @@
             ")' />" +
             "</label>" +
             "</div>" +
-            "<div class='col-md-4'>" +
+            "<div class='col s4'>" +
             "<label> Position Y de la ligne" +
             "<input type='range' min='7' max='85' step='1' class='line_position_y_slider' id='line_position_y_slider_" +
             counter +
@@ -581,7 +428,7 @@
             "</label>" +
             "</div>" +
             "</div>" +
-            "<div class='col-md-4' style='text-align:center; display:flex; justify-content:space-between'>" +
+            "<div class='col s4' style='text-align:center; display:flex; justify-content:space-between'>" +
             "<div>" +
             "<a class='btn btn-floating btn-small waves-effect waves-light left_align_button_targets' id='left_align_button_target_" +
             counter +
@@ -1168,7 +1015,7 @@
 			success: function (returnedData) {
 				$.each(returnedData, function (index) {		
 					var model = returnedData[index];
-					var append = "<div class='col-md-4 models' id='model_" + model.id + "'>";
+					var append = "<div class='col s4 models' id='model_" + model.id + "'>";
 					$.each(model.lignes, function(i){
 						var line = model.lignes[i];
 						var space = line.espacement / 2;

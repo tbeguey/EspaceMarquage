@@ -1,0 +1,164 @@
+.p_pad {
+    position: absolute;
+    font-family: 'Arial';
+    color: black;
+    text-anchor: middle;
+    font-size: 10pt;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+    margin-top: 0px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+#pad {
+    border: 2px dashed grey;
+    overflow: hidden;
+    display: inline-block;
+    padding: 0;
+    padding-top: 5px;
+    line-height: 4px;
+}
+
+.active_button {
+    background-color: #29524e;
+}
+
+.textfield {
+    text-align: center;
+}
+
+.pad-color-button > i {
+    display: none;
+}
+
+.active-pad-color > i {
+    display: block;
+}
+
+
+#p_date_left {
+    top: 50%;
+}
+
+#p_date_right {
+    top: 50%;
+}
+
+.filter-blue {
+    filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+}
+
+.filter-black {
+    filter: grayscale(100%);
+}
+
+.filter-red {
+    filter: sepia(100%) saturate(10000%) hue-rotate(30deg);
+}
+
+.filter-green {
+    filter: sepia(100%) saturate(10000%) hue-rotate(100deg);
+}
+
+.filter-purple {
+    filter: sepia(100%) saturate(10000%) hue-rotate(270deg);
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.tabs {
+    overflow-x: hidden;
+}
+
+.border-rect {
+    border: 1px solid darkblue;
+    border-radius: 5px;
+}
+
+.border-title {
+    font-weight: bold;
+}
+
+#pads {
+    position: relative;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+    #pads > div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+        #pads > div:not(#pad) {
+            border-width: 1px;
+            border-style: solid;
+            border-color: black;
+        }
+
+.thumb {
+    visibility: hidden;
+}
+
+.left-align {
+    left: 0 !important;
+}
+
+.modal {
+    width: 50% !important;
+    max-height: 100% !important;
+    overflow-y: hidden !important;
+}
+
+.models {
+    text-align: center;
+    border: 1px solid #1e88e5;
+    border-radius: 15px 50px;
+    margin: 5px;
+}
+
+#zoom_value {
+    font-size: 0.8rem !important;
+    color: #9e9e9e !important;
+    font-weight: bold !important;
+    margin-bottom: 5px !important;
+}
+
+.width_border {
+    margin-right: 5px;
+}
+
+.date_border {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#title {
+    font-family: "Robaga";
+}
+
+.indicator {
+    height: 10px !important;
+    background-color: #01579b !important;
+}
+
+.swipe-text {
+    color: #01579b !important;
+}

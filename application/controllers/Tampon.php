@@ -25,7 +25,7 @@ class Tampon extends CI_Controller {
 		$query = $this->db->query("SELECT * FROM TAMPON where Id = " . $id);
 		foreach ($query->result() as $row)
 		{
-			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Prix, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
+			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
 		}
 
 		if($pad != null)
@@ -69,7 +69,7 @@ class Tampon extends CI_Controller {
 		$query = $this->db->query("SELECT * FROM TAMPON");
 		foreach ($query->result() as $row)
 		{
-			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Prix, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
+			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
 			array_push($pads, $pad);
 		}
 
@@ -83,7 +83,7 @@ class Tampon extends CI_Controller {
 					unset($pads[$key]);
 
 			if($search !== "")
-				if(!preg_match('/' . $search . '/',$p->nom))
+				if(!preg_match('/' . $search . '/', $p->nom))
 					unset($pads[$key]);
 
 			if($dater !== $p->dateur)

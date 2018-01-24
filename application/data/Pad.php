@@ -14,11 +14,10 @@ Class Pad {
 	public $lignes_max;
 	public $dateur;
 
-	public function __construct($i, $m, $n, $p, $l, $h, $f, $t, $lm, $d){
+	public function __construct($i, $m, $n, $l, $h, $f, $t, $lm, $d){
 		$this->id = $i;
 		$this->marque = $m;
 		$this->nom = $n;
-		$this->prix = $p;
 		$this->largeur = $l;
 		$this->hauteur = $h;
 		$this->forme = $f;
