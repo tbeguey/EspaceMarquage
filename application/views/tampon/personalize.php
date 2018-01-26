@@ -249,6 +249,9 @@
 					<input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center; margin-right:15px;">
 					<a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
 				</div>
+				<div class="col s6 col offset-s6" style="text-align:center">
+					<a href="<?php echo base_url('index.php/encre/personalize/' . $id_pad);?>">Aller à la page de commande d'encre associée à ce tampon</a>
+				</div>
 			</div>
 		</div>
 		<br />

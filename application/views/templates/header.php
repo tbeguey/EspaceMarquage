@@ -16,16 +16,18 @@
 
 	<link href="<?php echo base_url('assets/css/header.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/footer.css');?>" rel="stylesheet">
+	<link href="<?php echo base_url('assets/css/welcome_message.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/tampon/personalize.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/connexion/index.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/tampon/index.css');?>" rel="stylesheet">
+	<link href="<?php echo base_url('assets/css/encre/personalize.css');?>" rel="stylesheet">
 
 </head>
 
 
 <nav class="nav-extended">
     <div class="nav-wrapper">
-		<a class="navbar-title brand-logo center" href="<?php echo base_url(); ?>">Espace Marquage</a>
+		<a class="navbar-title brand-logo center" id="logo" href="<?php echo base_url(); ?>">Espace Marquage</a>
 		<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 		<ul id="nav-mobile" class="left hide-on-med-and-down">
 			<li><a href="<?php echo base_url('index.php/tampon'); ?>">Tampon</a></li>

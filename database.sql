@@ -48,6 +48,16 @@
 		Ordre INT(6) NOT NULL,
 		PRIMARY KEY(Id_Ligne, Id_Modele)
 	);
+	
+	CREATE TABLE ENCRE(
+	Id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	Id_Tampon INT(6) NOT NULL,
+	Noir BOOLEAN NOT NULL,
+	Rouge BOOLEAN NOT NULL,
+	Bleu BOOLEAN NOT NULL,
+	Vert BOOLEAN NOT NULL,
+	Violet BOOLEAN NOT NULL
+	);
 
 
   INSERT INTO TAMPON(Marque, Nom, Largeur, Hauteur, Forme, Type, Lignes_Max, Dateur)
@@ -70,3 +80,5 @@ INSERT INTO MODELE(Id_Client, Id_Tampon, Titre, Defaut) VALUES (0, 1, "Défaut",
 INSERT INTO LIGNE_MODELE(Id_Ligne, Id_Modele, Ordre) VALUES (1,1,1);
 
 INSERT INTO LIGNE_MODELE(Id_Ligne, Id_Modele, Ordre) VALUES (2,1,2);
+
+INSERT INTO ENCRE(Id_Tampon, Noir, Rouge, Bleu, Vert, Violet) VALUES (1,true, true, true, false, true);

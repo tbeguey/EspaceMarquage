@@ -71,6 +71,24 @@ class Tampon extends CI_Controller {
 		{
 			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
 			array_push($pads, $pad);
+						array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+						array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+						array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
 		}
 
 		foreach($pads as $key => $p){

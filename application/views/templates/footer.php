@@ -38,5 +38,6 @@
 		<div class="container">
 		&copy 2018 - Espace Marquage
 		</div>
+		<a href="#logo" style="font-color:white;">Retournez en haut</a>
 	</div>
 </footer>
