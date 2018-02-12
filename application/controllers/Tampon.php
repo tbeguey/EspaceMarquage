@@ -35,8 +35,8 @@ class Tampon extends CI_Controller {
 
 			$data['id_pad'] = $pad->id;
 			$data['title'] =  $pad->marque . " " . $pad->nom; 
-			$data['width'] = intval($width * 3.78) + "px";
-			$data['height'] = intval($height * 3.78) + "px";
+			$data['width'] = $width * 3.78 + "px";
+			$data['height'] = $height * 3.78 + "px";
 			$data['max_lines'] = $pad->lignes_max;
 			$data['width_mm'] = $width;
 			$data['height_mm'] = $height;

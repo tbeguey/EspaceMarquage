@@ -250,7 +250,6 @@
 					<a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
 				</div>
 				<div class="col s6 col offset-s6" style="text-align:center">
-					<a href="<?php echo base_url('index.php/encre/personalize/' . $id_pad);?>">Aller à la page de commande d'encre associée à ce tampon</a>
 				</div>
 			</div>
 		</div>
@@ -260,7 +259,7 @@
 
 <div id="mail-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
-		<h4>Modal Header</h4>
+		<h4>Envoi de commande</h4>
 		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="ESPACE MARQUAGE - COMMANDE XXXXXXXX [CLIENT]"/>
 		<br/>
 		<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
@@ -269,6 +268,20 @@
 
     <div class="modal-footer">
       <a onclick="order()" class="modal-action modal-close waves-effect waves-green btn">ENVOYER</a>
+    </div>
+</div>
+
+<div id="buy-encre-modal" class="modal">
+    <div class="modal-content">
+        <p style="text-align: center;">Voulez-vous commander des recharges d'encres associées à ce tampon ?</p>
+        <div class="row">
+            <div class="col s2 offset-s4">
+                <a class="waves-effect waves-light btn" href="<?php echo base_url('index.php/encre/personalize/' . $id_pad);?>">OUI</a>
+            </div>
+            <div class="col s2 offset-s1">
+                <a class="waves-effect waves-light btn modal-close">NON</a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1237,10 +1250,10 @@
 					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val() + '&data=' + data + '&width=' + <?php echo $width_mm  ?> + '&height=' + <?php echo $height_mm ?>,
 					success: function (returnedData) {
 						$('#pad').css('border', border);
-						alert(returnedData);
+						$('#buy-encre-modal').modal('open');
 					},
 					error: function () {
-						alert("Erreur d'envoie.");
+						alert("Erreur d'envoie de commande.");
 					}
 				});
 			}

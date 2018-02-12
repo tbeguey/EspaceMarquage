@@ -1,5 +1,3 @@
-
-<html>
 <head>
     <title>Espace Marquage - Gravure & Tampon</title>
 
