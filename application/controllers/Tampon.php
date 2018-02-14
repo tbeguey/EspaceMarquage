@@ -8,6 +8,11 @@ class Tampon extends CI_Controller {
 
     public function index()
     {
+		if (!$this->ion_auth->logged_in())
+		{
+			$this->load->helper('url');
+			redirect('connexion/index', 'refresh');
+		}
         $data['title'] = "Choix des tampons";
 
         $this->load->view('templates/header', $data);
@@ -17,6 +22,12 @@ class Tampon extends CI_Controller {
 
 	public function personalize()
 	{
+		if (!$this->ion_auth->logged_in())
+		{
+			$this->load->helper('url');
+			redirect('connexion/index', 'refresh');
+		}
+
 		$this->load->view('templates/header');
 
 		$id = $this->uri->segment(3);
@@ -59,7 +70,7 @@ class Tampon extends CI_Controller {
 		$form = utf8_decode($this->input->get("form"));
 		$type = utf8_decode($this->input->get("type"));
 		$dater = $this->input->get("dater");
-		$search = utf8_decode($this->input->get("search"));
+		$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
 
 		if($dater=== "false" || $dater === 0 || $dater === "0")
 			$dater = false;
@@ -70,24 +81,6 @@ class Tampon extends CI_Controller {
 		foreach ($query->result() as $row)
 		{
 			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
-			array_push($pads, $pad);
-						array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-						array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-						array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
 			array_push($pads, $pad);
 		}
 
@@ -113,11 +106,10 @@ class Tampon extends CI_Controller {
 
 	public function refresh_list_logo()
 	{
-		$id_client = 1; // to change
+		$id_client = $this->ion_auth->user()->row()->id;
 		$logos = array();
 
 		$storeFolder = 'uploads/';
-		$clientStoreFolder = ""; // A DEFINIR ET AJOUTER DANS LE PATH
 		$targetPath = FCPATH . $storeFolder;
 
 
@@ -134,8 +126,8 @@ class Tampon extends CI_Controller {
 
 	public function save_upload_file()
 	{
-		$id_client = 1; // to change
-		$targetPath = './uploads/' . $id_client . "/";
+		$id_client = $this->ion_auth->user()->row()->id;
+		$targetPath = FCPATH . 'uploads/' . $id_client . "/";
 		if(!file_exists($targetPath))
 			mkdir($targetPath, 0777, true);
 
@@ -160,14 +152,14 @@ class Tampon extends CI_Controller {
 
 	public function send_mail()
 	{
-		$header = $this->input->post("header");
-		$content = $this->input->post("content");
-		$data = $this->input->post("data");
-		$width = $this->input->post("width");
-		$height = $this->input->post("height");
+		$header = $this->security->xss_clean($this->input->post("header"));
+		$content = $this->security->xss_clean($this->input->post("content"));
+		$data = $this->security->xss_clean($this->input->post("data"));
 
-		$storeFolder = 'orders/';
-		$targetPath = FCPATH . $storeFolder;
+		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
+		$id_client = $this->ion_auth->user()->row()->id;
+
+		$targetPath = FCPATH . 'orders/';
 
 		$today = getdate();
 
@@ -183,7 +175,7 @@ class Tampon extends CI_Controller {
 		if(!file_exists($targetPath))
 			mkdir($targetPath, 0777, true);
 
-		$pdfName = "[IDCLIENT]" . "-" . "[IDTAMPON]" . "-" . $today['0'] . ".pdf";
+		$pdfName = $id_client . "-" . $id_pad . "-" . $today['0'] . ".pdf";
 
 		$imgdata = base64_decode($data);
 
@@ -229,8 +221,8 @@ class Tampon extends CI_Controller {
 
 	public function refresh_list_models()
 	{
-		$id_client = 1; // to change
-		$id_pad = $this->input->get("id_pad");
+		$id_client = $this->ion_auth->user()->row()->id;
+		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
 		$models = array();
 
 		$query = $this->db->query("SELECT MODELE.Id as MID, Titre, Defaut, LIGNE.Id as LID, Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne " .
@@ -274,10 +266,10 @@ class Tampon extends CI_Controller {
 
 	public function save_model()
 	{
-		$id_client = 1; // to change
-		$id_pad = $this->input->get("id_pad");
-		$title = $this->input->get("title"); // si je mets des accents ca passe pas
-		$lines = json_decode($this->input->get("lines"));
+		$id_client = $this->ion_auth->user()->row()->id;
+		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
+		$title = $this->security->xss_clean($this->input->get("title")); // si je mets des accents ca passe pas
+		$lines = json_decode($this->security->xss_clean($this->input->get("lines")));
 
 		$data_model = array(
 			'Id_Client' => $id_client,
@@ -315,7 +307,7 @@ class Tampon extends CI_Controller {
 
 	public function delete_model()
 	{
-		$id_model = $this->input->get("model");
+		$id_model = $this->security->xss_clean($this->input->get("model"));
 		$id_lines = array();
 
 		$query = $this->db->query("SELECT Id_Ligne FROM LIGNE_MODELE WHERE Id_Modele = " . $id_model);

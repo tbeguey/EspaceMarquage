@@ -11,8 +11,8 @@
 		</div>
 		<div style="background-color:white; padding:15px; margin-bottom:10px;">
 			<div class="row">
-				<div class="col s2">
-					<label>Prix : </label>
+				<div class="col s4">
+					<label>Prix à l'unité : </label>
 					<span style="font-weight:bold; font-size:2em;">0.009€</span>
 				</div>			
 			</div>
@@ -28,13 +28,24 @@
 				<div class="col s5 offset-s2" style="text-align:right;">
 					<label>Quantité : </label>
 					<input id="input_quantity" type="number" min="1" max="9" step="1" value="1" style="font: 24pt Courier; width: 50px; height: 50px; text-align:center; margin-right:15px;">
-					<a class="waves-effect waves-light btn"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
+					<a class="waves-effect waves-light btn modal-trigger" href="#mail-modal"><i class="material-icons left">shopping_cart</i>ENVOYER COMMANDE</a>
 				</div>
 			</div>
-			<div class="row">
-				
-			</div>
 		</div>		
+	</div>
+
+	<div id="mail-modal" class="modal modal-fixed-footer">
+		<div class="modal-content">
+			<h4>Envoi de commande</h4>
+			<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="ESPACE MARQUAGE - COMMANDE XXXXXXXX [CLIENT]"/>
+			<br/>
+			<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
+			<script type="text/JavaScript">CKEDITOR.replace('Commentaires');</script>
+		</div>
+
+		<div class="modal-footer">
+		  <a onclick="order()" class="modal-action modal-close waves-effect waves-green btn">ENVOYER</a>
+		</div>
 	</div>
 </body>
 
@@ -47,6 +58,8 @@
 	});
 
 	$(document).on('ready', function(){
+		$('.modal').modal();
+
 		var black = <?php echo $black; ?>;
 		if(black == false)
 			$('.black').addClass('disabled');
@@ -66,6 +79,10 @@
 		var purple = <?php echo $purple; ?>;
 		if(purple == false)
 			$('.purple').addClass('disabled');
-
 	});
+
+	function order(){
+	
+	}
+
 </script>

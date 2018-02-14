@@ -32,9 +32,33 @@
 			<li><a href="<?php echo base_url('index.php/gravure'); ?>">Gravure</a></li>
 			<li><a href="<?php echo base_url('index.php/encre'); ?>">Recharges d'encres</a></li>
 		</ul>
-		<a type="button" class="btn waves-effect waves-light orange hide-on-med-and-down right" style="margin:15px;" href="<?php echo base_url('index.php/connexion'); ?>"><i class="material-icons left" style="margin-top:-14px;">account_box</i>SE CONNECTER</a>
+		<?php 
+		if (!$this->ion_auth->logged_in())
+		{
+			echo "<a type='button' class='btn waves-effect waves-light orange hide-on-med-and-down right' style='margin:15px;' href='" . base_url('index.php/connexion') . "'><i class='material-icons left' style='margin-top:-14px;'>account_box</i>SE CONNECTER</a>";
+		}
+		else
+		{
+			echo "<a type='button' class='btn waves-effect waves-light red hide-on-med-and-down right' style='margin:15px;' href='" . base_url('index.php/connexion/logout') . "'><i class='material-icons left' style='margin-top:-14px;'>account_box</i>SE DECONNECTER</a>";
+			echo "<span class='right hide-on-med-and-down'>" . $this->ion_auth->user()->row()->username . "</span>";
+		}
+
+		if($this->ion_auth->is_admin())
+		{
+			echo "<a class='right hide-on-med-and-down' href='#' style='margin-right:15px;'>Administration</a>";
+		}
+		?>
 		<ul class="side-nav" id="mobile-demo">
-			<li><a type="button" class="btn waves-effect waves-light orange" href="<?php echo base_url('index.php/connexion'); ?>"><i class="material-icons left">account_box</i>SE CONNECTER</a></li>
+			<?php
+			if (!$this->ion_auth->logged_in())
+			{
+				echo "<li><a type='button' class='btn waves-effect waves-light orange' style='margin:15px; href='" . base_url('index.php/connexion') . "'><i class='material-icons left'>account_box</i>SE CONNECTER</a></li>";
+			}
+			else
+			{
+				echo "<a type='button' class='btn waves-effect waves-light red' style='margin:15px; href='" . base_url('index.php/connexion/logout') . "'><i class='material-icons left'>account_box</i>SE DECONNECTER</a>";
+			}
+			?>
 			<hr>
 			<li><a href="<?php echo base_url('index.php/tampon'); ?>">Tampon</a></li>
 			<li><a href="<?php echo base_url('index.php/gravure'); ?>">Gravure</a></li>

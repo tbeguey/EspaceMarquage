@@ -51,7 +51,7 @@
 
 
 <script type="text/javascript">
-	$('#search_box').bind("enterKey",function(e){
+	/*$('#search_box').bind("enterKey",function(e){
 		refreshList();
 	});
 	$('#search_box').keyup(function(e){
@@ -64,10 +64,10 @@
 			if($(this).val().length == 0)
 				$(this).trigger("enterKey");
 		}
-	});
+	});*/
 
     document.getElementById('formComboBox').onchange = document.getElementById('typeComboBox').onchange =
-        document.getElementById('dater_checkbox').onchange = function () {
+        document.getElementById('dater_checkbox').onchange = document.getElementById('search_box').oninput = function () {
             refreshList();
         };
 

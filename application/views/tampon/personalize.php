@@ -260,7 +260,7 @@
 <div id="mail-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
 		<h4>Envoi de commande</h4>
-		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="ESPACE MARQUAGE - COMMANDE XXXXXXXX [CLIENT]"/>
+		<label for="modal-object">Objet : </label> <input type="text" id="modal-object" value="ESPACE MARQUAGE - COMMANDE XXXXXXXX [<?php echo $this->ion_auth->user()->row()->username ?>]"/>
 		<br/>
 		<textarea cols="50" rows="6" name="text-mail" id="Commentaires">Vous pouvez écrire votre texte ici.</textarea>                
 		<script type="text/JavaScript">CKEDITOR.replace('Commentaires');</script>
@@ -1238,6 +1238,7 @@
 	})
 
 	function order(){
+		$("body").css("cursor", "progress");
 		var border = $('#pad').css('border');
         $('#pad').css('border', 'none');
 	    html2canvas($("#pad"), {
@@ -1247,9 +1248,10 @@
                 $.ajax({
 					url: "<?php echo base_url(); ?>" + "index.php/tampon/send_mail",
 					type: 'POST',
-					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val() + '&data=' + data + '&width=' + <?php echo $width_mm  ?> + '&height=' + <?php echo $height_mm ?>,
+					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val() + '&data=' + data + '&id_pad=' + <?php echo $id_pad ?>,
 					success: function (returnedData) {
 						$('#pad').css('border', border);
+						$("body").css("cursor", "default");
 						$('#buy-encre-modal').modal('open');
 					},
 					error: function () {
