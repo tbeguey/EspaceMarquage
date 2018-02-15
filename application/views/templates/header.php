@@ -45,7 +45,7 @@
 
 		if($this->ion_auth->is_admin())
 		{
-			echo "<a class='right hide-on-med-and-down' href='#' style='margin-right:15px;'>Administration</a>";
+			echo "<a class='right hide-on-med-and-down' href='" . base_url('index.php/admin') . "' style='margin-right:15px;'>Administration</a>";
 		}
 		?>
 		<ul class="side-nav" id="mobile-demo">

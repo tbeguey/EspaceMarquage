@@ -347,7 +347,7 @@
 			$('#date-border').removeClass('invisible');
         }
         
-        refreshListPad();
+        refreshListLogo();
 		refreshListModels();
 		
 		$(function(){
@@ -813,7 +813,7 @@
         });
     }
     
-    function refreshListPad() {
+    function refreshListLogo() {
 		$('#logo-carousel').empty();
 		$.ajax({
 			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
@@ -857,7 +857,7 @@
     Dropzone.options.dropzoneForm = {
         init: function () {
             this.on('complete', function () {
-                refreshListPad();
+                refreshListLogo();
             });
         }
     };
