@@ -27,9 +27,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users'] = 'utilisateur';
-$config['tables']['groups'] = 'groupe';
-$config['tables']['users_groups'] = 'utilisateur_groupe';
+$config['tables']['users'] = 'UTILISATEUR';
+$config['tables']['groups'] = 'GROUPE';
+$config['tables']['users_groups'] = 'UTILISATEUR_GROUPE';
 
 /*
  | Users table column and Group table column you want to join WITH.

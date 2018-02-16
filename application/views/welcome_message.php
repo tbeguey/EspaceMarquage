@@ -37,8 +37,5 @@ header('Content-Type: text/html; charset=iso-8859-1');
 <script>
 
    $('.carousel.carousel-slider').carousel();
-		setInterval(function() {
-			$('.carousel.carousel-slider').carousel('next');
-	}, 10000);
 
 </script>

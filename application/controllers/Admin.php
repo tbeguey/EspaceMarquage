@@ -6,6 +6,11 @@ class Admin extends CI_Controller {
 
     public function index()
     {
+		if($this->ion_auth->is_admin())
+		{
+			$this->load->helper('url');
+			redirect('welcome/index', 'refresh');
+		}
         $data['title'] = "Administration";
 		$data['nb_users'] = $this->count_not_active_users();
 
@@ -16,6 +21,11 @@ class Admin extends CI_Controller {
 
 	public function users()
 	{
+		if($this->ion_auth->is_admin())
+		{
+			$this->load->helper('url');
+			redirect('welcome/index', 'refresh');
+		}
 	    $data['title'] = "Administration des utilisateurs";
 
         $this->load->view('templates/header', $data);
@@ -57,6 +67,7 @@ class Admin extends CI_Controller {
 
 	public function delete_user()
 	{
+		//delete aussi dans les autres tables
 		$this->db->where('id', $this->input->get("id"));
 		$this->db->delete('UTILISATEUR');
 	}
