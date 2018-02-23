@@ -47,12 +47,7 @@ CREATE TABLE UTILISATEUR_GROUPE(
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
   user_id int(11) unsigned NOT NULL,
   group_id int(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_users_groups_users1_idx` (`user_id`),
-  KEY `fk_users_groups_groups1_idx` (`group_id`),
-  CONSTRAINT `uc_users_groups` UNIQUE (`user_id`, `group_id`),
-  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groupe` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 );
 
 	CREATE TABLE LIGNE(
