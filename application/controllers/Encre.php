@@ -31,16 +31,16 @@ class Encre extends CI_Controller {
 		$id = $this->uri->segment(3);
 		$ink = null;
 
-		$query = $this->db->query("SELECT * FROM ENCRE where Id_Tampon = " . $id);
+		$query = $this->db->query("SELECT * FROM ENCRE where id_tampon = " . $id);
 		foreach ($query->result() as $row)
 		{
 			$pad = null;
-			$new_query = $this->db->query("SELECT * FROM TAMPON where Id = " . $row->Id_Tampon);
+			$new_query = $this->db->query("SELECT * FROM TAMPON where id = " . $row->id_tampon);
 			foreach ($new_query->result() as $new_row)
 			{
-				$pad = new Pad($new_row->Id, $new_row->Marque, $new_row->Nom, $new_row->Largeur, $new_row->Hauteur, $new_row->Forme, $new_row->Type, $new_row->Lignes_Max, $new_row->Dateur);
+				$pad = new Pad($new_row->id, $new_row->marque, $new_row->nom, $new_row->largeur, $new_row->hauteur, $new_row->forme, $new_row->type, $new_row->lignes_max, $new_row->dateur);
 			}
-			$ink = new Ink($row->Id, $pad, $row->Noir, $row->Rouge, $row->Bleu, $row->Vert, $row->Violet);
+			$ink = new Ink($row->id, $pad, $row->noir, $row->rouge, $row->bleu, $row->vert, $row->violet);
 		}
 
 		if($ink != null)
@@ -66,27 +66,27 @@ class Encre extends CI_Controller {
 	{
 		$inks = array();
 
-		$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
+		//$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
 
 
 		$query = $this->db->query("SELECT * FROM ENCRE");
 		foreach ($query->result() as $row)
 		{
 			$pad = null;
-			$new_query = $this->db->query("SELECT * FROM TAMPON where Id = " . $row->Id_Tampon);
+			$new_query = $this->db->query("SELECT * FROM TAMPON where id = " . $row->id_tampon);
 			foreach ($new_query->result() as $new_row)
 			{
-				$pad = new Pad($new_row->Id, $new_row->Marque, $new_row->Nom, $new_row->Largeur, $new_row->Hauteur, $new_row->Forme, $new_row->Type, $new_row->Lignes_Max, $new_row->Dateur);
+				$pad = new Pad($new_row->id, $new_row->marque, $new_row->nom, $new_row->largeur, $new_row->hauteur, $new_row->forme, $new_row->type, $new_row->lignes_max, $new_row->dateur);
 			}
-			$ink = new Ink($row->Id, $pad, $row->Noir, $row->Rouge, $row->Bleu, $row->Vert, $row->Violet);
+			$ink = new Ink($row->id, $pad, $row->noir, $row->rouge, $row->bleu, $row->vert, $row->violet);
 			array_push($inks, $ink);
 		}
 
-		foreach($inks as $key => $i){
+		/*foreach($inks as $key => $i){
 			if($search !== "")
 				if(!preg_match('/' . $search . '/', $i->tampon->nom))
 					unset($inks[$key]);
-		}
+		}*/
 
 		echo json_encode($inks);
 	}

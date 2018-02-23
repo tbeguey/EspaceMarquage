@@ -1,98 +1,208 @@
 <?php header('Content-Type: text/html; charset=utf-8'); ?>
 
-<div class="row">
-	<div class="col s4">
-		<label for="search_box"><i class='material-icons left'>search</i>Rechercher</label>
-		<input type="text" id="search_box"/>
+<div class="container">
+	<br>
+	<br>
+	<div class="row">
+		<div class="col s2 offset-s1 hide-on-med-and-down" id="left_column">
+			<p class="bold" style="text-align:center;">FILTRER PAR</p>
+			<hr>
+			<p>Forme</p>
+			<form action="#">
+				<p>
+					<input class="with-gap group1" name="group1" type="radio" id="Rectangle"  />
+					<label for="Rectangle">Rectangulaire</label>
+				</p>
+				<p>
+					<input class="with-gap group1" name="group1" type="radio" id="Carre"  />
+					<label for="Carre">CarrÈ</label>
+				</p>
+				<p>
+					<input class="with-gap group1" name="group1" type="radio" id="Cercle"  />
+					<label for="Cercle">Cercle</label>
+				</p>
+				<p style="position:fixed; opacity:0;"/>
+					<input class="with-gap group1" name="group1" type="radio" id="none" />
+					<label for="none"></label>
+				</p>
+			</form>
+			<hr>
+			<p>Type</p>
+			<form action="#">
+				<p>
+					<input class="with-gap group2" name="group2" type="radio" id="Plastique"  />
+					<label for="Plastique">Plastique</label>
+				</p>
+				<p>
+					<input class="with-gap group2" name="group2" type="radio" id="Metallique"  />
+					<label for="Metallique">MÈtallique</label>
+				</p>
+				<p style="position:fixed; opacity:0;"/>
+					<input class="with-gap group2" name="group2" type="radio" id="none"  />
+					<label for="none"></label>
+				</p>
+			</form>
+			<hr>
+			<p>Dateur</p>
+			<form action="#">
+				<p>
+					<input class="with-gap group3" name="group3" type="radio" id="true"  />
+					<label for="true">Oui</label>
+				</p>
+				<p >
+					<input class="with-gap group3" name="group3" type="radio" id="false"  />
+					<label for="false">Non</label>
+				</p>
+				<p style="position:fixed; opacity:0;"/>
+					<input class="with-gap group3" name="group3" type="radio" id="none"  />
+					<label for="none"></label>
+				</p>
+			</form>
+
+		</div>
+		<div class="col s8">
+			<div class="col s12">
+				<div class="col s3">
+					Affichage de <span id="start_index">1</span> - <span id="end_index">2</span> de <span id="total">2</span> article(s).
+				</div>
+				<div class="col s4 offset-s4" style="display:flex; justify-content:center; align-items: center;">
+					<input type="text" id="search_box" placeholder="Rechercher"/>
+					<i class='material-icons'>search</i>
+				</div>
+				<div class="col s6" id="chips">
+
+				</div>
+			</div>
+			
+
+			<div class="col s12" id="pad-list">
+			</div>
+
+			<div class="row">
+				<div class="col l4 offset-l5">
+					<ul class="pagination">
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col s10 offset-s1">
-		<div class="col s4">
-			<label>Forme de l'appareil</label>
-				<select id="formComboBox">
-					<option selected value="none"> -- Selectionner une option-- </option>
-					<option value="Rond">Rond</option>
-					<option value="Rectangle">Rectangle</option>
-					<option value="Carre">Carre</option>
-				</select>
-		</div>
 
-		<div class="col s3 offset-s1" style="margin-top:30px;">
-			<input type="checkbox" id="dater_checkbox" />
-			<label for="dater_checkbox">Tampon Dateur ?</label>
-		</div>
 
-		<div class="col s4">
-			<label>Type d'appareil</label>
-				<select id="typeComboBox">
-					<option selected value="none"> -- Selectionner une option-- </option>
-					<option value="Bois">Bois</option>
-					<option value="Plastique">Plastique</option>
-					<option value="Metallique">Metallique</option>
-				</select>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-    <div class="col s8 offset-s2" id="pad-list">
-    </div>
-</div>
-
-<div class="row">
-	<div class="col l4 offset-l5">
-		<ul class="pagination">
-		</ul>
-	</div>
-</div>
 
 
 
 <script type="text/javascript">
-	/*$('#search_box').bind("enterKey",function(e){
-		refreshList();
-	});
-	$('#search_box').keyup(function(e){
-		if(e.keyCode == 13)
-		{
-			$(this).trigger("enterKey");
-		}
-		if(e.keyCode == 8)
-		{
-			if($(this).val().length == 0)
-				$(this).trigger("enterKey");
-		}
-	});*/
-
-    document.getElementById('formComboBox').onchange = document.getElementById('typeComboBox').onchange =
-        document.getElementById('dater_checkbox').onchange = document.getElementById('search_box').oninput = function () {
-            refreshList();
-        };
+	var type_pad = "none";
+	var form_pad = "none";
+	var dater = "none";
 
     $(document).ready(function () {
-        $('select').material_select();
         refreshList();
     });
 
+	$('.group1').on('click', function(){
+		if(form_pad != "none"){
+			$('#chips').children().each(function(){
+				if($(this).attr('id').replace('-chip', '') == form_pad){
+					$(this).remove();
+				}
+			});
+		}
+		form_pad = $(this).attr('id');
+		if(form_pad != "none"){
+			var new_chip =  "<div class='chip' id='" + form_pad + "-chip'>" +
+						$("label[for='" + form_pad + "']").text() + "<i class='close material-icons'>close</i>" +
+						"</div>";
+			$('#chips').append(new_chip);
+
+			$('.close').on('click', function() {
+				var id = $(this).parent().attr('id').replace('-chip', '');
+				var group = $('#' + id).attr('class').split(' ')[1];
+				$('.' + group).each(function(){
+					if($(this).attr('id') == "none")
+						$(this).trigger('click');
+				});
+			});
+		}
+		refreshList();
+	});
+
+	$('.group2').on('click', function(){
+		if(type_pad != "none"){
+			$('#chips').children().each(function(){
+				if($(this).attr('id').replace('-chip', '') == type_pad){
+					$(this).remove();
+				}
+			});
+		}
+		type_pad = $(this).attr('id');
+		if(type_pad != "none"){
+			var new_chip =  "<div class='chip' id='" + type_pad + "-chip'>" +
+						$("label[for='" + type_pad + "']").text() + "<i class='close material-icons'>close</i>" +
+						"</div>";
+			$('#chips').append(new_chip);
+
+			$('.close').on('click', function() {
+				var id = $(this).parent().attr('id').replace('-chip', '');
+				var group = $('#' + id).attr('class').split(' ')[1];
+				$('.' + group).each(function(){
+					if($(this).attr('id') == "none")
+						$(this).trigger('click');
+				});
+			});
+		}
+		refreshList();
+	});
+
+	$('.group3').on('click', function(){
+		if(dater != "none"){
+			$('#chips').children().each(function(){
+				if($(this).attr('id').replace('-chip', '') == dater){
+					$(this).remove();
+				}
+			});
+		}
+		dater = $(this).attr('id');
+		if(dater != "none"){
+			var new_chip =  "<div class='chip' id='" + dater + "-chip'>" +
+						$("label[for='" + dater + "']").text() + "<i class='close material-icons'>close</i>" +
+						"</div>";
+			$('#chips').append(new_chip);
+
+			$('.close').on('click', function() {
+				var id = $(this).parent().attr('id').replace('-chip', '');
+				var group = $('#' + id).attr('class').split(' ')[1];
+				$('.' + group).each(function(){
+					if($(this).attr('id') == "none")
+						$(this).trigger('click');
+				});
+			});
+		}
+		refreshList();
+	});
+
+	$('#search_box').on('input', function(){
+		refreshList();
+	});
+
     function refreshList() {
-	    $('#pad-list').empty();
-		$('.pagination').empty();
-		var active_page = 1;
-		const number_by_page = 16 + 1; // +1 parceque j'avais la flemme de modifier le code pour que ca coincide
+		const number_by_page = 8; 
         $.ajax({
 			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_pad",
             type: 'GET',
-			data: 'form=' + $('#formComboBox').val() + '&type=' + $('#typeComboBox').val() + '&dater=' + $('#dater_checkbox').is(':checked') + '&search=' + $('#search_box').val(),
+			data: 'form=' + form_pad + '&type=' + type_pad + '&dater=' + dater + '&search=' + $('#search_box').val(),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (returnedData) {
-				var count = 0;
+				$('#pad-list').empty();
+				$('.pagination').empty();
+				var active_page = 1;
+				var count = 0; // obliger car l'index n'est pas une valeur sur
                 $.each(returnedData, function (index) {
-					count++;
 					var page = Math.floor(count/number_by_page) + 1;
-					if(count % number_by_page == 1){
+					if(count % number_by_page == 0){
 						$('#pad-list').append("<div class='page' id='page" + page + "'>");
 						$('.pagination').append("<li class='waves-effect num_page'><a>" + page + "</a></li>");
 						$('.num_page').on('click', function(){
@@ -101,6 +211,9 @@
 							$('.page').hide();
 							active_page = $(this).text();
 							$('#page' + active_page).show();
+							var start_index = (active_page-1) * number_by_page;
+							$('#start_index').text(start_index + 1);
+							$('#end_index').text(start_index + $('#page' + active_page).children().length);
 						});
 					}
                     var name = "TAMPON " + returnedData[index].marque + " " + returnedData[index].nom;
@@ -133,10 +246,16 @@
                     "</div >";
 					
 					$('#page' + page).append(line);
-					if(count % number_by_page == 0){
+					if(count % number_by_page == (number_by_page-1) || (count+1) == returnedData.length){
 						$('#pad-list').append("</div>");
 					}
-                })
+					count++;
+                });
+				$('#total').text(returnedData.length);
+				if(returnedData.length === 0)
+					$('#pad-list').append("<h3>Bientot disponible / Produit inexistant </h3>");
+				$('#start_index').text(1);
+				$('#end_index').text(number_by_page);
 				$('.page').hide();
 				$('.pagination').children().first().trigger('click');
 				$("<li><a class='waves-effect' id='left-page'><i class='material-icons'>chevron_left</i></a></li>").insertBefore($('.pagination').children().first());
@@ -144,19 +263,23 @@
 
 				$('#left-page').on('click', function(){
 					$('.pagination').children().each(function(){
-						if($(this).text() == (parseInt(active_page)-1).toString())
-							$(this).trigger('click');
+						if($(this).text() == (parseInt(active_page)-1).toString()){
+							$(this).trigger('click'); 
+							return false;
+						}
 					});
 				});
 				$('#right-page').on('click', function(){
 					$('.pagination').children().each(function(){
-						if($(this).text() == (parseInt(active_page)+1).toString())
+						if($(this).text() == (parseInt(active_page)+1).toString()){
 							$(this).trigger('click');
+							return false;
+						}
 					});
 				})
             },
             error: function () {
-                alert("Erreur de r√©cup√©ration de donn√©es.");
+                alert("Erreur lors de la recuperation de la liste des tampons.");
             }
         });
     }

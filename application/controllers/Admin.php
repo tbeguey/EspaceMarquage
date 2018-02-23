@@ -6,7 +6,7 @@ class Admin extends CI_Controller {
 
     public function index()
     {
-		if($this->ion_auth->is_admin())
+		if(!$this->ion_auth->is_admin())
 		{
 			$this->load->helper('url');
 			redirect('welcome/index', 'refresh');
@@ -21,7 +21,7 @@ class Admin extends CI_Controller {
 
 	public function users()
 	{
-		if($this->ion_auth->is_admin())
+		if(!$this->ion_auth->is_admin())
 		{
 			$this->load->helper('url');
 			redirect('welcome/index', 'refresh');

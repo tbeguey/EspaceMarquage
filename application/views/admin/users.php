@@ -2,17 +2,21 @@
 
 <h1><?php echo $title; ?> </h1>
 
-<table id="users-table">
-	<thead>
-		<th>N°</th>
-		<th>Entreprise</th>
-		<th>Adresse électronique</th>
-		<th></th>
-		<th></th>
-	</thead>
-	<tbody id="users-lines">
-	</tbody>
-</table>
+<div class="container responsive-table">
+	<div class="row">
+		<table id="users-table" class="striped">
+			<thead>
+				<th>N°</th>
+				<th>Entreprise</th>
+				<th>Adresse électronique</th>
+				<th></th>
+				<th></th>
+			</thead>
+			<tbody id="users-lines">
+			</tbody>
+		</table>
+	</div>
+</div>
 
 
 <script type="text/javascript">

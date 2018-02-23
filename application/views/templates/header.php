@@ -15,9 +15,9 @@
 	<link href="<?php echo base_url('assets/css/header.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/footer.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/welcome_message.css');?>" rel="stylesheet">
+	<link href="<?php echo base_url('assets/css/tampon/index.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/tampon/personalize.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/connexion/index.css');?>" rel="stylesheet">
-	<link href="<?php echo base_url('assets/css/tampon/index.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/encre/personalize.css');?>" rel="stylesheet">
 
 </head>

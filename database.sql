@@ -72,7 +72,7 @@ CREATE TABLE UTILISATEUR_GROUPE(
 		id_client INT(6) NOT NULL,
 		id_tampon INT(6) NOT NULL,
 		titre VARCHAR(255) NOT NULL,
-		defaut BOOLEAN NOT NULL
+		favori BOOLEAN NOT NULL
 	);
 
 	CREATE TABLE LIGNE_MODELE(
@@ -105,15 +105,13 @@ VALUES ("ESPACE MARQUAGE", 12, "Century", 0, "middle", true, false, false);
 INSERT INTO LIGNE(texte, taille, police, espacement, alignement, gras, italique, souligne)
 VALUES ("27 Rue Georges Barres", 10, "Arial", 0, "left", false, true, false);
 
-INSERT INTO MODELE(id_client, id_tampon, titre, defaut) VALUES (0, 1, "Défaut", true);
+INSERT INTO MODELE(id_client, id_tampon, titre, favori) VALUES (0, 1, "Défaut", true);
 
 INSERT INTO LIGNE_MODELE(id_ligne, id_modele, ordre) VALUES (1,1,1);
 
 INSERT INTO LIGNE_MODELE(id_Ligne, id_Modele, ordre) VALUES (2,1,2);
 
 INSERT INTO ENCRE(id_tampon, noir, rouge, bleu, vert, violet) VALUES (1,true, true, true, false, true);
-
-INSERT INTO UTILISATEUR(id, username, password, email, active) VALUES(1, 'tbeguey', 'motdepasse', 'begueytheo@gmail.com', 1);
 
 INSERT INTO GROUPE (id, name, description) VALUES
      (1,'Admin','Administrateur'),

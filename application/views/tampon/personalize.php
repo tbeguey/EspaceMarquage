@@ -5,7 +5,7 @@
 
 		<h4 id="title">TAMPON <?php echo $title ?></h4>
 
-		<div class="row" style="display:inline-flex;">
+		<div class="row" style="display:flex; justify-content:center; align-items:center;">
 			<div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
 				<div id="pad"></div>
 				<div id="border_one" class="invisible"></div>
@@ -97,20 +97,25 @@
 				<div id="test-swipe-3" class="col s12">
 					<br />
 					<div class="row">
-						<a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
-						<a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
+						<div class="col s3">
+							<a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
+							<a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
+						</div>
+						<div class="col s6 offset-s3">
+							<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
+							<a class="waves-effect waves-light btn red" disabled id="rmv-btn" onclick="remove_image_pad()"><i class="material-icons">highlight_off</i></a>
+						</div>
 					</div>
 					<br />
-					<div class="row">
+					<div class="row" style="margin: 3px; margin-left: 40px;">
 						<a class="waves-effect waves-light btn img-btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
+					</div>
+					<div class="row" style="margin: 3px;">
 						<a class="waves-effect waves-light btn img-btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
 						<a class="waves-effect waves-light btn img-btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
-						<a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
 					</div>
-					<div class="row">
-						<div class="col s4 col offset-s4">
-							<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
-						</div>
+					<div class="row" style="margin: 3px; margin-left: 40px;">
+						<a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
 					</div>
 					<div class="carousel" id="logo-carousel"></div>
 
@@ -209,11 +214,18 @@
 					<div class="row">
 						<div class="col s6 offset-s3">
 							<input type="text" style="margin-right:15px;" id="title-model" placeholder="Titre du modèle"/>
-							<a class='btn waves-effect waves-light blue model-save'><i class='material-icons left'>save</i>Enregistrer ce modèle</a>
 						</div>
 					</div>
-					<div class="row" id="container-models">
-				
+					<div class="row">
+						<div class="col s4 offset-s4">
+							<a class='btn waves-effect waves-light blue model-save'><i class='material-icons left'>save</i>Enregistrer un modèle</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s10 offset-s1" id="container-models">
+
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -303,7 +315,6 @@
         $('select').material_select();
 		$('.modal').modal();
 
-
         step_top = 78 / (max_lines - 1);
         
         while(nb_line != max_lines)
@@ -355,7 +366,10 @@
 		});
 
 		
-        $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");        
+        $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");  
+		
+		for(var i=0;i<2;i++)
+			zoom_in_pad();
     });
 
     function addrow() {
@@ -852,7 +866,19 @@
 		$(function(){
 			$(".img-btn").attr("disabled", false);
 		});
+		$('#rmv-btn').attr("disabled", false);
     }
+
+	function remove_image_pad(){
+		if(carousel_src != undefined){
+	        $('#pad-img').css('visibility', 'hidden');
+		}
+
+		$(function(){
+			$(".img-btn").attr("disabled", true);
+		});
+		$('#rmv-btn').attr("disabled", true);
+	}
 
     Dropzone.options.dropzoneForm = {
         init: function () {
@@ -1045,17 +1071,22 @@
 						append += "'>" + line.texte + "</p>";
 					})
 					append += "<br/>";
-					append += "<h5 class='bold' style='font-family:serif;'>" + model.titre + "</h5>";
-					append += "<div style='margin:5px;'>"
-					append += "<a class='btn btn-floating btn-small waves-effect waves-light green model-check' style='margin:10px'><i class='material-icons'>check</i></a>";
-					append += "<a class='btn btn-floating btn-small waves-effect waves-light red model-remove ";
-					if(model.defaut == true)
-						append += "disabled";
-					append += "'><i class='material-icons'>cancel</i></a>";
+					append += "<hr>";
+					append += "<h5 class='bold'>" + model.titre + "</h5>";
+					append += "<div>";
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light model-star tooltipped' data-position='bottom' data-delay='50' data-tooltip='Ajouter aux favoris'><i class='material-icons icon-";
+					if(model.favori == true)
+						append += "yellow";
+					else
+						append += "grey";
+					append += "'>star</i></a>";
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light green model-check tooltipped' data-position='bottom' data-delay='50' data-tooltip='Appliquer' style='margin:10px'><i class='material-icons'>check</i></a>";
+					append += "<a class='btn btn-floating btn-small waves-effect waves-light red model-remove tooltipped' data-position='bottom' data-delay='50' data-tooltip='Supprimer'><i class='material-icons'>delete</i></a>";
 					append += "</div>";
 
 					$('#container-models').append(append);
-				})
+				});
+				$('.tooltipped').tooltip({delay: 50});
 
 				$('.model-remove').on('click', function(){
 					var id = $(this).parent().parent().attr('id').replace('model_', '');
@@ -1160,17 +1191,27 @@
 
 						if(item.souligne == 1)
 							$('#underline_button_target_' + index).click();
-					});
-				})
-				if(model_applied == false){
-					$('.model-remove').each(function(){
-						if($(this).hasClass('disabled')){
-							$(this).parent().children('a').first().trigger('click');
+					});						
+				});
+
+				$('.model-star').on('click', function(){
+					var id = $(this).parent().parent().attr('id').replace('model_', '');
+					$.ajax({
+						url: "<?php echo base_url(); ?>" + "index.php/tampon/star_model",
+						type: 'GET',
+						data: 'model=' + id,
+						contentType: "application/json; charset=utf-8",
+						success: (returnedData) => {
+							$(this).children().toggleClass('icon-yellow');
+							$(this).children().toggleClass('icon-grey');
+						},
+						error: function () {
+							alert("Erreur dans la mise en favori.");
 						}
 					});
-					model_applied = true;
-				}
+				});
 
+				$('.model-check').first().trigger('click');
 			},
 			error: function () {
 				alert("Erreur de récupération de données.");

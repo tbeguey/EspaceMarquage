@@ -2,3 +2,12 @@
     font-size: 1em;
     font-weight: 300;
 }
+
+#left_column {
+    background: white;
+    height: 100%;
+}
+
+.chip {
+    background:white;
+}

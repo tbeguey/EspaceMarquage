@@ -43,6 +43,12 @@ class Connexion extends CI_Controller {
 			redirect('welcome/index', 'refresh');
 		}
 		else{
+			$query = $this->db->query("SELECT active FROM UTILISATEUR WHERE username = '" . $email . "';");
+			foreach ($query->result() as $row){
+				$active = $row->active;
+				if($active == 0)
+					redirect('connexion/waiting_activation', 'refresh');
+			}
 			redirect('connexion/failed', 'refresh');
 		}
 	}
@@ -66,7 +72,19 @@ class Connexion extends CI_Controller {
 		$username = $email;
 
 		if($this->ion_auth->register($username, $password, $email, $additional_data)){
-			redirect('connexion/waiting_activation', 'refresh');
+			if(count($this->ion_auth->users()->result()) == 1){
+				$data = array(
+					'active' => true
+				);
+
+				$this->db->where('id', 1);
+				$this->db->update('UTILISATEUR', $data);
+				$this->ion_auth->login($username, $password, true);
+				redirect('welcome/index', 'refresh');
+			}
+			else{
+				redirect('connexion/waiting_activation', 'refresh');
+			}
 		}
 		else{
 			redirect('connexion/failed', 'refresh');

@@ -5,13 +5,13 @@ Class Model {
 
 	public $id;
 	public $titre;
-	public $defaut;
+	public $favori;
 	public $lignes;
 
-	public function __construct($i, $t, $d, $l){
+	public function __construct($i, $t, $f, $l){
 		$this->id = $i;
 		$this->titre = $t;
-		$this->defaut = $d;
+		$this->favori = $f;
 		$this->lignes = $l;
 	}
 

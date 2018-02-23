@@ -33,10 +33,10 @@ class Tampon extends CI_Controller {
 		$id = $this->uri->segment(3);
 		$pad = null;
 
-		$query = $this->db->query("SELECT * FROM TAMPON where Id = " . $id);
+		$query = $this->db->query("SELECT * FROM TAMPON where id = " . $id);
 		foreach ($query->result() as $row)
 		{
-			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
+			$pad = new Pad($row->id, $row->marque, $row->nom, $row->largeur, $row->hauteur, $row->forme, $row->type, $row->lignes_max, $row->dateur);
 		}
 
 		if($pad != null)
@@ -72,16 +72,28 @@ class Tampon extends CI_Controller {
 		$dater = $this->input->get("dater");
 		$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
 
-		if($dater=== "false" || $dater === 0 || $dater === "0")
-			$dater = false;
-		else if($dater === "true" || $dater === 1 || $dater === "1")
-			$dater = true;
+		if($dater === "true")
+			$converted_dater = true;
+		if($dater === "false")
+			$converted_dater = false;
 
 		$query = $this->db->query("SELECT * FROM TAMPON");
 		foreach ($query->result() as $row)
 		{
-			$pad = new Pad($row->Id, $row->Marque, $row->Nom, $row->Largeur, $row->Hauteur, $row->Forme, $row->Type, $row->Lignes_Max, $row->Dateur);
+			$pad = new Pad($row->id, $row->marque, $row->nom, $row->largeur, $row->hauteur, $row->forme, $row->type, $row->lignes_max, $row->dateur);
 			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+						array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+			array_push($pads, $pad);
+
 		}
 
 		foreach($pads as $key => $p){
@@ -97,8 +109,9 @@ class Tampon extends CI_Controller {
 				if(!preg_match('/' . $search . '/', $p->nom))
 					unset($pads[$key]);
 
-			if($dater !== $p->dateur)
-				unset($pads[$key]);
+			if($dater !== "none")
+				if($converted_dater !== $p->dateur)
+					unset($pads[$key]);
 		}
 
 		echo json_encode($pads);
@@ -225,16 +238,17 @@ class Tampon extends CI_Controller {
 		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
 		$models = array();
 
-		$query = $this->db->query("SELECT MODELE.Id as MID, Titre, Defaut, LIGNE.Id as LID, Texte, Taille, Police, Espacement, Alignement, Gras, Italique, Souligne " .
+		$query = $this->db->query("SELECT * FROM (SELECT MODELE.id as mid, titre, favori, LIGNE.id as lid, texte, taille, police, espacement, alignement, gras, italique, souligne " .
 								"FROM LIGNE_MODELE " .
-								"JOIN LIGNE ON LIGNE.Id = Id_Ligne " .
-								"JOIN MODELE ON MODELE.Id = Id_Modele " .
-								"WHERE (Id_Client = " . $id_client . " OR Id_Client = 0) AND Id_Tampon = " . $id_pad . " " . // where id client = client actuel, pareil pour le tampon
-								"ORDER BY Ordre"); 
+								"JOIN LIGNE ON LIGNE.id = id_ligne " .
+								"JOIN MODELE ON MODELE.id = id_modele " .
+								"WHERE (id_client = " . $id_client . " OR id_client = 0) AND id_tampon = " . $id_pad . " " .
+								"ORDER BY ordre) AS T " .
+								"ORDER BY T.favori DESC"); 
 
 		foreach ($query->result() as $row)
 		{
-			$model_id = $row->MID;
+			$model_id = $row->mid;
 			$key_model = -1;
 			foreach($models as $k => $m)
 			{
@@ -245,7 +259,7 @@ class Tampon extends CI_Controller {
 				}
 			}
 
-			$line = new Line($row->LID, $row->Texte, $row->Taille, $row->Police, $row->Espacement, $row->Alignement, $row->Gras, $row->Italique, $row->Souligne);
+			$line = new Line($row->lid, $row->texte, $row->taille, $row->police, $row->espacement, $row->alignement, $row->gras, $row->italique, $row->souligne);
 
 			if($key_model != -1)
 			{
@@ -255,7 +269,7 @@ class Tampon extends CI_Controller {
 			{
 				$lines = array();
 				array_push($lines, $line);
-				$model = new Model($model_id, $row->Titre, $row->Defaut, $lines);
+				$model = new Model($model_id, $row->titre, $row->favori, $lines);
 				array_push($models, $model);
 			}
 
@@ -272,10 +286,10 @@ class Tampon extends CI_Controller {
 		$lines = json_decode($this->security->xss_clean($this->input->get("lines")));
 
 		$data_model = array(
-			'Id_Client' => $id_client,
-			'Id_Tampon' => $id_pad,
-			'Titre' => $title,
-			'Defaut' => false
+			'id_client' => $id_client,
+			'id_tampon' => $id_pad,
+			'titre' => $title,
+			'favori' => false
 		);
 		$this->db->insert('MODELE', $data_model);
 		$id_model = $this->db->insert_id();
@@ -283,23 +297,23 @@ class Tampon extends CI_Controller {
 		for($i = 0; $i < count($lines); $i+=8)
 		{
 			$data_line = array(
-				'Texte' => $lines[$i],
-				'Taille' => $lines[$i+1],
-				'Police' => $lines[$i+2],
-				'Espacement' => $lines[$i+3],
-				'Alignement' => $lines[$i+4],
-				'Gras' => $lines[$i+5],
-				'Italique' => $lines[$i+6],
-				'Souligne' => $lines[$i+7]
+				'texte' => $lines[$i],
+				'taille' => $lines[$i+1],
+				'police' => $lines[$i+2],
+				'espacement' => $lines[$i+3],
+				'alignement' => $lines[$i+4],
+				'gras' => $lines[$i+5],
+				'italique' => $lines[$i+6],
+				'souligne' => $lines[$i+7]
 			);
 			$this->db->insert('LIGNE', $data_line);
 			$id_line = $this->db->insert_id();
 
 			$order = $i/8;
 			$data_line_model = array(
-				'Id_Ligne' => $id_line,
-				'Id_Modele' => $id_model,
-				'Ordre' => $order
+				'id_ligne' => $id_line,
+				'id_modele' => $id_model,
+				'ordre' => $order
 			);
 			$this->db->insert('LIGNE_MODELE', $data_line_model);
 		}
@@ -310,23 +324,44 @@ class Tampon extends CI_Controller {
 		$id_model = $this->security->xss_clean($this->input->get("model"));
 		$id_lines = array();
 
-		$query = $this->db->query("SELECT Id_Ligne FROM LIGNE_MODELE WHERE Id_Modele = " . $id_model);
+		$query = $this->db->query("SELECT id_ligne FROM LIGNE_MODELE WHERE id_modele = " . $id_model);
 
 		foreach($query->result() as $row)
 		{
-			array_push($id_lines, $row->Id_Ligne);
+			array_push($id_lines, $row->id_ligne);
 		}
 
 		foreach($id_lines as $i)
 		{
-			$this->db->where('Id', $i);
+			$this->db->where('id', $i);
 			$this->db->delete('LIGNE');
-			$this->db->where('Id_Ligne', $i);
+			$this->db->where('id_ligne', $i);
 			$this->db->delete('LIGNE_MODELE');
 		}
 		
-		$this->db->where('Id', $id_model);
+		$this->db->where('id', $id_model);
 		$this->db->delete('MODELE');
+	}
+
+	public function star_model()
+	{
+		$id_model = $this->security->xss_clean($this->input->get("model"));
+		
+		$is_star = false;
+		$query = $this->db->query("SELECT favori FROM MODELE WHERE id = " . $id_model);
+		foreach($query->result() as $row)
+		{
+			$is_star = $row->favori;
+		}
+
+		$is_star ^= 1; // $is_star = !$is_star;
+
+		$data = array(
+			'favori' => $is_star
+		);
+
+		$this->db->where('id', $id_model);
+		$this->db->update('MODELE', $data);
 	}
 }
 ?>
