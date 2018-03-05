@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col s6" id="connection-div">
 		<h2> Déjà inscrit ? </h2>
-		<form action="<?php echo base_url(); ?>index.php/connexion/login/" method="post">
+		<form action="<?php echo base_url(); ?>connexion/login/" method="post">
 			<div class="col s6 offset-s3">
 				<label for="connection-mail">Adresse mail</label>
 				<input type="text" name="connection-mail"/>
@@ -28,7 +28,7 @@
 		<h2> Pas encore inscrit ? </h2>
 		<h6>Vous n'avez juste qu'à remplir ce formulaire, nous étudirons votre requete et vous enverons un mail lorsque vous pourrez connecter.</h3>
 		</br>
-		<form action="<?php echo base_url(); ?>index.php/connexion/register/" method="post">
+		<form action="<?php echo base_url(); ?>connexion/register/" method="post">
 			<div class="col s6 offset-s3">
 				<label for="inscription-mail">Adresse mail</label>
 				<input type="text" name="inscription-mail"/>

@@ -30,7 +30,7 @@ class Tampon extends CI_Controller {
 
 		$this->load->view('templates/header');
 
-		$id = $this->uri->segment(3);
+		$id = $this->uri->segment(2);
 		$pad = null;
 
 		$query = $this->db->query("SELECT * FROM TAMPON where id = " . $id);

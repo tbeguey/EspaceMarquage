@@ -27,7 +27,7 @@
 	function refresh_list(){
 		$('#users-lines').empty();
 		$.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/admin/get_not_active_users",
+			url: "<?php echo base_url(); ?>" + "admin/get_not_active_users",
 			type: 'GET',
 			data: '',
 			contentType: "application/json; charset=utf-8",
@@ -48,7 +48,7 @@
 
 	function delete_user(id){
 		$.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/admin/delete_user",
+			url: "<?php echo base_url(); ?>" + "admin/delete_user",
 			type: 'GET',
 			data: 'id=' + id,
 			contentType: "application/json; charset=utf-8",
@@ -63,7 +63,7 @@
 
 	function active_user(id){
 		$.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/admin/active_user",
+			url: "<?php echo base_url(); ?>" + "admin/active_user",
 			type: 'GET',
 			data: 'id=' + id,
 			contentType: "application/json; charset=utf-8",

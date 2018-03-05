@@ -2,4 +2,4 @@
 
 <h1><?php echo $title; ?> </h1>
 <br>
-<a href="<?php echo base_url('index.php/admin/users'); ?>">Utilisateurs (<?php echo $nb_users; ?> notifications)</a>
+<a href="<?php echo base_url('admin/users'); ?>">Utilisateurs (<?php echo $nb_users; ?> notifications)</a>

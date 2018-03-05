@@ -190,7 +190,7 @@
     function refreshList() {
 		const number_by_page = 8; 
         $.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_pad",
+			url: "<?php echo base_url(); ?>" + "tampon/refresh_list_pad",
             type: 'GET',
 			data: 'form=' + form_pad + '&type=' + type_pad + '&dater=' + dater + '&search=' + $('#search_box').val(),
             contentType: "application/json; charset=utf-8",
@@ -221,7 +221,7 @@
 					var dater = "Non";
 					if(returnedData[index].dateur === true)
 						dater = "Oui";
-                    var url = "<?php echo base_url(); ?>" + "index.php/tampon/personalize/" + id;
+                    var url = "<?php echo base_url(); ?>" + "tampon/" + id;
                     var line = "<div class='col l3 s10 offset-s1'>" +
                         "<div class='card'>" +
                         "<div class='card-image waves-effect waves-block waves-light'>" +

@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
 		if(!$this->ion_auth->is_admin())
 		{
 			$this->load->helper('url');
-			redirect('welcome/index', 'refresh');
+			redirect('', 'refresh');
 		}
         $data['title'] = "Administration";
 		$data['nb_users'] = $this->count_not_active_users();
@@ -24,7 +24,7 @@ class Admin extends CI_Controller {
 		if(!$this->ion_auth->is_admin())
 		{
 			$this->load->helper('url');
-			redirect('welcome/index', 'refresh');
+			redirect('', 'refresh');
 		}
 	    $data['title'] = "Administration des utilisateurs";
 

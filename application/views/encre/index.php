@@ -53,7 +53,7 @@
 		var active_page = 1;
 		const number_by_page = 16 + 1; // +1 parceque j'avais la flemme de modifier le code pour que ca coincide
         $.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/encre/refresh_list_ink",
+			url: "<?php echo base_url(); ?>" + "encre/refresh_list_ink",
             type: 'GET',
 			data: 'search=' + $('#search_box').val(),
             contentType: "application/json; charset=utf-8",
@@ -76,7 +76,7 @@
 					}
                     var name = "ENCRE POUR TAMPON " + returnedData[index].tampon.marque + " " + returnedData[index].tampon.nom;
                     var id = returnedData[index].id;
-                    var url = "<?php echo base_url(); ?>" + "index.php/encre/personalize/" + id;
+                    var url = "<?php echo base_url(); ?>" + "encre/" + id;
                     var line = "<div class='col l3 s10 offset-s1'>" +
                         "<div class='card'>" +
                         "<div class='card-image waves-effect waves-block waves-light'>" +

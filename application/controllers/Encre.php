@@ -28,7 +28,7 @@ class Encre extends CI_Controller {
 		}
 		$this->load->view('templates/header');
 
-		$id = $this->uri->segment(3);
+		$id = $this->uri->segment(2);
 		$ink = null;
 
 		$query = $this->db->query("SELECT * FROM ENCRE where id_tampon = " . $id);

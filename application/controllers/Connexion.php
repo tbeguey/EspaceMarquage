@@ -40,7 +40,7 @@ class Connexion extends CI_Controller {
 			$remember = TRUE;
 
 		if($this->ion_auth->login($email, $password, $remember)){
-			redirect('welcome/index', 'refresh');
+			redirect('', 'refresh');
 		}
 		else{
 			$query = $this->db->query("SELECT active FROM UTILISATEUR WHERE username = '" . $email . "';");
@@ -57,7 +57,7 @@ class Connexion extends CI_Controller {
 	{
 		$this->load->helper('url');
 		$this->ion_auth->logout();
-		redirect('welcome/index', 'refresh');
+		redirect('', 'refresh');
 	}
 
 	public function register()
@@ -80,7 +80,7 @@ class Connexion extends CI_Controller {
 				$this->db->where('id', 1);
 				$this->db->update('UTILISATEUR', $data);
 				$this->ion_auth->login($username, $password, true);
-				redirect('welcome/index', 'refresh');
+				redirect('', 'refresh');
 			}
 			else{
 				redirect('connexion/waiting_activation', 'refresh');

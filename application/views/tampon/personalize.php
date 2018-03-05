@@ -120,7 +120,7 @@
 					<div class="carousel" id="logo-carousel"></div>
 
 					<div class="jumbotron">
-						<form action="<?php echo base_url(); ?>index.php/tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+						<form action="<?php echo base_url(); ?>tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
 							<div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
 							<div class="fallback">
 								<input name="file" type="file" multiple />
@@ -288,7 +288,7 @@
         <p style="text-align: center;">Voulez-vous commander des recharges d'encres associées à ce tampon ?</p>
         <div class="row">
             <div class="col s2 offset-s4">
-                <a class="waves-effect waves-light btn" href="<?php echo base_url('index.php/encre/personalize/' . $id_pad);?>">OUI</a>
+                <a class="waves-effect waves-light btn" href="<?php echo base_url('encre/' . $id_pad);?>">OUI</a>
             </div>
             <div class="col s2 offset-s1">
                 <a class="waves-effect waves-light btn modal-close">NON</a>
@@ -830,7 +830,7 @@
     function refreshListLogo() {
 		$('#logo-carousel').empty();
 		$.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_logo",
+			url: "<?php echo base_url(); ?>" + "tampon/refresh_list_logo",
 			type: 'GET',
 			data: '',
 			contentType: "application/json; charset=utf-8",
@@ -1049,7 +1049,7 @@
 	function refreshListModels() {
 		$('#container-models').empty();
 		$.ajax({
-			url: "<?php echo base_url(); ?>" + "index.php/tampon/refresh_list_models",
+			url: "<?php echo base_url(); ?>" + "tampon/refresh_list_models",
 			type: 'GET',
 			data: 'id_pad=' + <?php echo $id_pad ?>,
 			contentType: "application/json; charset=utf-8",
@@ -1091,7 +1091,7 @@
 				$('.model-remove').on('click', function(){
 					var id = $(this).parent().parent().attr('id').replace('model_', '');
 					$.ajax({
-						url: "<?php echo base_url(); ?>" + "index.php/tampon/delete_model",
+						url: "<?php echo base_url(); ?>" + "tampon/delete_model",
 						type: 'GET',
 						data: 'model=' + id,
 						contentType: "application/json; charset=utf-8",
@@ -1197,7 +1197,7 @@
 				$('.model-star').on('click', function(){
 					var id = $(this).parent().parent().attr('id').replace('model_', '');
 					$.ajax({
-						url: "<?php echo base_url(); ?>" + "index.php/tampon/star_model",
+						url: "<?php echo base_url(); ?>" + "tampon/star_model",
 						type: 'GET',
 						data: 'model=' + id,
 						contentType: "application/json; charset=utf-8",
@@ -1260,7 +1260,7 @@
 		if(title){
 			var lines_to_send = JSON.stringify(lines);
 			$.ajax({
-					url: "<?php echo base_url(); ?>" + "index.php/tampon/save_model",
+					url: "<?php echo base_url(); ?>" + "tampon/save_model",
 					type: 'GET',
 					data: 'title=' + title + '&lines=' + lines_to_send + '&id_pad=' + <?php echo $id_pad ?>,
 					contentType: "application/json; charset=utf-8",
@@ -1287,7 +1287,7 @@
             onrendered: function (canvas) {
 				var data = encodeURIComponent(canvas.toDataURL("image/jpg").split(',')[1]);
                 $.ajax({
-					url: "<?php echo base_url(); ?>" + "index.php/tampon/send_mail",
+					url: "<?php echo base_url(); ?>" + "tampon/send_mail",
 					type: 'POST',
 					data: 'header=' + $('#modal-object').val() + '&content=' + $('#Commentaires').val() + '&data=' + data + '&id_pad=' + <?php echo $id_pad ?>,
 					success: function (returnedData) {
