@@ -52,6 +52,7 @@ class Tampon extends CI_Controller {
 			$data['width_mm'] = $width;
 			$data['height_mm'] = $height;
 			$data['dater'] = (int) $pad->dateur; //obliger de renvoyer un int, ca bug quand je passe false
+			$data['circle'] = (int) ($pad->forme == "Cercle");
 
 			$this->load->view('tampon/personalize.php', $data);
 		}
@@ -82,18 +83,6 @@ class Tampon extends CI_Controller {
 		{
 			$pad = new Pad($row->id, $row->marque, $row->nom, $row->largeur, $row->hauteur, $row->forme, $row->type, $row->lignes_max, $row->dateur);
 			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-						array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-			array_push($pads, $pad);
-
 		}
 
 		foreach($pads as $key => $p){

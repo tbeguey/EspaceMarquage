@@ -308,6 +308,7 @@
     var height_mm = <?php echo $height_mm ?>;
     var max_lines = <?php echo $max_lines ?>;
 	var dateur = <?php echo $dater ?>;
+	var circle = <?php echo $circle ?>;
     var step_top;
 	var model_applied = false;
 
@@ -333,7 +334,7 @@
 
             id_to_place_date = Math.ceil(max_lines / 2);
 
-            var new_line = "<p id='p_date_left' class='p_pad left-align'></p> <p id='p_date_right' class='p_pad right-align'></p> <p id='p_date' style='position: absolute; top: 50%;' class='middle-align'>" + today_date + "</p>";
+            var new_line = "<p id='p_date_left' class='p_pad left-align'></p> <p id='p_date_right' class='p_pad right-align'></p> <p id='p_date' style='position: absolute; top: 50%; margin-top:0px;' class='middle-align'>" + today_date + "</p>";
             $('#pad').append(new_line);
 
 			re_center("date_right");
@@ -357,6 +358,12 @@
 
 			$('#date-border').removeClass('invisible');
         }
+
+		if(circle == true){
+			$('#pads').children().each(function(){
+				$(this).css('border-radius', '100%');
+			});
+		}
         
         refreshListLogo();
 		refreshListModels();

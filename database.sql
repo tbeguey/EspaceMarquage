@@ -93,6 +93,12 @@ CREATE TABLE UTILISATEUR_GROUPE(
   
     INSERT INTO TAMPON(marque, nom, largeur, hauteur, forme, type, lignes_max, dateur)
   VALUES ("TRODAT", "5470", 38, 38, "Carre", "Metallique", 6, true);
+
+      INSERT INTO TAMPON(marque, nom, largeur, hauteur, forme, type, lignes_max, dateur)
+  VALUES ("TRODAT", "4911", 36, 12, "Rectangle", "Plastique", 3, false);
+
+  INSERT INTO TAMPON(marque, nom, largeur, hauteur, forme, type, lignes_max, dateur)
+  VALUES ("TRODAT", "46019", 17, 17, "Cercle", "Plastique", 3, false);
     
 INSERT INTO LIGNE(texte, taille, police, espacement, alignement, gras, italique, souligne)
 VALUES ("ESPACE MARQUAGE", 12, "Century", 0, "middle", true, false, false);
@@ -109,8 +115,8 @@ INSERT INTO LIGNE_MODELE(id_Ligne, id_Modele, ordre) VALUES (2,1,2);
 INSERT INTO ENCRE(id_tampon, noir, rouge, bleu, vert, violet) VALUES (1,true, true, true, false, true);
 
 INSERT INTO GROUPE (id, name, description) VALUES
-     (1,'Admin','Administrateur'),
-     (2,'Membres','Utilisateur lambda');
+     (1, 'Admin', 'Administrateur'),
+     (2, 'Membres', 'Utilisateur');
 
 INSERT INTO UTILISATEUR_GROUPE (id, user_id, group_id) VALUES
      (1,1,1);
