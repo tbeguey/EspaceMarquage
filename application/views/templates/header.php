@@ -12,6 +12,7 @@
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('ckeditor/ckeditor.js');?>"></script>
 
+
 	<link href="<?php echo base_url('assets/css/header.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/footer.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/welcome_message.css');?>" rel="stylesheet">

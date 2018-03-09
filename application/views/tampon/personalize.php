@@ -223,9 +223,8 @@
 					</div>
 					<div class="row">
 						<div class="col s10 offset-s1" id="container-models">
-
-						</div>
-						
+							
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -536,7 +535,6 @@
 			top_move = max_move + step_top;
 		}
 
-		/* PAS TERRIBLE, LE MIEUX SERAIT DE DIVISER LE TAMPON EN 2 ET ATTRIBUE N/2 LIGNES EN HAUT ET PAREIL EN BAS */
 		if(dateur == true && counter >= (max_lines/2)+1)
 			top_move = top_move + 7;
 
