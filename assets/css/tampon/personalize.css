@@ -29,6 +29,7 @@
     padding: 0;
     padding-top: 5px;
     line-height: 4px;
+    background-color:#fff;
 }
 
 .active_button {
@@ -78,6 +79,10 @@
 
 .invisible {
     visibility: hidden;
+}
+
+.undisplay {
+    display: none;
 }
 
 .tabs {
@@ -176,3 +181,27 @@
     color : grey !important;
 }
 
+.logo-list {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: white;
+    height: 400px;
+    overflow: auto;
+    padding: 10px;
+}
+
+.logo-item {
+    float: left;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+}
+
+
+.logo-img {
+    max-width: 80px;
+    max-height: 80px;
+}

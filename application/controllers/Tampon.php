@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 include APPPATH . 'data/Pad.php';
 include APPPATH . 'data/Model.php';
 include APPPATH . 'data/Line.php';
+include APPPATH . 'data/Logo.php';
+
 
 class Tampon extends CI_Controller {
 
@@ -106,7 +108,22 @@ class Tampon extends CI_Controller {
 		echo json_encode($pads);
 	}
 
-	public function refresh_list_logo()
+	public function get_logo_categories()
+	{
+		$dirs = array();
+		foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/*", GLOB_ONLYDIR) as $path){
+			$dir = explode("CLIP ART SITE/" , $path)[1];
+			array_push($dirs, $dir);
+		}
+		return($dirs);
+	}
+
+	public function json_categories()
+	{
+		echo json_encode($this->get_logo_categories());
+	}
+
+	public function get_list_logo_upload()
 	{
 		$id_client = $this->ion_auth->user()->row()->id;
 		$logos = array();
@@ -114,21 +131,65 @@ class Tampon extends CI_Controller {
 		$storeFolder = 'uploads/';
 		$targetPath = FCPATH . $storeFolder;
 
-
 		foreach(glob($targetPath . $id_client . "/" . '*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
-			array_push($logos, $id_client . "/" . basename($file));
+			array_push($logos, base_url('/uploads/') . $id_client . "/" . basename($file));
+		}
+		
+		echo json_encode($logos);
+	}
+
+	public function get_list_logo_library()
+	{
+		$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
+		$category = utf8_decode($this->input->get("category"));
+	
+		$logos = array();
+
+		if($category === ""){
+			$categories = $this->get_logo_categories();
+			foreach($categories as $c){		
+				foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/" . $c . '/*.{jpg,JPG,gif,GIF,png,PNG}', GLOB_BRACE) as $path){
+					$file = basename($path);
+					$info = pathinfo($file);
+					$name = basename($file,'.'.$info['extension']); // index
+
+					$logo = new Logo($c, $name, $info['extension']);
+					if($search !== ""){
+						if(strpos($logo->nom, $search) !== false){
+							array_push($logos, $logo);
+						}
+					}
+					else
+						array_push($logos, $logo);
+
+				}
+			}	
+		}
+		else{
+			foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/" . $category . '/*.{jpg,JPG,gif,GIF,png,PNG}', GLOB_BRACE) as $path){
+				$file = basename($path);
+				$info = pathinfo($file);
+				$name = basename($file,'.'.$info['extension']); // index
+
+				$logo = new Logo($category, $name, $info['extension']);
+				if($search !== ""){
+					if(strpos($logo->nom, $search) !== false){
+						array_push($logos, $logo);
+					}
+				}
+				else
+					array_push($logos, $logo);			
+			}
 		}
 
-		foreach(glob($targetPath . "0/" . '*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
-			array_push($logos, "0/" .  basename($file));
-		}
 
 		echo json_encode($logos);
 	}
 
 	public function save_upload_file()
 	{
-		$id_client = $this->ion_auth->user()->row()->id;
+		//$id_client = $this->ion_auth->user()->row()->id;
+		$id_client = 1;
 		$targetPath = FCPATH . 'uploads/' . $id_client . "/";
 		if(!file_exists($targetPath))
 			mkdir($targetPath, 0777, true);
@@ -136,9 +197,7 @@ class Tampon extends CI_Controller {
 		$config['upload_path'] = $targetPath;
 		$config['encrypt_name'] = TRUE;
 		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size'] = 100;
-		$config['max_width'] = 1024;
-		$config['max_height'] = 768;
+
 
 		$this->load->library('upload', $config);
 

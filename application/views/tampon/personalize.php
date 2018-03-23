@@ -96,38 +96,59 @@
 
 				<div id="test-swipe-3" class="col s12">
 					<br />
-					<div class="row">
-						<div class="col s3">
-							<a class="waves-effect waves-light btn img-btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
-							<a class="waves-effect waves-light btn img-btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
-						</div>
-						<div class="col s6 offset-s3">
-							<a class="waves-effect waves-light btn" onclick="add_image_pad()"><i class="material-icons left">add_a_photo</i>Ajouter ce logo au tampon</a>
-							<a class="waves-effect waves-light btn red" disabled id="rmv-btn" onclick="remove_image_pad()"><i class="material-icons">highlight_off</i></a>
-						</div>
+					<div class="switch col offset-l4">
+						<label style="font-size:15">
+							Notre bibliothèque
+							<input type="checkbox" id="switch_logo">
+							<span class="lever"></span>
+							Vos téléchargements
+						</label>
 					</div>
 					<br />
-					<div class="row" style="margin: 3px; margin-left: 40px;">
-						<a class="waves-effect waves-light btn img-btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
+					<div id="logo-buttons" class="undisplay">
+						<a class="waves-effect waves-light btn" onclick="img_size_plus()"><i class="material-icons">zoom_in</i></a>
+						<a class="waves-effect waves-light btn" onclick="img_size_minus()"><i class="material-icons">zoom_out</i></a>
+						<a class="waves-effect waves-light btn red" id="rmv-btn" onclick="remove_image_pad()"><i class="material-icons">highlight_off</i></a>
+						<br />
+						<div class="row" style="margin: 3px; margin-left: 40px;">
+							<a class="waves-effect waves-light btn" onclick="img_move_top()"><i class="material-icons">keyboard_arrow_up</i></a>
+						</div>
+						<div class="row" style="margin: 3px;">
+							<a class="waves-effect waves-light btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
+							<a class="waves-effect waves-light btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
+						</div>
+						<div class="row" style="margin: 3px; margin-left: 40px;">
+							<a class="waves-effect waves-light btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
+						</div>
 					</div>
-					<div class="row" style="margin: 3px;">
-						<a class="waves-effect waves-light btn img-btn" onclick="img_move_left()"><i class="material-icons">keyboard_arrow_left</i></a>
-						<a class="waves-effect waves-light btn img-btn" onclick="img_move_right()"><i class="material-icons">keyboard_arrow_right</i></a>
-					</div>
-					<div class="row" style="margin: 3px; margin-left: 40px;">
-						<a class="waves-effect waves-light btn img-btn" onclick="img_move_down()"><i class="material-icons">keyboard_arrow_down</i></a>
-					</div>
-					<div class="carousel" id="logo-carousel"></div>
-
-					<div class="jumbotron">
-						<form action="<?php echo base_url(); ?>tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-							<div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
-							<div class="fallback">
-								<input name="file" type="file" multiple />
+					<div id="library-logo-div">
+						<div class="row" style="margin-top:10px;">
+							<div class="col s3">
+								<select id="categories-list">
+									<option value="">Tout</option>
+								</select>
 							</div>
-						</form>
+							<div class="col s6 offset-s3">
+								<input type="text" id="logo-search" placeholder="Rechercher"/>
+							</div>
+						</div>
+						<ul class="logo-list" id="logo-list-library">
+						</ul>
+					<br/>
 					</div>
-					<br />
+					<div id="upload-logo-div" class="undisplay">
+						<div class="jumbotron">
+							<form action="<?php echo base_url(); ?>tampon/save_upload_file/" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+								<div class="dz-message" data-dz-message><span>Glissez/Déposez votre image ici ou cliquez pour ouvrir l'explorateur de fichiers.</span></div>
+								<div class="fallback">
+									<input name="file" type="file" multiple />
+								</div>
+							</form>
+						</div>
+						<br />
+						<ul class="logo-list" id="logo-list-upload">
+						</ul>
+					</div>
 				</div>
 				<div id="test-swipe-4" class="col s12">
 					<br/>
@@ -299,17 +320,15 @@
 <script type="text/javascript">
     var counter;
     var nb_line = 0;
-    var id_modal;
-    var carousel_src;
     var id_to_place_date;
-    var last_slider_value;
+	 var step_top;
+	var has_favori = false;
+
     var width_mm = <?php echo $width_mm ?>;
     var height_mm = <?php echo $height_mm ?>;
     var max_lines = <?php echo $max_lines ?>;
 	var dateur = <?php echo $dater ?>;
 	var circle = <?php echo $circle ?>;
-    var step_top;
-	var model_applied = false;
 
     $(document).ready(function () {
         $('select').material_select();
@@ -364,13 +383,24 @@
 			});
 		}
         
-        refreshListLogo();
 		refreshListModels();
-		
-		$(function(){
-			$(".img-btn").attr("disabled", true);
+
+		$.ajax({
+			url: "<?php echo base_url(); ?>" + "tampon/json_categories",
+			type: 'GET',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (returnedData) {
+				returnedData.forEach(function(item, i){
+					var line = "<option value='" + item + "'>" + item + "</option>";
+					$('#categories-list').append(line);
+				});
+				$('#categories-list').material_select();
+			}
 		});
 
+		refreshListLogoLibrary();
+		refreshListLogoUpload();
 		
         $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");  
 		
@@ -832,63 +862,17 @@
         });
     }
     
-    function refreshListLogo() {
-		$('#logo-carousel').empty();
-		$.ajax({
-			url: "<?php echo base_url(); ?>" + "tampon/refresh_list_logo",
-			type: 'GET',
-			data: '',
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			success: function (returnedData) {
-				$.each(returnedData, function (index) {
-					var line = "<a class='carousel-item'><img src='<?php  echo base_url('uploads/'); ?>" + returnedData[index] + "'/>" +
-						"</a>";
-					$('#logo-carousel').append(line);
-				})
-				if($('#logo-carousel').hasClass('initialized'))
-					$('#logo-carousel').removeClass('initialized');
-				$('#logo-carousel').carousel({
-					pause: true,
-					interval: false,
-					onCycleTo: function(data) {
-						carousel_src = data.children('img').attr('src');
-					},
-				});
-			},
-			error: function () {
-				alert("Erreur de récupération de données.");
-			}
-		});
-    }
 
-    function add_image_pad() {
-		if(carousel_src != undefined){
-	        $('#pad-img').css('visibility', 'visible');
-			$('#pad-img').attr('src', carousel_src);
-		}
-
-		$(function(){
-			$(".img-btn").attr("disabled", false);
-		});
-		$('#rmv-btn').attr("disabled", false);
-    }
 
 	function remove_image_pad(){
-		if(carousel_src != undefined){
-	        $('#pad-img').css('visibility', 'hidden');
-		}
-
-		$(function(){
-			$(".img-btn").attr("disabled", true);
-		});
-		$('#rmv-btn').attr("disabled", true);
+		$('#logo-buttons').addClass('undisplay');
+		$('#pad-img').css('visibility', 'hidden');
 	}
 
     Dropzone.options.dropzoneForm = {
         init: function () {
             this.on('complete', function () {
-                refreshListLogo();
+				refreshListLogoUpload();
             });
         }
     };
@@ -1080,8 +1064,10 @@
 					append += "<h5 class='bold'>" + model.titre + "</h5>";
 					append += "<div>";
 					append += "<a class='btn btn-floating btn-small waves-effect waves-light model-star tooltipped' data-position='bottom' data-delay='50' data-tooltip='Ajouter aux favoris'><i class='material-icons icon-";
-					if(model.favori == true)
+					if(model.favori == true){
 						append += "yellow";
+						has_favori = true;
+					}
 					else
 						append += "grey";
 					append += "'>star</i></a>";
@@ -1215,8 +1201,8 @@
 						}
 					});
 				});
-
-				$('.model-check').first().trigger('click');
+				if(has_favori == true)
+					$('.model-check').first().trigger('click');
 			},
 			error: function () {
 				alert("Erreur de récupération de données.");
@@ -1317,4 +1303,75 @@
 			$('#title').text('TAMPON <?php echo $title; ?>');
 		}
 	}
+
+	$('#switch_logo').on('change', function(){
+		$('#upload-logo-div').toggleClass('undisplay');
+		$('#library-logo-div').toggleClass('undisplay');
+	})
+
+
+
+	$('#logo-search').on('input', function(){
+		refreshListLogoLibrary();
+	});
+
+	$('#categories-list').on('change', function(){
+		refreshListLogoLibrary();
+	});
+
+	function refreshListLogoLibrary(){
+		var search = $('#logo-search').val();
+		var category = $('#categories-list').val();
+		$.ajax({
+			url: "<?php echo base_url(); ?>" + "tampon/get_list_logo_library",
+			type: 'GET',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: 'search=' + search + "&category=" + category,
+			success: function (returnedData) {
+				$('#logo-list-library').empty();
+				returnedData.forEach(function(i){
+					var line = "<li class='logo-item tooltipped' data-position='bottom' data-delay='50' data-tooltip='" + i.nom + "'><img class='logo-img' src='<?php echo base_url('assets/Site/CLIP ART SITE/')?>" + i.categorie + "/" + i.nom + "." + i.extension + "'></li>";
+					$('#logo-list-library').append(line);
+				});
+				$('.tooltipped').tooltip({delay: 50});
+
+				$('.logo-item').on('click', function(){
+					$('#logo-buttons').removeClass('undisplay');
+					$('#pad-img').css('visibility', 'visible');
+					$('#pad-img').attr('src', $(this).children().first().attr('src'));
+				});
+			},
+			error: function(){
+				alert("Erreur de récupérations des logos de notre bibliothèque.");
+			}
+		});
+	}
+
+	function refreshListLogoUpload(){
+		$.ajax({
+			url: "<?php echo base_url(); ?>" + "tampon/get_list_logo_upload",
+			type: 'GET',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (returnedData) {
+				$('#logo-list-upload').empty();
+				returnedData.forEach(function(i){
+					var line = "<li class='logo-item'><img class='logo-img' src='" + i + "'></li>";
+					$('#logo-list-upload').append(line);
+				});
+
+				$('.logo-item').on('click', function(){
+					$('#logo-buttons').removeClass('undisplay');
+					$('#pad-img').css('visibility', 'visible');
+					$('#pad-img').attr('src', $(this).children().first().attr('src'));
+				});
+			},
+			error: function(){
+				alert("Erreur de récupérations de vos téléchargements.");
+			}
+		});
+	}
+
 </script>
+

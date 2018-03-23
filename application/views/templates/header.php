@@ -76,4 +76,4 @@
 	    $(".button-collapse").sideNav();
 	});
 
-</script
+</script>
