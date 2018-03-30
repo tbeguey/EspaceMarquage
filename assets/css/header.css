@@ -8,6 +8,7 @@
     src: url('../fonts/Robaga/Robaga Rounded Regular.otf');
 }
 
+
 .nav-extended {
     background-color: #01579b;
 }
@@ -22,7 +23,11 @@
         color: orange;
     }
 
+h1 {
+    font-size: 3em;
+}
+
 body {
-    font-family: "Robaga";
+    font-family: "Robaga", sans-serif;
     background-color: rgb(224, 224, 224);
 }

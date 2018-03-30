@@ -48,8 +48,8 @@ class Tampon extends CI_Controller {
 
 			$data['id_pad'] = $pad->id;
 			$data['title'] =  $pad->marque . " " . $pad->nom; 
-			$data['width'] = $width * 3.78 + "px";
-			$data['height'] = $height * 3.78 + "px";
+			$data['width'] = $width * 3.78 . "px";
+			$data['height'] = $height * 3.78 . "px";
 			$data['max_lines'] = $pad->lignes_max;
 			$data['width_mm'] = $width;
 			$data['height_mm'] = $height;
@@ -114,7 +114,7 @@ class Tampon extends CI_Controller {
 		foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/*", GLOB_ONLYDIR) as $path){
 			$dir = explode("CLIP ART SITE/" , $path)[1];
 			array_push($dirs, $dir);
-		}
+        }
 		return($dirs);
 	}
 
@@ -411,5 +411,18 @@ class Tampon extends CI_Controller {
 		$this->db->where('id', $id_model);
 		$this->db->update('MODELE', $data);
 	}
+
+    public function get_list_fonts()
+    {
+        $fonts = array();
+
+        /*foreach(glob(FCPATH . "assets\Site\Fonts" . "/" . '*.{ttf,otf,TTF, OTF}',GLOB_BRACE) as $file){
+            array_push($fonts, basename($file));
+        }*/
+
+        array_push($fonts, "Freehand_471.ttf");
+
+        echo json_encode($fonts);
+    }
 }
 ?>

@@ -383,7 +383,6 @@
 			});
 		}
         
-		refreshListModels();
 
 		$.ajax({
 			url: "<?php echo base_url(); ?>" + "tampon/json_categories",
@@ -399,8 +398,10 @@
 			}
 		});
 
-		refreshListLogoLibrary();
+        refreshListModels();
+        refreshListLogoLibrary();
 		refreshListLogoUpload();
+		refreshListFonts();
 		
         $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");  
 		
@@ -1372,6 +1373,21 @@
 			}
 		});
 	}
+
+	function refreshListFonts(){
+        $.ajax({
+            url: "<?php echo base_url(); ?>" + "tampon/get_list_fonts",
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (returnedData) {
+                alert("police");
+            },
+            error: function(){
+                alert("Erreur de récupérations des polices.");
+            }
+        });
+    }
 
 </script>
 

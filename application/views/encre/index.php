@@ -1,5 +1,7 @@
 <?php header('Content-Type: text/html; charset=utf-8'); ?>
 
+<h1><?php echo $title; ?> </h1>
+
 <div class="container">
 	<br>
 	<br>
@@ -15,7 +17,7 @@
 				</p>
 				<p>
 					<input class="with-gap group1" name="group1" type="radio" id="Carre"  />
-					<label for="Carre">Carré</label>
+					<label for="Carre">Carrï¿½</label>
 				</p>
 				<p>
 					<input class="with-gap group1" name="group1" type="radio" id="Cercle"  />
@@ -35,7 +37,7 @@
 				</p>
 				<p>
 					<input class="with-gap group2" name="group2" type="radio" id="Metallique"  />
-					<label for="Metallique">Métallique</label>
+					<label for="Metallique">Mï¿½tallique</label>
 				</p>
 				<p style="position:fixed; opacity:0;"/>
 					<input class="with-gap group2" name="group2" type="radio" id="none"  />
