@@ -134,7 +134,7 @@ class Tampon extends CI_Controller {
 		foreach(glob($targetPath . $id_client . "/" . '*.{jpg,JPG,gif,GIF,png,PNG}',GLOB_BRACE) as $file){
 			array_push($logos, base_url('/uploads/') . $id_client . "/" . basename($file));
 		}
-		
+
 		echo json_encode($logos);
 	}
 
@@ -142,12 +142,12 @@ class Tampon extends CI_Controller {
 	{
 		$search = utf8_decode($this->security->xss_clean($this->input->get("search")));
 		$category = utf8_decode($this->input->get("category"));
-	
+
 		$logos = array();
 
 		if($category === ""){
 			$categories = $this->get_logo_categories();
-			foreach($categories as $c){		
+			foreach($categories as $c){
 				foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/" . $c . '/*.{jpg,JPG,gif,GIF,png,PNG}', GLOB_BRACE) as $path){
 					$file = basename($path);
 					$info = pathinfo($file);
@@ -163,11 +163,11 @@ class Tampon extends CI_Controller {
 						array_push($logos, $logo);
 
 				}
-			}	
+			}
 		}
 		else{
 			foreach(glob(FCPATH . "assets\Site\CLIP ART SITE/" . $category . '/*.{jpg,JPG,gif,GIF,png,PNG}', GLOB_BRACE) as $path){
-				$file = basename($path);
+                $file = basename($path);
 				$info = pathinfo($file);
 				$name = basename($file,'.'.$info['extension']); // index
 
@@ -416,11 +416,9 @@ class Tampon extends CI_Controller {
     {
         $fonts = array();
 
-        /*foreach(glob(FCPATH . "assets\Site\Fonts" . "/" . '*.{ttf,otf,TTF, OTF}',GLOB_BRACE) as $file){
+        foreach(glob(FCPATH . "assets/Site/Fonts" . "/" . '*.{ttf,otf,TTF, OTF}',GLOB_BRACE) as $file){
             array_push($fonts, basename($file));
-        }*/
-
-        array_push($fonts, "Freehand_471.ttf");
+        }
 
         echo json_encode($fonts);
     }

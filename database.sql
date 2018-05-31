@@ -66,6 +66,7 @@ CREATE TABLE UTILISATEUR_GROUPE(
 	    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 		id_client INT(6) NOT NULL,
 		id_tampon INT(6) NOT NULL,
+		id_bordure INT(6),
 		titre VARCHAR(255) NOT NULL,
 		favori BOOLEAN NOT NULL
 	);
@@ -87,6 +88,15 @@ CREATE TABLE UTILISATEUR_GROUPE(
 	violet BOOLEAN NOT NULL
 	);
 
+	CREATE TABLE BORDURE(
+		id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    largeur INT(3) NOT NULL,
+    hauteur INT(3) NOT NULL,
+    largeur_double INT(3),
+    hauteur_double INT(3)
+	);
+
 
   INSERT INTO TAMPON(marque, nom, largeur, hauteur, forme, type, lignes_max, dateur)
   VALUES ("TRODAT", "4913", 56, 20, "Rectangle", "Plastique", 5, false);
@@ -106,7 +116,7 @@ VALUES ("ESPACE MARQUAGE", 12, "Century", 0, "middle", true, false, false);
 INSERT INTO LIGNE(texte, taille, police, espacement, alignement, gras, italique, souligne)
 VALUES ("27 Rue Georges Barres", 10, "Arial", 0, "left", false, true, false);
 
-INSERT INTO MODELE(id_client, id_tampon, titre, favori) VALUES (0, 1, "Défaut", true);
+INSERT INTO MODELE(id_client, id_tampon, titre, favori) VALUES (0, 1,"Défaut", true);
 
 INSERT INTO LIGNE_MODELE(id_ligne, id_modele, ordre) VALUES (1,1,1);
 

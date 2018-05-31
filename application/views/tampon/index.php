@@ -1,7 +1,6 @@
 <?php header('Content-Type: text/html; charset=utf-8'); ?>
 
-<h1><?php echo $title; ?> </h1>
-<div class="container">
+    <h1><?php echo $title; ?> </h1>
     <br>
 	<br>
 	<div class="row">
@@ -16,7 +15,7 @@
 				</p>
 				<p>
 					<input class="with-gap group1" name="group1" type="radio" id="Carre"  />
-					<label for="Carre">Carr�</label>
+					<label for="Carre">Carre</label>
 				</p>
 				<p>
 					<input class="with-gap group1" name="group1" type="radio" id="Cercle"  />
@@ -36,7 +35,7 @@
 				</p>
 				<p>
 					<input class="with-gap group2" name="group2" type="radio" id="Metallique"  />
-					<label for="Metallique">M�tallique</label>
+					<label for="Metallique">Metallique</label>
 				</p>
 				<p style="position:fixed; opacity:0;"/>
 					<input class="with-gap group2" name="group2" type="radio" id="none"  />
@@ -87,7 +86,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 
 
 
@@ -241,7 +239,7 @@
 						"<p style='margin:3px;'>Dateur : " + dater + ".</p>" +
 						"<h5 style='text-align:center;'>Prix : 1500.2&euro;.</h5>" +
 
-                        "<a class='btn waves-effect waves-light green' href='" + url + "'><i class='material-icons left'>mode_edit</i>EDITER</a>"
+                        "<a class='btn waves-effect waves-light green' href='" + url + "'><i class='material-icons left'>mode_edit</i>PERSONNALISER</a>"
                     "</div>" +
                     "</div>" +
                     "</div >";

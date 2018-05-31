@@ -42,7 +42,7 @@
 							<div class="row">
 								<div class="col s4">
 									<label>Couleur de texte</label>
-									<select onchange="change_color()" id="list_color">
+									<select id="list_color">
 										<option value="black">Noir</option>
 										<option value="blue">Bleu</option>
 										<option value="red">Rouge</option>
@@ -71,9 +71,6 @@
 								<div class="col s4">
 									<label>Police de texte</label>
 									<select onchange="change_font_family()" id="font_family_list" style="height:20px; overflow:scroll">
-										<option value="Arial" class="arial">Arial</option>
-										<option value="Agency FB" style="font-family:'Agency FB'">Agency FB</option>
-										<option value="Century" style="font-family:'Century'">Century</option>
 									</select>
 								</div>
 							</div>
@@ -97,7 +94,7 @@
 				<div id="test-swipe-3" class="col s12">
 					<br />
 					<div class="switch col offset-l4">
-						<label style="font-size:15">
+						<label>
 							Notre bibliothèque
 							<input type="checkbox" id="switch_logo">
 							<span class="lever"></span>
@@ -158,7 +155,7 @@
 							<div class="switch">
 								<label>
 									Off
-									<input type="checkbox" onchange="active_border_one()">
+									<input type="checkbox" id="switch_border_one">
 									<span class="lever"></span>
 									On
 								</label>
@@ -176,16 +173,16 @@
 									<label> Largeur 1
 										<input type="range" min="2" max="100" value="2" step="1" id="width_border_one" class="width_border"/> 
 									</label>
-									<label> Largeur 2 (Double uniquement)
-											<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border" disabled/> 
+									<label id="label_width_border_two" class="invisible"> Largeur 2 (Double uniquement)
+											<input type="range" min="10" max="100" value="10" step="1" id="width_border_two" class="width_border invisible"/>
 									</label>
 								</div>
 								<div style="display:inline-flex"> 
 									<label> Hauteur 1
 										<input type="range" min="5" max="100" value="5" step="1" id="height_border_one" class="height_border"/> 
 									</label>
-									<label> Hauteur 2 (Double uniquement)
-											<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border" disabled/> 
+									<label id="label_height_border_two" class="invisible"> Hauteur 2 (Double uniquement)
+											<input type="range" min="15" max="100" value="15" step="1" id="height_border_two" class="height_border invisible"/>
 									</label>
 								</div>
 							</div>
@@ -273,7 +270,7 @@
 			<div class="row">
 				<div class="col s3">
 					<img src="<?php echo base_url('images/logo-pdf.png');?>" style="width:50px; height:50px" />
-					<a href="javascript:export_pdf(true)">Télécharger le visuel en PDF</a>
+					<a href="javascript:export_pdf()">Télécharger le visuel en PDF</a>
 				</div>
 
 				<div class="col s6 col offset-s2" style="text-align:right">
@@ -318,17 +315,17 @@
 </div>
 
 <script type="text/javascript">
-    var counter;
-    var nb_line = 0;
-    var id_to_place_date;
-	 var step_top;
-	var has_favori = false;
+    let counter;
+    let nb_line = 0;
+    let id_to_place_date;
+    let step_top;
+	let has_favori = false;
 
-    var width_mm = <?php echo $width_mm ?>;
-    var height_mm = <?php echo $height_mm ?>;
-    var max_lines = <?php echo $max_lines ?>;
-	var dateur = <?php echo $dater ?>;
-	var circle = <?php echo $circle ?>;
+    let width_mm = <?php echo $width_mm ?>;
+    let height_mm = <?php echo $height_mm ?>;
+    let max_lines = <?php echo $max_lines ?>;
+	let dateur = <?php echo $dater ?>;
+	let circle = <?php echo $circle ?>;
 
     $(document).ready(function () {
         $('select').material_select();
@@ -341,24 +338,24 @@
         
 
         if (dateur == true) {
-            var d = new Date();
+            let d = new Date();
 
-            var month = d.getMonth() + 1;
-            var day = d.getDate();
+            let month = d.getMonth() + 1;
+            let day = d.getDate();
             
-            var today_date = (day < 10 ? '0' : '') + day + ' ' +
+            let today_date = (day < 10 ? '0' : '') + day + ' ' +
                 (month < 10 ? '0' : '') + month + ' ' +
                 d.getFullYear();
 
             id_to_place_date = Math.ceil(max_lines / 2);
 
-            var new_line = "<p id='p_date_left' class='p_pad left-align'></p> <p id='p_date_right' class='p_pad right-align'></p> <p id='p_date' style='position: absolute; top: 50%; margin-top:0px;' class='middle-align'>" + today_date + "</p>";
+            let new_line = "<p id='p_date_left' class='p_pad left-align'></p> <p id='p_date_right' class='p_pad right-align'></p> <p id='p_date' style='position: absolute; top: 50%; margin-top:0px;' class='middle-align'>" + today_date + "</p>";
             $('#pad').append(new_line);
 
 			re_center("date_right");
 			re_center("date");
 
-            var new_textfield = "<div class='row'>" +
+            let new_textfield = "<div class='row'>" +
                 "<div class='col s12'>" +
                 "<div class='col s4'>" +
                 "<input type='text' class='textfield' id='textfield_date_left' />" +
@@ -391,7 +388,7 @@
 			dataType: "json",
 			success: function (returnedData) {
 				returnedData.forEach(function(item, i){
-					var line = "<option value='" + item + "'>" + item + "</option>";
+					let line = "<option value='" + item + "'>" + item + "</option>";
 					$('#categories-list').append(line);
 				});
 				$('#categories-list').material_select();
@@ -405,7 +402,7 @@
 		
         $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");  
 		
-		for(var i=0;i<2;i++)
+		for(let i=0; i<2; i++)
 			zoom_in_pad();
     });
 
@@ -420,7 +417,7 @@
         // Do something stupid to indicate the value
         ++counter;
 
-        var new_textfield = "<div class='row'>" +
+        let new_textfield = "<div class='row'>" +
             "<div class='col s4' style='text-align:center'>" +
             "<div class='col s5'>" +
             "<input type='text' class='textfield' id='textfield_" +
@@ -454,9 +451,6 @@
             ")' id='font_family_list_" +
             counter +
             "'>" +
-            "<option value='Arial' style='font-family:'Arial''>Arial</option>" +
-            "<option value='Agency FB' style='font-family:'Agency FB''>Agency FB</option>" +
-            "<option value='Century' style='font-family:'Century''>Century</option>" +
             "</select>" +
             "</div>" +
             "</div>" +
@@ -552,13 +546,13 @@
             }
         });
 
-        var top_move = step_top * (counter - 1);
+        let top_move = step_top * (counter - 1);
 		top_move = top_move + 7;
 
 		if(counter > max_lines){
-			var max_move = 0;
+			let max_move = 0;
 			$('.p_pad').each(function(){
-				var t = parseFloat($(this)[0].style.top.replace('%',''));
+				let t = parseFloat($(this)[0].style.top.replace('%',''));
 				if(t > max_move){
 					max_move = t;
 				}
@@ -569,7 +563,7 @@
 		if(dateur == true && counter >= (max_lines/2)+1)
 			top_move = top_move + 7;
 
-        var new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
+        let new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
         $('#pad').append(new_pad_line);
 
         $('#line_position_y_slider_' + counter).val(top_move);
@@ -579,9 +573,9 @@
     }
 
     $(document).on('input', '.textfield', function () {
-        var textfield_id = $(this).attr('id');
-        var id = textfield_id.replace("textfield_", "");
-        var text = $('#' + textfield_id).val();
+        let textfield_id = $(this).attr('id');
+        let id = textfield_id.replace("textfield_", "");
+        let text = $('#' + textfield_id).val();
         $('#p_' + id).text(text);
         
         re_center(id);
@@ -594,9 +588,9 @@
         $('#textfield_' + id).parent().parent().parent().remove();
 
 		$('.p_pad').each(function(){
-			var i = parseInt($(this).attr('id').replace('p_', ''));
+			let i = parseInt($(this).attr('id').replace('p_', ''));
 			if(i > id){
-				var t = parseFloat($(this)[0].style.top.replace('%','')) - step_top;
+				let t = parseFloat($(this)[0].style.top.replace('%','')) - step_top;
 				$(this).css('top', t +'%');
 			}
 		});
@@ -639,7 +633,7 @@
         
 
         $('.p_pad').each(function() {
-            var padding = ($('#pad').css('width').replace('px', '') - $(this).textWidth()) / 2;
+            let padding = ($('#pad').css('width').replace('px', '') - $(this).textWidth()) / 2;
             $(this).css('left', padding + "px");
         });
 
@@ -674,7 +668,7 @@
         $('.p_pad').removeClass('middle-align');
         
         $('.p_pad').each(function() {
-            var padding = $('#pad').css('width').replace('px', '') - $(this).textWidth() - 5;
+            let padding = $('#pad').css('width').replace('px', '') - $(this).textWidth() - 5;
             $(this).css('left', padding + "px");
         });
 
@@ -701,8 +695,8 @@
         $('#left_align_button_target_' + id).removeClass('active_button');
     }
 
-    function change_color() {
-        var color = $("#list_color").val(); 
+    $("#list_color").on('change', function(){
+        let color = $("#list_color").val();
         $('.p_pad').css('color', color);
 
         $('#pad-img').removeClass('filter-black');
@@ -715,10 +709,10 @@
 
         $('#border_one').css('border-color', color);
         $('#border_two').css('border-color', color);
-    }
+    });
 
     function change_font_size() {
-        var size = $("#font_size_list").val(); 
+        let size = $("#font_size_list").val();
         $('.p_pad').css('font-size', size + "pt");
 
         $('.font_size_list_targets').each(function (index) {
@@ -729,7 +723,7 @@
         });
 
 		$('.p_pad').each(function (index) {
-			var id = $(this).attr('id').replace('p_','');
+			let id = $(this).attr('id').replace('p_','');
             if (id != undefined) {
 				re_center(id);
             }
@@ -737,7 +731,7 @@
     }
 
     function change_font_size_target(id) {
-        var size = $('#font_size_list_' + id).val();
+        let size = $('#font_size_list_' + id).val();
         $('#p_' + id).css('font-size', size + "pt");
 
 		re_center(id);
@@ -765,7 +759,7 @@
     }
 
     function change_font_family() {
-        var font = $("#font_family_list").val();
+        let font = $("#font_family_list").val();
         $('.p_pad').css('font-family', font);
 
         $('.font_family_list_targets').each(function (index) {
@@ -776,7 +770,7 @@
         });
 
 		$('.p_pad').each(function (index) {
-			var id = $(this).attr('id').replace('p_','');
+			let id = $(this).attr('id').replace('p_','');
             if (id != undefined) {
 				re_center(id);
             }
@@ -784,7 +778,7 @@
     }
 
     function change_font_family_target(id) {
-        var font = $('#font_family_list_' + id).val();
+        let font = $('#font_family_list_' + id).val();
         $('#p_' + id).css('font-family', font);
 
 		re_center(id);
@@ -829,8 +823,8 @@
     $('.pad-color-button').click(function () {
         $(this).toggleClass('active-pad-color');
         if ($(this).hasClass('active-pad-color')) {
-            var i = 0;
-            var index = $('.active-pad-color').index($(this));
+            let i = 0;
+            let index = $('.active-pad-color').index($(this));
             while ($('.active-pad-color').length > $('#input_quantity').val()) {
                 if (index !== i) {
                     $('.active-pad-color').eq(i).removeClass('active-pad-color');
@@ -847,9 +841,9 @@
     });
 
     function export_pdf() {
-        var doc = new jsPDF('l', 'mm', [height_mm, width_mm]);
+        let doc = new jsPDF('l', 'mm', [height_mm, width_mm]);
 
-		var border = $('#pad').css('border');
+		let border = $('#pad').css('border');
         $('#pad').css('border', 'none');
 
         html2canvas($("#pad"), {
@@ -879,7 +873,7 @@
     };
 
     function space_letter_target(id) {
-        var space = $("#space_letter_slider_" + id).val();
+        let space = $("#space_letter_slider_" + id).val();
         space = space / 2;
         space += "px";
         $('#p_' + id).css('letter-spacing', space);
@@ -890,40 +884,44 @@
         re_center(id);
     }
 
-    function active_border_one() {
+    $("#switch_border_one").on('change', function(){
         $('#options-border-1').toggleClass('invisible');
         $('#border_one').toggleClass('invisible');
 
-		$('#width_border_one').trigger('change');
-		$('#height_border_one').trigger('change');
-    }
+        $('#width_border_one').trigger('change');
+        $('#height_border_one').trigger('change');
+    });
 
 	function active_border_date() {
 		$('#options-border-d').toggleClass('invisible');
 		$('#p_date').toggleClass('date_border');
-		var move = 10;
+		let move = 10;
 		if($('#p_date').hasClass('date_border'))
 			move = -10;
-		var top = parseFloat($('#p_date').css('top').replace('px', '')) + move;
-		var left = parseFloat($('#p_date')[0].style.left.replace('px', '')) + move;
+		let top = parseFloat($('#p_date').css('top').replace('px', '')) + move;
+		let left = parseFloat($('#p_date')[0].style.left.replace('px', '')) + move;
 		$('#p_date').css('top', top + 'px');
 		$('#p_date').css('left', left + 'px');
 	}
 
     $('.width_border').on('change input', function() {
-        var width = 100 - $(this).val();
-        var id = $(this).attr('id').replace('width_', '');
+        let width = 100 - $(this).val();
+        let id = $(this).attr('id').replace('width_', '');
         $('#' + id).css('width', width + '%');
     });
     
     $('.height_border').on('change input', function() {
-        var height = 100 - $(this).val();
-        var id = $(this).attr('id').replace('height_', '');
+        let height = 100 - $(this).val();
+        let id = $(this).attr('id').replace('height_', '');
         $('#' + id).css('height', height + '%');
     });
 
 	$('#border_style_one').on('change', function(){
-		var value = $(this).val();
+		let value = $(this).val();
+        $('#label_width_border_two').addClass('invisible');
+        $('#label_height_border_two').addClass('invisible');
+        $('#width_border_two').addClass('invisible');
+        $('#height_border_two').addClass('invisible');
 		$('#border_two').addClass('invisible');
 
 		switch(value){
@@ -934,8 +932,10 @@
 				$('#border_one').css('border-style', 'dashed');
 				break;
 			case "double":
-				$('#width_border_two').prop('disabled', false);
-				$('#height_border_two').prop('disabled', false);
+                $('#label_width_border_two').removeClass('invisible');
+                $('#label_height_border_two').removeClass('invisible');
+				$('#width_border_two').removeClass('invisible');
+				$('#height_border_two').removeClass('invisible');
 				$('#border_two').removeClass('invisible');
 				$('#width_border_two').trigger('change');
 				$('#height_border_two').trigger('change');
@@ -946,33 +946,34 @@
 	});
     
     $.fn.textWidth = function(){
-        var html_org = $(this).html();
-        var html_calc = '<span>' + html_org + '</span>';
+        let html_org = $(this).html();
+        let html_calc = '<span>' + html_org + '</span>';
         $(this).html(html_calc);
-        var width = $(this).find('span:first').width();
+        let width = $(this).find('span:first').width();
         $(this).html(html_org);
         return width;
     };
     
     function re_center(id){
+        let padding;
         if ($('#p_' + id).hasClass('middle-align')) {
-            var padding = ($('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth())/2;
+            padding = ($('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth())/2;
 			padding -= 2;
             $('#p_' + id).css('left', padding + "px");
         }
         else if ($('#p_' + id).hasClass('right-align')) {
-            var padding = $('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth() - 5;
+            padding = $('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth() - 5;
             $('#p_' + id).css('left', padding + "px");
         }
         
     }
     
     function move_position_x(id) {
-		var max = parseInt($('#line_position_x_slider_' + id).attr('max'));
-		var min = parseInt($('#line_position_x_slider_' + id).attr('min'));
-		var value = parseInt($('#line_position_x_slider_' + id).val());
-		var mid = (max + min)/2;
-        var left = max + min;
+		let max = parseInt($('#line_position_x_slider_' + id).attr('max'));
+		let min = parseInt($('#line_position_x_slider_' + id).attr('min'));
+		let value = parseInt($('#line_position_x_slider_' + id).val());
+		let mid = (max + min)/2;
+        let left = max + min;
 		left = value / left;
         left = left * $('#pad').css('width').replace('px', '');
         left = left - $('#p_' + id).textWidth()/2;
@@ -1004,12 +1005,12 @@
     }
     
     function move_position_y(id) {
-        var top = $('#line_position_y_slider_' + id).val();
+        let top = $('#line_position_y_slider_' + id).val();
         $('#p_' + id).css('top', top + '%');
     }
     
     function zoom_in_pad() {
-        var zoom = parseInt($('#zoom_value').text().replace('%',''));
+        let zoom = parseInt($('#zoom_value').text().replace('%',''));
         zoom = zoom + 20;
         if (zoom < 300) {
             $('#pads').parent().animate({
@@ -1026,7 +1027,7 @@
 	*/
 
     function zoom_out_pad() {
-        var zoom = parseInt($('#zoom_value').text().replace('%',''));
+        let zoom = parseInt($('#zoom_value').text().replace('%',''));
         zoom = zoom - 20;
         if (zoom > 50) {
             $('#pads').parent().animate({
@@ -1046,11 +1047,11 @@
 			dataType: "json",
 			success: function (returnedData) {
 				$.each(returnedData, function (index) {		
-					var model = returnedData[index];
-					var append = "<div class='col s4 models' id='model_" + model.id + "'>";
+					let model = returnedData[index];
+					let append = "<div class='col s4 models' id='model_" + model.id + "'>";
 					$.each(model.lignes, function(i){
-						var line = model.lignes[i];
-						var space = line.espacement / 2;
+						let line = model.lignes[i];
+						let space = line.espacement / 2;
 						append += "<p style='font-family:" + line.police + ";font-size:" + line.taille + "pt;letter-spacing:" + space + "px; text-indent:" + space + "px; margin-left:-" + space + "px; margin-right:-" + space + "px;' class='" + line.alignement + "-align ";
 						if(line.gras == true)
 							append += " bold ";
@@ -1081,7 +1082,7 @@
 				$('.tooltipped').tooltip({delay: 50});
 
 				$('.model-remove').on('click', function(){
-					var id = $(this).parent().parent().attr('id').replace('model_', '');
+					let id = $(this).parent().parent().attr('id').replace('model_', '');
 					$.ajax({
 						url: "<?php echo base_url(); ?>" + "tampon/delete_model",
 						type: 'GET',
@@ -1097,33 +1098,34 @@
 				})
 
 				$('.model-check').on('click', function(){
-					var lines = [];
+				    reset();
+					let lines = [];
 					$(this).parent().parent().children('p').each(function(index){
-						var text = $(this).text();
-						var size = $(this)[0].style.fontSize;
+						let text = $(this).text();
+						let size = $(this)[0].style.fontSize;
 						size = size.replace('pt', '');
-						var family = $(this).css('font-family').split('"').join("");
-						var space = $(this).css('letter-spacing') * 2;
-						var align = "";
+						let family = $(this).css('font-family').split('"').join("");
+						let space = $(this).css('letter-spacing') * 2;
+						let align = "";
 						if($(this).hasClass('left-align') == true)
 							align = "left";
 						else if($(this).hasClass('middle-align') == true)
 							align = "middle";
 						else if($(this).hasClass('right-align') == true)
 							align = "right";
-						var bold = false;
+						let bold = false;
 						if($(this).hasClass('bold') == true)
 							bold = true;
 
-						var italic = false;
+						let italic = false;
 						if($(this).hasClass('italic') == true)
 							italic = true
 
-						var underline = false;
+						let underline = false;
 						if($(this).hasClass('underline') == true)
 							underline = true;
 
-						var line = {
+						let line = {
 							"texte" : text,
 							"taille" : size,
 							"police" : family,
@@ -1136,15 +1138,15 @@
 						lines.push(line);
 					})
 					
-					var index_textfields = [];
+					let index_textfields = [];
 					$('.textfield').each(function(){
-						var id = $(this).attr('id').replace('textfield_', '');
+						let id = $(this).attr('id').replace('textfield_', '');
 						index_textfields.push(id);
 
-					})
+					});
 
 					lines.forEach(function(item, i){
-						var index = index_textfields[i];
+						let index = index_textfields[i];
 						$('#textfield_' + index).val(item.texte);
 						$('#textfield_' + index).trigger('input');
 
@@ -1187,7 +1189,7 @@
 				});
 
 				$('.model-star').on('click', function(){
-					var id = $(this).parent().parent().attr('id').replace('model_', '');
+					let id = $(this).parent().parent().attr('id').replace('model_', '');
 					$.ajax({
 						url: "<?php echo base_url(); ?>" + "tampon/star_model",
 						type: 'GET',
@@ -1212,15 +1214,15 @@
     }	
 
 	$('.model-save').on('click', function(){
-		var title = $('#title-model').val();
-		var lines = [];
+		let title = $('#title-model').val();
+		let lines = [];
 		$('.textfield').each(function() {
-			var id = $(this).attr('id').replace('textfield_', '');
-			var text = $('#textfield_' + id).val();
-			var size = $('#font_size_list_' + id).val();
-			var family = $('#font_family_list_' + id).val();
-			var space = $('#space_letter_slider_' + id).val();
-			var align = "";
+			let id = $(this).attr('id').replace('textfield_', '');
+			let text = $('#textfield_' + id).val();
+			let size = $('#font_size_list_' + id).val();
+			let family = $('#font_family_list_' + id).val();
+			let space = $('#space_letter_slider_' + id).val();
+			let align = "";
 			if($('#left_align_button_target_' + id).hasClass('active_button'))
 				align = "left";
 			else if($('#center_align_button_target_' + id).hasClass('active_button'))
@@ -1228,15 +1230,15 @@
 			else if($('#right_align_button_target_' + id).hasClass('active_button'))
 				align = "right";
 
-			var bold = false;
+			let bold = false;
 			if($('#bold_button_target_' + id).hasClass('active_button'))
 				bold = true;
 
-			var italic = false;
+			let italic = false;
 			if($('#italic_button_target_' + id).hasClass('active_button'))
 				italic = true;
 
-			var underline = false
+			let underline = false
 			if($('#underline_button_target_' + id).hasClass('active_button'))
 				underline =true;
 
@@ -1248,9 +1250,9 @@
 			lines.push(bold);
 			lines.push(italic);
 			lines.push(underline);
-		})
+		});
 		if(title){
-			var lines_to_send = JSON.stringify(lines);
+			let lines_to_send = JSON.stringify(lines);
 			$.ajax({
 					url: "<?php echo base_url(); ?>" + "tampon/save_model",
 					type: 'GET',
@@ -1268,16 +1270,16 @@
 			alert("Veuillez définir un titre.");
 		}
 
-	})
+	});
 
 	function order(){
 		$("body").css("cursor", "progress");
-		var border = $('#pad').css('border');
+		let border = $('#pad').css('border');
         $('#pad').css('border', 'none');
 	    html2canvas($("#pad"), {
             scale: 8,
             onrendered: function (canvas) {
-				var data = encodeURIComponent(canvas.toDataURL("image/jpg").split(',')[1]);
+				let data = encodeURIComponent(canvas.toDataURL("image/jpg").split(',')[1]);
                 $.ajax({
 					url: "<?php echo base_url(); ?>" + "tampon/send_mail",
 					type: 'POST',
@@ -1321,8 +1323,8 @@
 	});
 
 	function refreshListLogoLibrary(){
-		var search = $('#logo-search').val();
-		var category = $('#categories-list').val();
+		let search = $('#logo-search').val();
+		let category = $('#categories-list').val();
 		$.ajax({
 			url: "<?php echo base_url(); ?>" + "tampon/get_list_logo_library",
 			type: 'GET',
@@ -1332,7 +1334,7 @@
 			success: function (returnedData) {
 				$('#logo-list-library').empty();
 				returnedData.forEach(function(i){
-					var line = "<li class='logo-item tooltipped' data-position='bottom' data-delay='50' data-tooltip='" + i.nom + "'><img class='logo-img' src='<?php echo base_url('assets/Site/CLIP ART SITE/')?>" + i.categorie + "/" + i.nom + "." + i.extension + "'></li>";
+					let line = "<li class='logo-item tooltipped' data-position='bottom' data-delay='50' data-tooltip='" + i.nom + "'><img class='logo-img' src='<?php echo base_url('assets/Site/CLIP ART SITE/')?>" + i.categorie + "/" + i.nom + "." + i.extension + "'></li>";
 					$('#logo-list-library').append(line);
 				});
 				$('.tooltipped').tooltip({delay: 50});
@@ -1358,7 +1360,7 @@
 			success: function (returnedData) {
 				$('#logo-list-upload').empty();
 				returnedData.forEach(function(i){
-					var line = "<li class='logo-item'><img class='logo-img' src='" + i + "'></li>";
+					let line = "<li class='logo-item'><img class='logo-img' src='" + i + "'></li>";
 					$('#logo-list-upload').append(line);
 				});
 
@@ -1374,6 +1376,22 @@
 		});
 	}
 
+    let fonts = [];
+	function setUpFontSelect(id)
+    {
+        fonts.forEach(function(item, index){
+            let value = fonts[index].split(".")[0];
+            $('#' + id).append("<option value='" + value + "'>" + value + "</option>");
+        });
+
+        $('#' + id).material_select();
+
+        $('#' + id).parent().children('ul').children('li').each(function(){
+            $(this).css('font-family', $(this).children().text());
+        });
+
+    }
+
 	function refreshListFonts(){
         $.ajax({
             url: "<?php echo base_url(); ?>" + "tampon/get_list_fonts",
@@ -1381,12 +1399,69 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (returnedData) {
-                alert("police");
+                let style = document.createElement('style');
+                style.type = 'text/css';
+                returnedData.forEach(function(item){
+                    fonts.push(item);
+                });
+                fonts.forEach(function(item, index){
+                    let i = fonts[index];
+                    let value = i.split(".")[0];
+
+                    style.innerHTML += '@font-face {\n' +
+                        '    font-family: ' + value + ';\n' +
+                        '    src: url(<?php echo base_url("assets/Site/Fonts/")?>' + i + ');\n' +
+                        '}\n';
+
+                    $('#font_family_list').append("<option value='" + value + "'>" + value + "</option>");
+                });
+
+                $('.font_family_list_targets').each(function(j){
+                    if($(this).attr('id')){
+                        let id = $(this).attr('id');
+                        setUpFontSelect(id);
+                    }
+                });
+
+                document.getElementsByTagName('head')[0].appendChild(style);
+
+                $('#font_family_list').material_select();
+                $('#font_family_list').parent().children('ul').children('li').each(function(){
+                    $(this).css('font-family', $(this).children().text());
+                });
+
+
             },
             error: function(){
                 alert("Erreur de récupérations des polices.");
             }
         });
+    }
+
+    function reset()
+    {
+        while(nb_line < max_lines){
+            addrow();
+        }
+
+        $('#list_color').val($('#list_color').children('option').first().val());
+        $('#list_color').trigger("change");
+        $('#list_color').material_select();
+
+        $('#font_size_list').val("10");
+        $('#font_size_list').trigger("change");
+        $('#font_size_list').material_select();
+
+        $('#font_family_list').val($('#font_family_list').children('option').first().val());
+        $('#font_family_list').trigger("change");
+        $('#font_family_list').material_select();
+
+        $('#center_align_button').trigger("click");
+
+        if($("#switch_border_one").prop('checked')){
+            $("#switch_border_one").trigger('change');
+            $("#switch_border_one").prop('checked', false);
+        }
     }
 
 </script>

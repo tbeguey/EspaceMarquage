@@ -8,6 +8,7 @@
     font-style: normal;
     text-decoration: none;
     margin-top: 0px;
+    white-space: nowrap;
 }
 
 .bold {
