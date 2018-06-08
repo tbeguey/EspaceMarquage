@@ -1,8 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 include APPPATH . 'data/Pad.php';
-include APPPATH . 'data/Model.php';
-include APPPATH . 'data/Line.php';
 include APPPATH . 'data/Logo.php';
 
 
@@ -188,8 +186,7 @@ class Tampon extends CI_Controller {
 
 	public function save_upload_file()
 	{
-		//$id_client = $this->ion_auth->user()->row()->id;
-		$id_client = 1;
+		$id_client = $this->ion_auth->user()->row()->id;
 		$targetPath = FCPATH . 'uploads/' . $id_client . "/";
 		if(!file_exists($targetPath))
 			mkdir($targetPath, 0777, true);
@@ -280,137 +277,6 @@ class Tampon extends CI_Controller {
 
 	}
 
-	public function refresh_list_models()
-	{
-		$id_client = $this->ion_auth->user()->row()->id;
-		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
-		$models = array();
-
-		$query = $this->db->query("SELECT * FROM (SELECT MODELE.id as mid, titre, favori, LIGNE.id as lid, texte, taille, police, espacement, alignement, gras, italique, souligne " .
-								"FROM LIGNE_MODELE " .
-								"JOIN LIGNE ON LIGNE.id = id_ligne " .
-								"JOIN MODELE ON MODELE.id = id_modele " .
-								"WHERE (id_client = " . $id_client . " OR id_client = 0) AND id_tampon = " . $id_pad . " " .
-								"ORDER BY ordre) AS T " .
-								"ORDER BY T.favori DESC"); 
-
-		foreach ($query->result() as $row)
-		{
-			$model_id = $row->mid;
-			$key_model = -1;
-			foreach($models as $k => $m)
-			{
-				if($m->id == $model_id)
-				{
-					$key_model = $k;
-					break;
-				}
-			}
-
-			$line = new Line($row->lid, $row->texte, $row->taille, $row->police, $row->espacement, $row->alignement, $row->gras, $row->italique, $row->souligne);
-
-			if($key_model != -1)
-			{
-				array_push($models[$key_model]->lignes, $line);
-			}
-			else
-			{
-				$lines = array();
-				array_push($lines, $line);
-				$model = new Model($model_id, $row->titre, $row->favori, $lines);
-				array_push($models, $model);
-			}
-
-		}
-
-		echo json_encode($models);
-	}
-
-	public function save_model()
-	{
-		$id_client = $this->ion_auth->user()->row()->id;
-		$id_pad = $this->security->xss_clean($this->input->get("id_pad"));
-		$title = $this->security->xss_clean($this->input->get("title")); // si je mets des accents ca passe pas
-		$lines = json_decode($this->security->xss_clean($this->input->get("lines")));
-
-		$data_model = array(
-			'id_client' => $id_client,
-			'id_tampon' => $id_pad,
-			'titre' => $title,
-			'favori' => false
-		);
-		$this->db->insert('MODELE', $data_model);
-		$id_model = $this->db->insert_id();
-
-		for($i = 0; $i < count($lines); $i+=8)
-		{
-			$data_line = array(
-				'texte' => $lines[$i],
-				'taille' => $lines[$i+1],
-				'police' => $lines[$i+2],
-				'espacement' => $lines[$i+3],
-				'alignement' => $lines[$i+4],
-				'gras' => $lines[$i+5],
-				'italique' => $lines[$i+6],
-				'souligne' => $lines[$i+7]
-			);
-			$this->db->insert('LIGNE', $data_line);
-			$id_line = $this->db->insert_id();
-
-			$order = $i/8;
-			$data_line_model = array(
-				'id_ligne' => $id_line,
-				'id_modele' => $id_model,
-				'ordre' => $order
-			);
-			$this->db->insert('LIGNE_MODELE', $data_line_model);
-		}
-	}
-
-	public function delete_model()
-	{
-		$id_model = $this->security->xss_clean($this->input->get("model"));
-		$id_lines = array();
-
-		$query = $this->db->query("SELECT id_ligne FROM LIGNE_MODELE WHERE id_modele = " . $id_model);
-
-		foreach($query->result() as $row)
-		{
-			array_push($id_lines, $row->id_ligne);
-		}
-
-		foreach($id_lines as $i)
-		{
-			$this->db->where('id', $i);
-			$this->db->delete('LIGNE');
-			$this->db->where('id_ligne', $i);
-			$this->db->delete('LIGNE_MODELE');
-		}
-		
-		$this->db->where('id', $id_model);
-		$this->db->delete('MODELE');
-	}
-
-	public function star_model()
-	{
-		$id_model = $this->security->xss_clean($this->input->get("model"));
-		
-		$is_star = false;
-		$query = $this->db->query("SELECT favori FROM MODELE WHERE id = " . $id_model);
-		foreach($query->result() as $row)
-		{
-			$is_star = $row->favori;
-		}
-
-		$is_star ^= 1; // $is_star = !$is_star;
-
-		$data = array(
-			'favori' => $is_star
-		);
-
-		$this->db->where('id', $id_model);
-		$this->db->update('MODELE', $data);
-	}
 
     public function get_list_fonts()
     {

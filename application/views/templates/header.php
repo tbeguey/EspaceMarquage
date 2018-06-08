@@ -1,9 +1,10 @@
 <head>
-    <title>Espace Marquage - Gravure & Tampon</title>
+    <title>Espace Marquage - Tampon & Gravure</title>
 
     <script src="<?php echo base_url('jquery/jquery-1.10.2.min.js');?>"></script>
 
-	<link type="text/css" rel="stylesheet" href="<?php echo base_url('materialize/css/materialize.min.css'); ?>" media="screen,projection" />
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url('images/favicon.jpeg'); ?>" />
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url('materialize/css/materialize.min.css'); ?>" media="screen,projection" />
     <script type="text/javascript" src="<?php echo base_url('materialize/js/materialize.min.js');?>"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
@@ -15,7 +16,6 @@
 
 	<link href="<?php echo base_url('assets/css/header.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/footer.css');?>" rel="stylesheet">
-	<link href="<?php echo base_url('assets/css/welcome_message.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/tampon/index.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/tampon/personalize.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('assets/css/connexion/index.css');?>" rel="stylesheet">
@@ -32,6 +32,13 @@
 			<li><a href="<?php echo base_url('tampon'); ?>">Tampon</a></li>
 			<li><a href="<?php echo base_url('gravure'); ?>">Gravure</a></li>
 			<li><a href="<?php echo base_url('encre'); ?>">Recharges d'encres</a></li>
+            <?php
+            if($this->ion_auth->is_admin())
+            {
+                echo "<li ><span> - </span></li>";
+                echo "<li><a href='" . base_url('admin') . "'>Administration</a></li>";
+            }
+            ?>
 		</ul>
 		<?php 
 		if (!$this->ion_auth->logged_in())
@@ -42,11 +49,6 @@
 		{
 			echo "<a type='button' class='btn waves-effect waves-light red hide-on-med-and-down right' style='margin:15px;' href='" . base_url('connexion/logout') . "'><i class='material-icons left' style='margin-top:-14px;'>account_box</i>SE DECONNECTER</a>";
 			echo "<span class='right hide-on-med-and-down'>" . $this->ion_auth->user()->row()->username . "</span>";
-		}
-
-		if($this->ion_auth->is_admin())
-		{
-			echo "<a class='right hide-on-med-and-down' href='" . base_url('admin') . "' style='margin-right:15px;'>Administration</a>";
 		}
 		?>
 		<ul class="side-nav" id="mobile-demo">
@@ -64,6 +66,13 @@
 			<li><a href="<?php echo base_url('tampon'); ?>">Tampon</a></li>
 			<li><a href="<?php echo base_url('gravure'); ?>">Gravure</a></li>
 			<li><a href="<?php echo base_url('encre'); ?>">Recharges d'encres</a></li>
+            <?php
+            if($this->ion_auth->is_admin())
+            {
+                echo "<li ><span> - </span></li>";
+                echo "<li><a href='" . base_url('admin') . "'>Administration</a></li>";
+            }
+            ?>
 		</ul>
     </div>
 </nav>
@@ -71,6 +80,8 @@
 </br>
 
 <script>
+
+    let base_url = "<?php echo base_url(); ?>";
 
 	$(document).ready(function(){
 	    $(".button-collapse").sideNav();
