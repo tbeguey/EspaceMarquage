@@ -11,6 +11,15 @@
     white-space: nowrap;
 }
 
+.font_family_list_targets{
+    min-width: 175px;
+}
+
+.font_size_list_targets{
+    max-width: 40px;
+}
+
+
 .bold {
     font-weight: bold;
 }
@@ -27,8 +36,7 @@
     border: 2px dashed grey;
     overflow: hidden;
     display: inline-block;
-    padding: 0;
-    padding-top: 5px;
+    padding: 5px 0 0;
     line-height: 4px;
     background-color:#fff;
 }
@@ -119,9 +127,7 @@
     }
 
         #pads > div:not(#pad) {
-            border-width: 1px;
-            border-style: solid;
-            border-color: black;
+            border: 1px solid black;
         }
 
 .thumb {
@@ -130,6 +136,7 @@
 
 .left-align {
     left: 0 !important;
+    text-indent: 0px !important;
 }
 
 .modal {

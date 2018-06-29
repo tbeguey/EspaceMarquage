@@ -2,6 +2,10 @@ let counter;
 let nb_line = 0;
 let id_to_place_date;
 let step_top;
+let circletype_one;
+let circletype_last;
+let circle_width;
+let last_row_id = -1;
 
 $(document).ready(function () {
     $('select').material_select();
@@ -12,8 +16,7 @@ $(document).ready(function () {
     while(nb_line !== max_lines)
         addrow();
 
-
-    if (dateur === true) {
+    if (dateur === 1) {
         let d = new Date();
 
         let month = d.getMonth() + 1;
@@ -50,10 +53,40 @@ $(document).ready(function () {
         $('#date-border').removeClass('invisible');
     }
 
-    if(circle === true){
+    if(circle === 1){
+        $('#align_buttons_targets_1').children().each(function(){
+            $(this).addClass('disabled');
+        });
+        $('#align_buttons_targets_' + max_lines).children().each(function(){
+            $(this).addClass('disabled');
+        });
+        $('#delete_button_1').addClass('disabled');
+        $('#delete_button_' + max_lines).addClass('disabled');
+
+        $('#underline_button_target_1').addClass('disabled');
+        $('#underline_button_target_' + max_lines).addClass('disabled');
+
+        if(nb_line == 3)
+            $('#delete_button_2').addClass('disabled');
+
+
         $('#pads').children().each(function(){
             $(this).css('border-radius', '100%');
         });
+
+        circle_width = ($('#pads').css('width').replace('px', '')/2);
+
+        $('#p_1').text("Bonjour");
+        $('#p_' + max_lines).text("Aurevoir");
+
+        $('#p_' + max_lines).css('top', '93%');
+        $('#p_' + max_lines).css('left', circle_width);
+        $('#p_1').css('left', circle_width);
+
+        circletype_one = new CircleType(document.getElementById('p_1'));
+        circletype_one.radius(circle_width - 5).dir(1);
+        circletype_last = new CircleType(document.getElementById('p_' + max_lines));
+        circletype_last.radius(circle_width - 5).dir(-1);
     }
 
 
@@ -77,11 +110,15 @@ $(document).ready(function () {
 
     $('#pad').append("<img class='filter-black' id='pad-img' style='width:50px; height:50px; position:absolute; visibility:hidden; '/>");
 
-    for(let i=0; i<2; i++)
+    for(let i=0; i<5; i++)
         zoom_in_pad();
+
 });
 
 function addrow() {
+    if(nb_line == 1)
+        $('#delete_button_' + last_row_id).removeClass('disabled');
+
     nb_line++;
     // Check to see if the counter has been initialized
     if (typeof counter === 'undefined') {
@@ -99,7 +136,7 @@ function addrow() {
         counter +
         "' /> " +
         "</div>" +
-        "<div class='col s3'>" +
+        "<div class='col s2'>" +
         "<select class='font_size_list_targets' id='font_size_list_" +
         counter +
         "' onchange='change_font_size_target(" +
@@ -120,7 +157,7 @@ function addrow() {
         "<option value='20'>20</option>" +
         "</select>" +
         "</div>" +
-        "<div class='col s4'>" +
+        "<div class='col s5'>" +
         "<select class='font_family_list_targets' onchange='change_font_family_target(" +
         counter +
         ")' id='font_family_list_" +
@@ -165,7 +202,9 @@ function addrow() {
         "</div>" +
         "</div>" +
         "<div class='col s4' style='text-align:center; display:flex; justify-content:space-between'>" +
-        "<div>" +
+        "<div id='align_buttons_targets_" +
+        counter +
+        "'>" +
         "<a class='btn btn-floating btn-small waves-effect waves-light left_align_button_targets' id='left_align_button_target_" +
         counter +
         "' onclick='left_align_target(" +
@@ -200,7 +239,9 @@ function addrow() {
         ")'><i class='material-icons'>format_underline</i></a> " +
         "</div>" +
         "<div>" +
-        "<a class='btn btn-floating btn-small waves-effect waves-light red delete_button' onclick='delete_target(" +
+        "<a class='btn btn-floating btn-small waves-effect waves-light red' id='delete_button_" +
+        counter +
+        "' onclick='delete_target(" +
         counter +
         ")'><i class='material-icons'>delete_forever</i></a>" +
         "</div>" +
@@ -216,11 +257,7 @@ function addrow() {
             $(this).material_select();
         }
     });
-    /*$('.font_family_list_targets').each(function () {
-        if ($(this).attr('id') !== undefined) {
-            $(this).material_select();
-        }
-    });*/
+
     setUpFontSelect("font_family_list_" + counter);
 
     let top_move = step_top * (counter - 1);
@@ -229,15 +266,21 @@ function addrow() {
     if(counter > max_lines){
         let max_move = 0;
         $('.p_pad').each(function(){
-            let t = parseFloat($(this)[0].style.top.replace('%',''));
-            if(t > max_move){
-                max_move = t;
+            let i = $(this).attr('id').replace('p_', '');
+            if(!(circle === 1 && i == max_lines))
+            {
+                let t = parseFloat($(this)[0].style.top.replace('%',''));
+                if(t > max_move){
+                    max_move = t;
+                }
             }
+
+
         });
         top_move = max_move + step_top;
     }
 
-    if(dateur === true && counter >= (max_lines/2)+1)
+    if(dateur === 1 && counter >= (max_lines/2)+1)
         top_move = top_move + 7;
 
     let new_pad_line = "<p id='p_" + counter + "' class='p_pad middle-align' style='top:" + top_move + "%'></p>";
@@ -253,9 +296,43 @@ $(document).on('input', '.textfield', function () {
     let textfield_id = $(this).attr('id');
     let id = textfield_id.replace("textfield_", "");
     let text = $('#' + textfield_id).val();
-    $('#p_' + id).text(text);
 
-    re_center(id);
+
+    if(id == 1 && circle === 1)
+    {
+        $('#p_' + id).text(text);
+        circletype_one = new CircleType(document.getElementById('p_1'));
+        circletype_one.radius(circle_width - circle_width/6.1).dir(1);
+        if(circletype_one.radius() != circle_width - circle_width/6.1)
+        {
+            $(this).val(
+                function(index, value){
+                    return value.substr(0, value.length - 1);
+                });
+            $(this).trigger('input');
+        }
+    }
+    else if (id == max_lines && circle === 1)
+    {
+        //$('#p_' + id).css('top', 100 - (text.length * 1.6 + 7) + '%');
+        $('#p_' + id).text(text);
+        circletype_last = new CircleType(document.getElementById('p_' + max_lines));
+        circletype_last.radius(circle_width - circle_width/6.1).dir(-1);
+        if(circletype_last.radius() != circle_width - circle_width/6.1)
+        {
+            $(this).val(
+                function(index, value){
+                    return value.substr(0, value.length - 1);
+                });
+            $(this).trigger('input');
+        }
+
+    }
+    else
+    {
+        $('#p_' + id).text(text);
+        re_center(id);
+    }
 });
 
 function delete_target(id) {
@@ -267,10 +344,19 @@ function delete_target(id) {
     $('.p_pad').each(function(){
         let i = parseInt($(this).attr('id').replace('p_', ''));
         if(i > id){
-            let t = parseFloat($(this)[0].style.top.replace('%','')) - step_top;
-            $(this).css('top', t +'%');
+            if(!(circle === 1 && i == max_lines))
+            {
+                let t = parseFloat($(this)[0].style.top.replace('%','')) - step_top;
+                $(this).css('top', t +'%');
+            }
+
         }
     });
+
+    if(nb_line == 1){
+        last_row_id = $('.p_pad').first().attr('id').replace('p_', '');
+        $('#delete_button_' + last_row_id).addClass('disabled');
+    }
 }
 
 function left_align() {
@@ -310,7 +396,7 @@ function center_align() {
 
 
     $('.p_pad').each(function() {
-        let padding = ($('#pad').css('width').replace('px', '') - $(this).textWidth()) / 2;
+        let padding = ($('#pad').css('width').replace('px', '') - $(this).css('width').replace('px','')) / 2;
         $(this).css('left', padding + "px");
     });
 
@@ -345,7 +431,7 @@ function right_align() {
     $('.p_pad').removeClass('middle-align');
 
     $('.p_pad').each(function() {
-        let padding = $('#pad').css('width').replace('px', '') - $(this).textWidth() - 5;
+        let padding = $('#pad').css('width').replace('px', '') - $(this).css('width').replace('px','') - 5;
         $(this).css('left', padding + "px");
     });
 
@@ -405,6 +491,10 @@ function change_font_size() {
             re_center(id);
         }
     });
+
+    circletype_one.destroy();
+    circletype_one = new CircleType(document.getElementById('p_1'));
+    circletype_one.radius(circle_width - 5).dir(1);
 }
 
 function change_font_size_target(id) {
@@ -520,17 +610,17 @@ $('#input_quantity').change(function () {
 function export_pdf() {
     let doc = new jsPDF('l', 'mm', [height_mm, width_mm]);
 
-    let border = $('#pad').css('border');
-    $('#pad').css('border', 'none');
+    $('#pad').css('border-style', 'none');
 
     html2canvas($("#pads"), {
         scale: 8,
         onrendered: function (canvas) {
             doc.addImage(canvas, 'PNG', 0, 0, width_mm, height_mm);
             doc.save('APERCU - ' + $('#title').text() + ' - ' + $.now() + '.pdf');
-            $('#pad').css('border', border);
+            $('#pad').css('border-style', 'dashed');
             return;
-        }
+        },
+        letterRendering:true
     });
 }
 
@@ -555,8 +645,8 @@ function space_letter_target(id) {
     space += "px";
     $('#p_' + id).css('letter-spacing', space);
     $('#p_' + id).css('text-indent', space);
-    $('#p_' + id).css('margin-left', '-' + space);
-    $('#p_' + id).css('margin-right', '-' + space);
+    //$('#p_' + id).css('margin-left', '-' + space);
+    //$('#p_' + id).css('margin-right', '-' + space);
 
     re_center(id);
 }
@@ -632,9 +722,10 @@ $.fn.textWidth = function(){
 };
 
 function re_center(id){
+
     let padding;
     if ($('#p_' + id).hasClass('middle-align')) {
-        padding = ($('#pad').css('width').replace('px', '') - $('#p_' + id).textWidth())/2;
+        padding = ($('#pad').css('width').replace('px', '') - $('#p_' + id).css('width').replace('px',''))/2;
         padding -= 2;
         $('#p_' + id).css('left', padding + "px");
     }
@@ -653,7 +744,7 @@ function move_position_x(id) {
     let left = max + min;
     left = value / left;
     left = left * $('#pad').css('width').replace('px', '');
-    left = left - $('#p_' + id).textWidth()/2;
+    left = left - $('#p_' + id).css('width').replace('px','')/2;
 
     $('#p_' + id).css('left', left + "px");
 
@@ -736,7 +827,8 @@ function order(){
                 alert("Erreur d'envoi de commande.");
             }
         });
-        }
+        },
+        letterRendering:true
     });
 }
 

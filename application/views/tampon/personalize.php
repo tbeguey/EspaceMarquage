@@ -6,7 +6,7 @@
     <h4 id="title">TAMPON <?php echo $title ?></h4>
 
     <div class="row" style="display:flex; justify-content:center; align-items:center;">
-        <div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>">
+        <div id="pads" style="width: <?php echo $width ?>; height: <?php echo $height ?>;">
             <div id="pad"></div>
             <div id="border_one" class="invisible"></div>
             <div id="border_two" class="invisible"></div>
@@ -29,7 +29,7 @@
             <div id="test-swipe-1" class="col s12">
                 <br />
                 <div class="row">
-                    <div class="col s12" style="text-align:center">
+                    <div class="col s12" id="align_buttons" style="text-align:center">
                         <a class="btn waves-effect waves-light" id="left_align_button" onclick="left_align()"><i class="material-icons left">format_align_left</i>ALIGNER A GAUCHE</a>
                         <a class="btn waves-effect waves-light active_button" id="center_align_button" onclick="center_align()"><i class="material-icons left">format_align_center</i>CENTRER</a>
                         <a class="btn waves-effect waves-light" id="right_align_button" onclick="right_align()"><i class="material-icons right">format_align_right</i>ALIGNER A DROITE</a>
@@ -83,7 +83,7 @@
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col s6 col offset-s4" style="padding:0">
+                    <div class="col s3 offset-s5" style="padding:0">
                         <a class="waves-effect waves-light btn" onclick="addrow()" id="add-row"><i class="material-icons left">add</i>AJOUTER UNE LIGNE</a>
                     </div>
                 </div>
@@ -214,7 +214,6 @@
             </div>
         </div>
     </div>
-    <br />
     <div style="background-color:white;">
         <!--<div class="row">
             <div class="col s12" style="text-align:center">

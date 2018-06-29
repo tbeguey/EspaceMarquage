@@ -12,6 +12,7 @@
     <link href="<?php echo base_url('dropzone/dropzone.css');?>" rel="stylesheet">
     <script type="text/javascript" src="<?php echo base_url('dropzone/dropzone.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('ckeditor/ckeditor.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('CircleType/dist/circletype.min.js');?>"></script>
 
 
 	<link href="<?php echo base_url('assets/css/header.css');?>" rel="stylesheet">
